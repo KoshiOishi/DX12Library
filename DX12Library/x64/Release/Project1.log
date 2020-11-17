@@ -1,0 +1,9 @@
+﻿  main.cpp
+d:\k019g1301\2年前期\directx\授業プロジェクト\project1\project1\main.cpp(384): warning C4566: ユニバーサル文字名 '\u00A5' によって表示されている文字は、現在のコード ページ (932) で表示できません
+d:\k019g1301\2年前期\directx\授業プロジェクト\project1\project1\main.cpp(644): warning C4305: '初期化中': 'double' から 'float' へ切り詰めます。
+  コード生成しています。
+  1 of 247 functions ( 0.4%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    0 functions had inline decision re-evaluated but remain unchanged
+  コード生成が終了しました。
+  Project1.vcxproj -> D:\K019G1301\2年前期\DirectX\授業プロジェクト\Project1\x64\Release\Project1.exe

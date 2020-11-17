@@ -1,0 +1,16 @@
+﻿  DebugText.cpp
+d:\k019g1301\2年前期\dx2(directx)\授業プロジェクト\現在開発中\project1\project1\debugtext.cpp(47): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+  GamePlay.cpp
+  c:\program files (x86)\windows kits\10\include\10.0.18362.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+d:\k019g1301\2年前期\dx2(directx)\授業プロジェクト\現在開発中\project1\project1\input.h(4): warning C4005: 'DIRECTINPUT_VERSION': マクロが再定義されました。
+  c:\program files (x86)\windows kits\10\include\10.0.18362.0\um\dinput.h(48): note: 'DIRECTINPUT_VERSION' の以前の定義を確認してください
+  Sprite.cpp
+  c:\program files (x86)\windows kits\10\include\10.0.18362.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+d:\k019g1301\2年前期\dx2(directx)\授業プロジェクト\現在開発中\project1\project1\sprite.cpp(334): warning C4244: '=': 'UINT64' から 'float' への変換です。データが失われる可能性があります。
+d:\k019g1301\2年前期\dx2(directx)\授業プロジェクト\現在開発中\project1\project1\sprite.cpp(335): warning C4244: '=': 'UINT' から 'float' への変換です。データが失われる可能性があります。
+d:\k019g1301\2年前期\dx2(directx)\授業プロジェクト\現在開発中\project1\project1\sprite.cpp(374): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+d:\k019g1301\2年前期\dx2(directx)\授業プロジェクト\現在開発中\project1\project1\sprite.cpp(380): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+  main.cpp
+  コードを生成中...
+d:\k019g1301\2年前期\dx2(directx)\授業プロジェクト\現在開発中\project1\project1\sprite.cpp(194): warning C4715: 'Sprite::Initialize': 値を返さないコントロール パスがあります。
+  Project1.vcxproj -> D:\K019G1301\2年前期\DX2(DirectX)\授業プロジェクト\現在開発中\Project1\x64\Debug\Project1.exe
