@@ -30,9 +30,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	DX12Init::Initialize();
 	Input::Initialize(DX12Init::GetHwnd());
 	Sound::Initialize();
-	Sprite::Initialize();
+	Sprite::FirstInit();
 	Object3D::FirstInit();
 
+	//デバッグテキスト初期化
+	DebugText::Initialize(0, L"Resources/debugfont.png");
 
 	SceneManager::AddScene(new GamePlay());
 	SceneManager::SetScene("GamePlay");

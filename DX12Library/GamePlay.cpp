@@ -24,22 +24,8 @@ void GamePlay::Initialize()
 	obj2.Initialize();
 	obj2.SetPosition({ 30, 0, 0 });
 
-
-	Sprite::SpriteLoadTexture(1, L"Resources/haikeidayo.png");
-	Sprite::SpriteLoadTexture(2, L"Resources/gazoudayo.png");
-	sprite1.SpriteSetTexNumber(1);
-	sprite1.GenerateSprite();
-	sprite2.SpriteSetTexNumber(2);
-	sprite2.GenerateSprite();
-
-	sprite2.SpriteSetSize(600.0f,300.0f);
-
-	//デバッグテキスト用のテクスチャ番号を指定
-	DebugText::SetDebugTextTexNumber(0);
-	//デバッグテキスト用のテクスチャ読み込み
-	Sprite::SpriteLoadTexture(DebugText::GetDebugTextTexNumber(), L"Resources/debugfont.png");
-	//デバッグテキスト初期化
-	DebugText::Initialize();
+	sprite1.Initialize(1, L"Resources/haikeidayo.png");
+	sprite2.Initialize(2, L"Resources/gazoudayo.png");
 
 }
 

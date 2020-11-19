@@ -24,7 +24,7 @@ const int Sprite::spriteSRVCount = 512;
 ComPtr <ID3D12Resource> Sprite::spriteTexbuff[Sprite::spriteSRVCount];	//テクスチャバッファ
 
 
-HRESULT Sprite::Initialize()
+void Sprite::FirstInit()
 {
 	HRESULT result = S_FALSE;
 
@@ -193,9 +193,21 @@ HRESULT Sprite::Initialize()
 
 }
 
-HRESULT Sprite::SpriteLoadTexture(UINT texnumber, const wchar_t* filename)
+void Sprite::Initialize(UINT texnumber, const wchar_t * filename, XMFLOAT2 anchorpoint, bool isFlipX, bool isFlipY)
+{
+	Sprite::SpriteLoadTexture(texnumber, filename);
+	SpriteSetTexNumber(texnumber);
+	GenerateSprite(anchorpoint, isFlipX, isFlipY);
+}
+
+void Sprite::SpriteLoadTexture(UINT texnumber, const wchar_t* filename)
 {
 	HRESULT result = S_FALSE;
+
+	//すでにテクスチャが読み込まれている場合はリターン
+	if (spriteTexbuff[texnumber] != nullptr) {
+		return;
+	}
 
 	//WICテクスチャのロード
 	TexMetadata metadata{};
@@ -262,10 +274,9 @@ HRESULT Sprite::SpriteLoadTexture(UINT texnumber, const wchar_t* filename)
 		)
 	);
 
-	return S_OK;
 }
 
-HRESULT Sprite::GenerateSprite(XMFLOAT2 anchorpoint, bool isFlipX, bool isFlipY)
+void Sprite::GenerateSprite(XMFLOAT2 anchorpoint, bool isFlipX, bool isFlipY)
 {
 	HRESULT result = S_FALSE;
 	this->anchorpoint = anchorpoint;
@@ -380,8 +391,6 @@ HRESULT Sprite::GenerateSprite(XMFLOAT2 anchorpoint, bool isFlipX, bool isFlipY)
 		0.0f, DX12Init::GetWindowWidth(), DX12Init::GetWindowHeight(), 0.0f, 0.0f, 1.0f
 	);
 
-
-	return result;
 }
 
 void Sprite::SpriteSetPipeline()

@@ -6,12 +6,12 @@ Sprite DebugText::sprites[maxCharCount];
 int DebugText::spriteIndex = 0;
 UINT DebugText::debugTextTexNumber;
 
-void DebugText::Initialize()
+
+void DebugText::Initialize(UINT debugTextTexNumber, const wchar_t* texfilename)
 {
 	for (int i = 0; i < _countof(sprites); i++)
 	{
-		sprites[i].SpriteSetTexNumber(debugTextTexNumber);
-		sprites[i].GenerateSprite();
+		sprites[i].Initialize(debugTextTexNumber, texfilename);
 	}
 }
 

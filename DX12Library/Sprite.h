@@ -62,16 +62,24 @@ public:
 	/// <summary>
 	/// 初期化処理
 	/// </summary>
-	/// <returns></returns>
-	static HRESULT Initialize();
+	static void FirstInit();
+
+	/// <summary>
+	/// 初期化処理をまとめたもの。
+	/// </summary>
+	/// <param name="texnumber">テクスチャ番号</param>
+	/// <param name="filename">テクスチャファイルパス</param>
+	/// <param name="anchorpoint">アンカーポイント(省略可)</param>
+	/// <param name="isFlipX">横反転フラグ(省略可)</param>
+	/// <param name="isFlipY">縦反転フラグ(省略可)</param>
+	void Initialize(UINT texnumber, const wchar_t* filename, XMFLOAT2 anchorpoint = { 0,0 }, bool isFlipX = false, bool isFlipY = false);
 
 	/// <summary>
 	/// スプライトのテクスチャ読み込み処理
 	/// </summary>
 	/// <param name="texnumber">テクスチャ番号</param>
 	/// <param name="filename">ファイルパス</param>
-	/// <returns></returns>
-	static HRESULT SpriteLoadTexture(UINT texnumber, const wchar_t* filename);
+	static void SpriteLoadTexture(UINT texnumber, const wchar_t* filename);
 
 	/// <summary>
 	/// スプライトの生成
@@ -79,8 +87,9 @@ public:
 	/// <param name="anchorpoint">アンカーポイント(省略可)</param>
 	/// <param name="isFlipX">横回転フラグ(省略可)</param>
 	/// <param name="isFlipY">縦回転フラグ(省略可)</param>
-	/// <returns></returns>
-	HRESULT GenerateSprite(XMFLOAT2 anchorpoint = { 0,0 }, bool isFlipX = false, bool isFlipY = false);
+	void GenerateSprite(XMFLOAT2 anchorpoint = { 0,0 }, bool isFlipX = false, bool isFlipY = false);
+
+
 
 	/// <summary>
 	/// スプライトパイプラインをセット スプライト描画前に必ず書く

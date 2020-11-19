@@ -11,7 +11,12 @@ public:
 	static const int fontLineCount = 14;	//フォント画像内1行分の文字列
 	static UINT debugTextTexNumber;
 
-	static void Initialize();
+	/// <summary>
+	/// デバッグテキストの初期化処理
+	/// </summary>
+	/// <param name="debugTextTexNumber">デバッグテキストに使用するスプライトテクスチャ番号</param>
+	/// <param name="texfilename">デバッグテキストに使用するテクスチャファイルパス</param>
+	static void Initialize(UINT debugTextTexNumber, const wchar_t* texfilename);
 	static void SetDebugTextTexNumber(const int debugTextTexNumber);
 
 	/// <summary>
