@@ -6,7 +6,6 @@
 
 GamePlay::GamePlay()
 {
-	nextScene = "";
 	sceneName = "GamePlay";
 }
 

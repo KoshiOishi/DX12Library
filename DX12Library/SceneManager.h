@@ -12,6 +12,7 @@ class SceneManager
 private:
 	static string nowScene;
 	static vector<Scene*> scenes;
+	static int sceneNum;
 
 public:
 	static void AddScene(Scene* scene);

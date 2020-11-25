@@ -1,16 +1,12 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(391,5): warning MSB8028: 中間ディレクトリ (x64\Debug\) に別のプロジェクト (Project1.vcxproj) と共有されているファイルが含まれています。これにより、クリーンしてリビルド動作が適切に行われない可能性があります。
-  DebugText.cpp
-d:\k019g1301\ライブラリ\dx12library\dx12library\debugtext.cpp(47): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+  FPSManager.cpp
+d:\k019g1301\ライブラリ\dx12library\dx12library\fpsmanager.cpp(20): warning C4244: '初期化中': 'LONGLONG' から 'double' への変換です。データが失われる可能性があります。
   GamePlay.cpp
   c:\program files (x86)\windows kits\10\include\10.0.18362.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
 d:\k019g1301\ライブラリ\dx12library\dx12library\input.h(4): warning C4005: 'DIRECTINPUT_VERSION': マクロが再定義されました。
   c:\program files (x86)\windows kits\10\include\10.0.18362.0\um\dinput.h(48): note: 'DIRECTINPUT_VERSION' の以前の定義を確認してください
-  Sprite.cpp
-  c:\program files (x86)\windows kits\10\include\10.0.18362.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
-d:\k019g1301\ライブラリ\dx12library\dx12library\sprite.cpp(345): warning C4244: '=': 'UINT64' から 'float' への変換です。データが失われる可能性があります。
-d:\k019g1301\ライブラリ\dx12library\dx12library\sprite.cpp(346): warning C4244: '=': 'UINT' から 'float' への変換です。データが失われる可能性があります。
-d:\k019g1301\ライブラリ\dx12library\dx12library\sprite.cpp(385): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
-d:\k019g1301\ライブラリ\dx12library\dx12library\sprite.cpp(391): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
   main.cpp
+  Scene.cpp
+  SceneManager.cpp
   コードを生成中...
   DX12Library.vcxproj -> D:\K019G1301\ライブラリ\DX12Library\x64\Debug\DX12Library.exe

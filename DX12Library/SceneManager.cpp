@@ -1,9 +1,11 @@
 #include <assert.h>
+#include "Input.h"
 #include "SceneManager.h"
 
 //静的メンバ変数の実体
 SceneManager::string SceneManager::nowScene;
 SceneManager::vector<Scene*> SceneManager::scenes;
+int SceneManager::sceneNum;
 
 void SceneManager::AddScene(Scene * scene)
 {
@@ -13,50 +15,29 @@ void SceneManager::AddScene(Scene * scene)
 void SceneManager::SetScene(string sceneName)
 {
 	nowScene = sceneName;
-	Initialize();
+	for (int i = 0; i < scenes.size(); i++)
+	{
+		//現在シーンのみ適用
+		if (scenes[i]->GetSceneName() != nowScene) continue;
+
+		sceneNum = i;
+		Initialize();
+		return;
+	}
 }
 
 void SceneManager::Initialize()
 {
-	for (int i = 0; i < scenes.size(); i++)
-	{
-		//現在シーンのみ適用
-		if (scenes[i]->GetSceneName() != nowScene) continue;
-
-		scenes[i]->Initialize();
-		return;
-	}
-
-	//どのシーンも呼ばれなかったら警告
-	assert(0);
+	scenes[sceneNum]->Initialize();
 }
 
 void SceneManager::Update()
 {
-	for (int i = 0; i < scenes.size(); i++)
-	{
-		//現在シーンのみ適用
-		if (scenes[i]->GetSceneName() != nowScene) continue;
-
-		scenes[i]->Update();
-		return;
-	}
-
-	//どのシーンも呼ばれなかったら警告
-	assert(0);
+	Input::Update();
+	scenes[sceneNum]->Update();
 }
 
 void SceneManager::Draw()
 {
-	for (int i = 0; i < scenes.size(); i++)
-	{
-		//現在シーンのみ適用
-		if (scenes[i]->GetSceneName() != nowScene) continue;
-
-		scenes[i]->Draw();
-		return;
-	}
-
-	//どのシーンも呼ばれなかったら警告
-	assert(0);
+	scenes[sceneNum]->Draw();
 }

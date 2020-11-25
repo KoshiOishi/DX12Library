@@ -39,9 +39,6 @@
     <ClCompile Include="Object3D.cpp">
       <Filter>ソース ファイル\ライブラリ</Filter>
     </ClCompile>
-    <ClCompile Include="Shape.cpp">
-      <Filter>ソース ファイル\ライブラリ</Filter>
-    </ClCompile>
     <ClCompile Include="Sound.cpp">
       <Filter>ソース ファイル\ライブラリ</Filter>
     </ClCompile>
@@ -61,6 +58,9 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="SceneManager.cpp">
+      <Filter>ソース ファイル\ライブラリ</Filter>
+    </ClCompile>
+    <ClCompile Include="FPSManager.cpp">
       <Filter>ソース ファイル\ライブラリ</Filter>
     </ClCompile>
   </ItemGroup>
@@ -100,9 +100,6 @@
     <ClInclude Include="Scene.h">
       <Filter>ヘッダー ファイル\ライブラリ</Filter>
     </ClInclude>
-    <ClInclude Include="Shape.h">
-      <Filter>ヘッダー ファイル\ライブラリ</Filter>
-    </ClInclude>
     <ClInclude Include="Sound.h">
       <Filter>ヘッダー ファイル\ライブラリ</Filter>
     </ClInclude>
@@ -116,6 +113,9 @@
       <Filter>ヘッダー ファイル\シーン</Filter>
     </ClInclude>
     <ClInclude Include="SceneManager.h">
+      <Filter>ヘッダー ファイル\ライブラリ</Filter>
+    </ClInclude>
+    <ClInclude Include="FPSManager.h">
       <Filter>ヘッダー ファイル\ライブラリ</Filter>
     </ClInclude>
   </ItemGroup>

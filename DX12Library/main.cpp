@@ -7,6 +7,7 @@
 #include "Sound.h"
 #include "DX12Init.h"
 #include "SceneManager.h"
+#include "FPSManager.h"
 #include "GamePlay.h"
 
 using namespace DirectX;
@@ -42,6 +43,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	MSG msg{}; // メッセージ
 	while (true)
 	{
+		FPSManager::Initialize(60);
 		// メッセージがある?
 		if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
 			TranslateMessage(&msg); // キー入力メッセージの処理
@@ -54,7 +56,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		SceneManager::Update();
 		SceneManager::Draw();
-
+		FPSManager::AdjustFPS();
 	}
 	// ウィンドウクラスを登録解除
 	DX12Init::End();
