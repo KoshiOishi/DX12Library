@@ -14,9 +14,13 @@ private:
 	Object3D obj1[5];
 	Object3D obj2;
 
+	Model* model1;
+	Model* model2;
+
 
 public:
 	GamePlay();
+	~GamePlay();
 	void Initialize() override;
 	void Update() override;
 	void Draw() override;

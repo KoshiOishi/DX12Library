@@ -9,17 +9,32 @@ GamePlay::GamePlay()
 	sceneName = "GamePlay";
 }
 
+GamePlay::~GamePlay()
+{
+	delete model1;
+	delete model2;
+}
+
 void GamePlay::Initialize()
 {
+	for (int i = 0; i < 5; i++)
+	{
+		obj1[i].Initialize();
+	}
+
+	model1->Initialize();
+	model2->Initialize();
+
+	model1->LoadOBJ("PLAYER");
+	model2->LoadOBJ("post");
 
 	for (int i = 0; i < 5; i++)
 	{
-		obj1[i].LoadOBJ("PLAYER");
-		obj1[i].Initialize();
+		obj1[i].SetModel(model1);
 		obj1[i].SetPosition({ (float)(rand() % 20 - 10), (float)(rand() % 20 - 10), (float)(rand() % 20 - 10) });
 	}
 
-	obj2.LoadOBJ("post");
+	obj2.SetModel(model2);
 	obj2.Initialize();
 	obj2.SetPosition({ 30, 0, 0 });
 

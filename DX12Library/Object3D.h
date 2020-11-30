@@ -4,6 +4,7 @@
 #include <d3dx12.h>
 #include <wrl.h>
 #include <vector>
+#include "Model.h"
 #pragma comment(lib, "d3d12.lib")
 
 class Object3D
@@ -24,46 +25,12 @@ public:
 		
 //サブクラス
 public:
-	struct Vertex
-	{
-		XMFLOAT3 pos;	 //xyz座標
-		XMFLOAT3 normal; //法線ベクトル
-		XMFLOAT2 uv;	//uv座標
-	};
 
 	// 定数バッファ用データ構造体
 	struct ConstBufferDataB0 {
 		XMMATRIX mat;	//3D変換行列
 	};
 
-	// 定数バッファ用データ構造体B1
-	struct ConstBufferDataB1
-	{
-		XMFLOAT3 ambient;	//アンビエント係数
-		float pad1;			//パディング
-		XMFLOAT3 diffuse;	//ディフューズ係数
-		float pad2;			//パディング
-		XMFLOAT3 specular;	//スペキュラー係数
-		float alpha;		//アルファ
-	};
-
-	//マテリアル
-	struct Material
-	{
-		std::string name;	//マテリアル名
-		XMFLOAT3 ambient;	//アンビエント影響度
-		XMFLOAT3 diffuse;	//ディフューズ影響度
-		XMFLOAT3 specular;	//スペキュラー影響度
-		float alpha;		//アルファ
-		std::string textureFilename;	//テクスチャファイル名
-		//コンストラクタ
-		Material() {
-			ambient = { 0.3f, 0.3f, 0.3f };
-			diffuse = { 0.0f, 0.0f, 0.0f };
-			specular = { 0.0f,0.0f,0.0f };
-			alpha = 1.0f;
-		}
-	};
 
 
 //定数
@@ -73,14 +40,6 @@ private:
 //メンバ変数
 private:
 
-	//マテリアル
-	Material material;
-
-	//頂点データ
-	vector<Vertex> vertices;
-
-	//インデックスデータ
-	vector<unsigned short> indices;
 
 	// スケーリング倍率
 	XMFLOAT3 scale;
@@ -94,32 +53,15 @@ private:
 	// ワールド座標
 	XMMATRIX matWorld;
 
+	//モデル
+	Model* model;
+
 #pragma region 初期化回りの変数
-	// 頂点バッファ
-	ComPtr < ID3D12Resource> vertBuff = nullptr;
 
-	// 頂点バッファビュー
-	D3D12_VERTEX_BUFFER_VIEW vbView{};
-
-	// インデックスバッファ
-	ComPtr <ID3D12Resource> indexBuff = nullptr;
-
-	//インデックスバッファビュー
-	D3D12_INDEX_BUFFER_VIEW ibView{};
-
-
-	// テクスチャバッファ
-	ComPtr <ID3D12Resource> texbuff = nullptr;
 
 	// 定数バッファ
 	ComPtr<ID3D12Resource> constBuffB0;
-	ComPtr<ID3D12Resource> constBuffB1;
 
-	// シェーダリソースビューのハンドル(CPU)
-	CD3DX12_CPU_DESCRIPTOR_HANDLE cpuDescHandleSRV;
-
-	// シェーダリソースビューのハンドル(GPU)
-	CD3DX12_GPU_DESCRIPTOR_HANDLE gpuDescHandleSRV;
 
 
 
@@ -153,22 +95,7 @@ private:
 	// パイプラインステート
 	static ComPtr <ID3D12PipelineState> pipelinestate;
 
-	// デスクリプタサイズ
-	static UINT descriptorHandleIncrementSize;
-
 //メンバ関数
-private:
-	/// <summary>
-	/// マテリアル読み込み
-	/// </summary>
-	void LoadMaterial(const std::string& directoryPath, const std::string& filename);
-
-	/// <summary>
-	/// テクスチャ読み込み
-	/// </summary>
-	/// <returns>成否</returns>
-	bool LoadTexture(const std::string& directoryPath, const std::string& filename);
-
 
 public:
 
@@ -188,10 +115,10 @@ public:
 	void Draw();
 
 	/// <summary>
-	/// OBJファイル読み込み ※Initializeの前に記述！
+	/// モデルをセットする
 	/// </summary>
-	/// <param name="modelname"></param>
-	void LoadOBJ(const std::string& modelname);
+	/// <param name="model">モデルのポインタ</param>
+	void SetModel(Model* model);
 
 #pragma region 便利関数
 //メンバ関数
@@ -295,6 +222,12 @@ public:
 	/// ビュー行列の更新処理
 	/// </summary>
 	static void UpdateViewMatrix();
+
+	/// <summary>
+	/// デスクリプタヒープのポインタを取得
+	/// </summary>
+	/// <returns>デスクリプタヒープのポインタ</returns>
+	static ID3D12DescriptorHeap* GetDescHeap();
 
 #pragma endregion
 
