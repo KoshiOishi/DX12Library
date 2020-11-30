@@ -12,7 +12,7 @@ using namespace DirectX;
 //静的メンバ変数の実体
 XMMATRIX Object3D::matView{};
 XMMATRIX Object3D::matProjection{};
-XMFLOAT3 Object3D::eye = { 0, 0, -50.0f };
+XMFLOAT3 Object3D::eye = { 0, 0, -100 };
 XMFLOAT3 Object3D::target = { 0, 0, 0 };
 XMFLOAT3 Object3D::up = { 0, 1, 0 };
 
@@ -249,9 +249,6 @@ void Object3D::Initialize()
 	position = { 0.0f,0.0f,0.0f };
 
 	//ビュー行列の作成
-	eye = { 0, 0, -100 };	//視点座標
-	target = { 0, 0, 0 };	//注視点座標
-	up = { 0, 1, 0 };		//上方向ベクトル
 	matView = XMMatrixLookAtLH(
 		XMLoadFloat3(&eye),
 		XMLoadFloat3(&target),

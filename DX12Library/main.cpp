@@ -59,6 +59,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		FPSManager::AdjustFPS();
 	}
 	// ウィンドウクラスを登録解除
+	SceneManager::DeleteScene();
 	DX12Init::End();
 }
 

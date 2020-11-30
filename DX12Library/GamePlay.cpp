@@ -14,7 +14,7 @@ void GamePlay::Initialize()
 
 	for (int i = 0; i < 5; i++)
 	{
-		obj1[i].LoadOBJ("vending_machine");
+		obj1[i].LoadOBJ("PLAYER");
 		obj1[i].Initialize();
 		obj1[i].SetPosition({ (float)(rand() % 20 - 10), (float)(rand() % 20 - 10), (float)(rand() % 20 - 10) });
 	}

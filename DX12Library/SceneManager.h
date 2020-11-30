@@ -17,6 +17,7 @@ private:
 public:
 	static void AddScene(Scene* scene);
 	static void SetScene(string sceneName);
+	static void DeleteScene();
 
 	static void Initialize();
 	static void Update();

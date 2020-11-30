@@ -151,6 +151,7 @@
     <ClCompile Include="DX12Init.cpp" />
     <ClCompile Include="FPSManager.cpp" />
     <ClCompile Include="GamePlay.cpp" />
+    <ClCompile Include="Model.cpp" />
     <ClCompile Include="Object3D.cpp" />
     <ClCompile Include="DebugText.cpp" />
     <ClCompile Include="Input.cpp" />
@@ -235,6 +236,7 @@
     <ClInclude Include="DX12Init.h" />
     <ClInclude Include="FPSManager.h" />
     <ClInclude Include="GamePlay.h" />
+    <ClInclude Include="Model.h" />
     <ClInclude Include="Object3D.h" />
     <ClInclude Include="DebugText.h" />
     <ClInclude Include="Input.h" />

@@ -8,6 +8,8 @@
 
 class Object3D
 {
+public:
+
 	using XMMATRIX = DirectX::XMMATRIX;
 	using XMFLOAT4 = DirectX::XMFLOAT4;
 	using XMFLOAT3 = DirectX::XMFLOAT3;

@@ -26,6 +26,16 @@ void SceneManager::SetScene(string sceneName)
 	}
 }
 
+void SceneManager::DeleteScene()
+{
+	for (int i = 0; i < scenes.size(); i++)
+	{
+		delete scenes[i];
+	}
+
+	scenes.clear();
+}
+
 void SceneManager::Initialize()
 {
 	scenes[sceneNum]->Initialize();
