@@ -4,6 +4,7 @@
 #include <d3dx12.h>
 #include <wrl.h>
 #include <vector>
+#include <string>
 #pragma comment(lib, "d3d12.lib")
 
 class Model
@@ -92,14 +93,54 @@ private:
 	//定数バッファ
 	ComPtr<ID3D12Resource> constBuffB1;
 
+	//OBJか否か
+	bool isOBJ = true;
+
 //メンバ関数
 public:
 	void Initialize();
 	void Update();
 	void Draw();
 
-	void LoadOBJ(const std::string & modelname);
-	void LoadMaterial(const std::string & directoryPath, const std::string & filename);
-	bool LoadTexture(const std::string & directoryPath, const std::string & filename);
+	/// <summary>
+	/// OBJファイルからモデルを作成する（フォルダ名と中身の名前は同一のものにしてください。）
+	/// </summary>
+	/// <param name="modelname">objファイルを格納してるフォルダ名</param>
+	/// <param name="index">インデックス（重複しないように指定）</param>
+	void LoadOBJ(const std::string & modelname, int index);
+	void LoadMaterial(const std::string & directoryPath, const std::string & filename, int index);
+	bool LoadTexture(const std::string & directoryPath, const std::string & filename, int index);
+	void CreateBuffer();
+
+	/// <summary>
+	/// OBJファイルから作られたモデルであるかどうか返す
+	/// </summary>
+	/// <returns></returns>
+	bool GetIsOBJ() { return isOBJ; }
+
+	//以下図形作成
+	/// <summary>
+	/// 四角形ポリゴンを作成。中心基準。
+	/// </summary>
+	/// <param name="width">横幅</param>
+	/// <param name="height">縦幅</param>
+	/// <param name="depth">奥行</param>
+	/// <param name="index">インデックス（重複しないように指定）</param>
+	void CreateBox(float width, float height, float depth, int index);
+
+	/// <summary>
+	/// 球ポリゴンを作成
+	/// </summary>
+	/// <param name="radius">半径</param>
+	/// <param name="index">インデックス（重複しないように指定）</param>
+	void CreateSphere(float radius, int index);
+
+	/// <summary>
+	/// 円柱ポリゴンを作成
+	/// </summary>
+	/// <param name="radius">半径</param>
+	/// <param name="height">高さ</param>
+	/// <param name="index">インデックス（重複しないように指定）</param>
+	void CreatePoll(float radius, float height, int index);
 };
 

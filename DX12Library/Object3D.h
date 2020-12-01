@@ -28,6 +28,7 @@ public:
 
 	// 定数バッファ用データ構造体
 	struct ConstBufferDataB0 {
+		XMFLOAT4 color;	//色(RGBA)
 		XMMATRIX mat;	//3D変換行列
 	};
 
@@ -54,7 +55,13 @@ private:
 	XMMATRIX matWorld;
 
 	//モデル
-	Model* model;
+	Model model;
+
+	//ワイヤフレーム表示
+	bool isWireFlane;
+
+	//色
+	XMFLOAT4 color = { 1,1,1,1 };
 
 #pragma region 初期化回りの変数
 
@@ -89,11 +96,23 @@ private:
 	// デスクリプタヒープ
 	static ComPtr <ID3D12DescriptorHeap> basicDescHeap;
 
-	// ルートシグネチャ
-	static ComPtr <ID3D12RootSignature> rootsignature;
+	// OBJ用ルートシグネチャ
+	static ComPtr <ID3D12RootSignature> rootsignatureOBJ;
 
-	// パイプラインステート
-	static ComPtr <ID3D12PipelineState> pipelinestate;
+	// 数式用ルートシグネチャ
+	static ComPtr <ID3D12RootSignature> rootsignatureMath;
+
+	// OBJ用パイプラインステート
+	static ComPtr <ID3D12PipelineState> pipelinestateOBJ;
+
+	// OBJ用ワイヤフレームパイプラインステート
+	static ComPtr <ID3D12PipelineState> pipelinestateOBJ_wire;
+
+	// 数式オブジェクト用パイプラインステート
+	static ComPtr <ID3D12PipelineState> pipelinestateMath;
+
+	// 数式オブジェクト用ワイヤフレームパイプラインステート
+	static ComPtr <ID3D12PipelineState> pipelinestateMath_wire;
 
 //メンバ関数
 
@@ -117,8 +136,8 @@ public:
 	/// <summary>
 	/// モデルをセットする
 	/// </summary>
-	/// <param name="model">モデルのポインタ</param>
-	void SetModel(Model* model);
+	/// <param name="model">モデル</param>
+	void SetModel(Model model);
 
 #pragma region 便利関数
 //メンバ関数
@@ -175,6 +194,10 @@ public:
 	/// </summary>
 	static void FirstInit();
 
+	static void InitPipelineOBJ();
+
+	static void InitPipelineMath();
+
 #pragma region Getter
 //メンバ関数
 public:
@@ -195,8 +218,28 @@ public:
 	/// 座標の取得
 	/// </summary>
 	/// <returns>座標</returns>
-		const XMFLOAT3& GetPosition() { return position; }
+	const XMFLOAT3& GetPosition() { return position; }
 
+	/// <summary>
+	/// ワイヤフレーム描画フラグを取得
+	/// </summary>
+	/// <returns>ワイヤフレームフラグ</returns>
+	const bool& GetIsWireFlame() { return isWireFlane; }
+
+	/// <summary>
+	/// 色(RGBA)を取得する
+	/// </summary>
+	/// <returns>色(RGBA)</returns>
+	const XMFLOAT4& GetColor() { return color; }
+
+	/// <summary>
+	/// 色(RGBA)を0～255の数値で取得する
+	/// </summary>
+	/// <returns>色(RGBA)、0～255の範囲</returns>
+	const XMFLOAT4& GetColorAs0To255(){
+		XMFLOAT4 c = { color.x * 255,color.y * 255 ,color.z * 255 ,color.w * 255 };
+		return c;
+	}
 
 //静的メンバ関数
 public:
@@ -252,7 +295,55 @@ public:
 	/// <param name="position">座標</param>
 	void SetPosition(const XMFLOAT3 position) { this->position = position; }
 
+	/// <summary>
+	/// ワイヤフレームフラグをセット
+	/// </summary>
+	void SetIsWireFlame(const bool isWireFlame) { this->isWireFlane = isWireFlame; }
 
+	/// <summary>
+	/// 色(RGBA)をセット
+	/// </summary>
+	/// <param name="R">赤</param>
+	/// <param name="G">緑</param>
+	/// <param name="B">青</param>
+	/// <param name="A">アルファ値</param>
+	void SetColor(float R, float G, float B, float A) {
+		XMFLOAT4 c = { R,G,B,A };
+		SetColor(c);
+	}
+
+	/// <summary>
+	/// 色(RGBA)をセット
+	/// </summary>
+	/// <param name="color">色(RGBA)</param>
+	void SetColor(XMFLOAT4 color) { this->color = color; }
+
+	/// <summary>
+	/// 色(RGBA)を0～255の範囲でセット
+	/// </summary>
+	/// <param name="R">赤</param>
+	/// <param name="G">緑</param>
+	/// <param name="B">青</param>
+	/// <param name="A">アルファ値</param>
+	void SetColorAs0To255(float R, float G, float B, float A)
+	{
+		R = R / 255;
+		G = G / 255;
+		B = B / 255;
+		A = A / 255;
+		XMFLOAT4 c = { R,G,B,A };
+		SetColor(c);
+	}
+
+	/// <summary>
+	/// 色(RGBA)を0～255の範囲でセット
+	/// </summary>
+	/// <param name="color">色(RGBA)</param>
+	void SetColorAs0To255(XMFLOAT4 color)
+	{
+		XMFLOAT4 c = { color.x / 255, color.y / 255, color.z / 255, color.w / 255 };
+		SetColor(c);
+	}
 //静的メンバ関数
 public:
 	/// <summary>

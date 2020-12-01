@@ -5,8 +5,9 @@ d:\k019g1301\ライブラリ\dx12library\dx12library\input.h(4): warning C4005: 
   c:\program files (x86)\windows kits\10\include\10.0.18362.0\um\dinput.h(48): note: 'DIRECTINPUT_VERSION' の以前の定義を確認してください
   Model.cpp
   c:\program files (x86)\windows kits\10\include\10.0.18362.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
-d:\k019g1301\ライブラリ\dx12library\dx12library\model.cpp(209): warning C4267: '=': 'size_t' から 'UINT' に変換しました。データが失われているかもしれません。
-d:\k019g1301\ライブラリ\dx12library\dx12library\model.cpp(228): warning C4267: '=': 'size_t' から 'UINT' に変換しました。データが失われているかもしれません。
+d:\k019g1301\ライブラリ\dx12library\dx12library\model.cpp(62): warning C4101: 'result': ローカル変数は 1 度も使われていません。
+d:\k019g1301\ライブラリ\dx12library\dx12library\model.cpp(363): warning C4267: '=': 'size_t' から 'UINT' に変換しました。データが失われているかもしれません。
+d:\k019g1301\ライブラリ\dx12library\dx12library\model.cpp(382): warning C4267: '=': 'size_t' から 'UINT' に変換しました。データが失われているかもしれません。
 c:\program files (x86)\microsoft visual studio\2017\professional\vc\tools\msvc\14.16.27023\include\xmemory0(879): warning C4267: '初期化中': 'size_t' から '_Objty' に変換しました。データが失われているかもしれません。
           with
           [
@@ -31,10 +32,13 @@ c:\program files (x86)\microsoft visual studio\2017\professional\vc\tools\msvc\1
           [
               _Ty=unsigned short
           ]
-  d:\k019g1301\ライブラリ\dx12library\dx12library\model.cpp(161): note: コンパイル対象の関数 テンプレート インスタンス化 'void std::vector<unsigned short,std::allocator<_Ty>>::emplace_back<unsigned __int64>(unsigned __int64 &&)' のリファレンスを確認してください
+  d:\k019g1301\ライブラリ\dx12library\dx12library\model.cpp(160): note: コンパイル対象の関数 テンプレート インスタンス化 'void std::vector<unsigned short,std::allocator<_Ty>>::emplace_back<unsigned __int64>(unsigned __int64 &&)' のリファレンスを確認してください
           with
           [
               _Ty=unsigned short
           ]
+  Object3D.cpp
+  c:\program files (x86)\windows kits\10\include\10.0.18362.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+  main.cpp
   コードを生成中...
   DX12Library.vcxproj -> D:\K019G1301\ライブラリ\DX12Library\x64\Debug\DX12Library.exe

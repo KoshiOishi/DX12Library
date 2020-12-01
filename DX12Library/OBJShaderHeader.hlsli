@@ -1,5 +1,6 @@
 cbuffer cbuff0 : register(b0)
 {
+	float4 color;
 	matrix mat; // ３Ｄ変換行列
 };
 

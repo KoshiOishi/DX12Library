@@ -14,8 +14,8 @@ private:
 	Object3D obj1[5];
 	Object3D obj2;
 
-	Model* model1;
-	Model* model2;
+	Model model1;
+	Model model2;
 
 
 public:

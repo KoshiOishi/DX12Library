@@ -9,5 +9,5 @@ float4 PSmain(VSOutput input) : SV_TARGET
 	float diffuse = saturate(dot(-light, input.normal));	//diffuseを[0,1]の範囲にClampする
 	float brightness = diffuse + 0.3f;	//アンビエント項を0.3として計算
 	float4 texcolor = (tex.Sample(smp, input.uv)) * color;
-	return float4(texcolor.rgb * brightness, texcolor.a);	//RGBをそれぞれ法線のXYZ、Aを1で出力
+	return float4(texcolor.rgb * brightness, texcolor.a) * color;	//RGBをそれぞれ法線のXYZ、Aを1で出力
 }

@@ -11,8 +11,6 @@ GamePlay::GamePlay()
 
 GamePlay::~GamePlay()
 {
-	delete model1;
-	delete model2;
 }
 
 void GamePlay::Initialize()
@@ -22,16 +20,17 @@ void GamePlay::Initialize()
 		obj1[i].Initialize();
 	}
 
-	model1->Initialize();
-	model2->Initialize();
+	model1.CreateBox(5, 5, 5, 0);
+	model2.LoadOBJ("vending_machine", 1);
 
-	model1->LoadOBJ("PLAYER");
-	model2->LoadOBJ("post");
+	model1.Initialize();
+	model2.Initialize();
 
 	for (int i = 0; i < 5; i++)
 	{
 		obj1[i].SetModel(model1);
 		obj1[i].SetPosition({ (float)(rand() % 20 - 10), (float)(rand() % 20 - 10), (float)(rand() % 20 - 10) });
+		obj1[i].SetColorAs0To255(128,255,128,255);
 	}
 
 	obj2.SetModel(model2);
@@ -220,7 +219,7 @@ void GamePlay::Draw()
 
 	//前景スプライト描画ここから
 
-	sprite2.SpriteDraw();
+	//sprite2.SpriteDraw();
 	DebugText::DrawAll();
 
 	//前景スプライト描画ここまで
