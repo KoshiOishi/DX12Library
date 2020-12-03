@@ -512,7 +512,146 @@ void Model::CreateSphere(float radius, int index)
 {
 }
 
-void Model::CreatePoll(float radius, float height, int index)
+void Model::CreatePoll(int vertex, float radius, float height, int index)
 {
+	isOBJ = false;
 
+	material.name = "default";
+
+	material.textureFilename = "white1x1.png";
+	LoadTexture("Resources/", material.textureFilename, index);
+
+	vector<Vertex> v;
+	Vertex v0_up;
+	v0_up.pos = { 0,height / 2,0 };
+	v.emplace_back(v0_up);
+
+	//天井の座標も
+	for (int i = 0; i < vertex; i++)
+	{
+		Vertex vert;
+		float f = 360.0f / vertex;
+		float rad = (f * i) * (3.14159265f / 180);
+		vert.pos = { std::cos(rad) * radius, height / 2, std::sin(rad) * radius };
+		v.emplace_back(vert);
+	}
+
+	Vertex v0_down;
+	v0_down.pos = { 0,-height / 2,0 };
+	v.emplace_back(v0_down);
+
+	//底面の頂点座標を求める
+	for (int i = 0; i < vertex; i++)
+	{
+		Vertex vert;
+		float f = 360.0f / vertex;
+		float rad = (f * i) * (3.14159265f / 180);
+		vert.pos = { std::cos(rad) * radius, -height / 2, std::sin(rad) * radius };
+		v.emplace_back(vert);
+	}
+
+	//for (int i = 0; i < vertex * 2 + 2; i++)
+	//	v[i].pos.x = i;
+
+	//格納
+	//上面
+	for (int i = 0; i < vertex; i++)
+	{
+		if (i + 1 < vertex)
+		{
+			vertices.emplace_back(v[i + 1]);
+			vertices.emplace_back(v[0]);
+			vertices.emplace_back(v[i + 2]);
+		}
+		else
+		{
+			vertices.emplace_back(v[i + 1]);
+			vertices.emplace_back(v[0]);
+			vertices.emplace_back(v[vertex - i]);
+		}
+	}
+
+	//下面
+	for (int i = vertex; i < vertex * 2; i++)
+	{
+		if (i + 1 < vertex * 2)
+		{
+			vertices.emplace_back(v[i + 2]);
+			vertices.emplace_back(v[i + 3]);
+			vertices.emplace_back(v[vertex + 1]);
+		}
+		else
+		{
+			vertices.emplace_back(v[i + 2]);
+			vertices.emplace_back(v[vertex * 2 - i + vertex + 1]);
+			vertices.emplace_back(v[vertex + 1]);
+		}
+	}
+
+
+	for (int i = 0; i < vertex; i++)
+	{
+		int n[4];
+		if (i + 1 < vertex)
+		{
+			n[0] = i + 1;
+			n[1] = i + 2;
+			n[2] = vertex + 2 + i;
+			n[3] = vertex + 3 + i;
+		}
+		else
+		{
+			n[0] = i + 1;
+			n[1] = 1;
+			n[2] = vertex + 2 + i;
+			n[3] = vertex + 2;
+		}
+		vertices.emplace_back(v[n[2]]);
+		vertices.emplace_back(v[n[0]]);
+		vertices.emplace_back(v[n[3]]);
+		vertices.emplace_back(v[n[3]]);
+		vertices.emplace_back(v[n[0]]);
+		vertices.emplace_back(v[n[1]]);
+
+	}
+
+	//インデックス
+	for (int i = 0; i < vertex * 3 * 2 + 6 * vertex; i++)
+	{
+		indices.emplace_back(i);
+	}
+
+	//for (int i = vertices.size(); i > vertex * 6; i--)
+	//{
+	//	vertices.pop_back();
+	//	indices.pop_back();
+	//}
+
+	//法線の計算
+	for (int i = 0; i < vertices.size() / 3; i++)
+	{
+		//三角形1つごとに計算していく
+		//三角形のインデックスを取り出して、一時的な変数に入れる
+		unsigned short index0 = indices[i * 3 + 0];
+		unsigned short index1 = indices[i * 3 + 1];
+		unsigned short index2 = indices[i * 3 + 2];
+		//三角形を構成する頂点座標をベクトルに代入
+		XMVECTOR p0 = XMLoadFloat3(&vertices[index0].pos);
+		XMVECTOR p1 = XMLoadFloat3(&vertices[index1].pos);
+		XMVECTOR p2 = XMLoadFloat3(&vertices[index2].pos);
+		//p0⇒p1ベクトル、p0⇒p2ベクトルを計算（ベクトルの減算）
+		XMVECTOR v1 = XMVectorSubtract(p1, p0);
+		XMVECTOR v2 = XMVectorSubtract(p2, p0);
+		//外積は両方から垂直なベクトル
+		XMVECTOR normal = XMVector3Cross(v1, v2);
+		//正規化（長さを1にする）
+		normal = XMVector3Normalize(normal);
+		//求めた法線を頂点データに代入
+		XMStoreFloat3(&vertices[index0].normal, normal);
+		XMStoreFloat3(&vertices[index1].normal, normal);
+		XMStoreFloat3(&vertices[index2].normal, normal);
+
+	}
+
+	CreateBuffer();
 }

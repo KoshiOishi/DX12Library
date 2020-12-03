@@ -11,7 +11,7 @@ private:
 	Sprite sprite1;
 	Sprite sprite2;
 
-	Object3D obj1[5];
+	Object3D obj1;
 	Object3D obj2;
 
 	Model model1;

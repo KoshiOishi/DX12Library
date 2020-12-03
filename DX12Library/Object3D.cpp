@@ -326,6 +326,7 @@ void Object3D::InitPipelineMath()
 
 	//サンプルマスクとラスタライザステートの設定
 	gpipeline.SampleMask = D3D12_DEFAULT_SAMPLE_MASK; // 標準設定
+
 	//標準的な設定(背面カリング、塗りつぶし、深度クリッピング有効)
 	gpipeline.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
 

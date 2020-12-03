@@ -138,9 +138,10 @@ public:
 	/// <summary>
 	/// 円柱ポリゴンを作成
 	/// </summary>
+	/// <param name="vertex">底面の頂点数</param>
 	/// <param name="radius">半径</param>
 	/// <param name="height">高さ</param>
 	/// <param name="index">インデックス（重複しないように指定）</param>
-	void CreatePoll(float radius, float height, int index);
+	void CreatePoll(int vertex, float radius, float height, int index);
 };
 

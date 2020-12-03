@@ -15,23 +15,16 @@ GamePlay::~GamePlay()
 
 void GamePlay::Initialize()
 {
-	for (int i = 0; i < 5; i++)
-	{
-		obj1[i].Initialize();
-	}
+	obj1.Initialize();
 
-	model1.CreateBox(5, 5, 5, 0);
-	model2.LoadOBJ("vending_machine", 1);
+	model1.LoadOBJ("PLAYER", 1);
+	model2.CreatePoll(100, 5, 10, 0);
 
 	model1.Initialize();
 	model2.Initialize();
 
-	for (int i = 0; i < 5; i++)
-	{
-		obj1[i].SetModel(model1);
-		obj1[i].SetPosition({ (float)(rand() % 20 - 10), (float)(rand() % 20 - 10), (float)(rand() % 20 - 10) });
-		obj1[i].SetColorAs0To255(128,255,128,255);
-	}
+	obj1.SetModel(model1);
+	obj1.SetColorAs0To255(255, 255, 64, 255);
 
 	obj2.SetModel(model2);
 	obj2.Initialize();
@@ -100,12 +93,12 @@ void GamePlay::Update()
 		//座標を移動する処理(Y座標)
 		if (Input::Push(DIK_W))
 		{
-			obj1[0].AddPosition(0, 1.0f, 0);
+			obj1.AddPosition(0, 1.0f, 0);
 
 		}
 		else if (Input::Push(DIK_S))
 		{
-			obj1[0].AddPosition(0, -1.0f, 0);
+			obj1.AddPosition(0, -1.0f, 0);
 
 		}
 	}
@@ -114,11 +107,11 @@ void GamePlay::Update()
 		//座標を移動する処理(X座標)
 		if (Input::Push(DIK_A))
 		{
-			obj1[0].AddPosition(-1.0f, 0, 0);
+			obj1.AddPosition(-1.0f, 0, 0);
 		}
 		else if (Input::Push(DIK_D))
 		{
-			obj1[0].AddPosition(1.0f, 0, 0);
+			obj1.AddPosition(1.0f, 0, 0);
 
 		}
 
@@ -129,11 +122,41 @@ void GamePlay::Update()
 		//座標を移動する処理(Z座標)
 		if (Input::Push(DIK_Z))
 		{
-			obj1[0].AddPosition(0, 0, -1.0f);
+			obj1.AddPosition(0, 0, -1.0f);
 		}
 		else if (Input::Push(DIK_X))
 		{
-			obj1[0].AddPosition(0, 0, 1.0f);
+			obj1.AddPosition(0, 0, 1.0f);
+
+		}
+
+	}
+
+	if (Input::Push(DIK_C) || Input::Push(DIK_V))
+	{
+		//座標を移動する処理(X座標)
+		if (Input::Push(DIK_C))
+		{
+			obj1.AddRotation(0, -1.0f, 0);
+		}
+		else if (Input::Push(DIK_V))
+		{
+			obj1.AddRotation(0, 1.0f, 0);
+
+		}
+
+	}
+
+	if (Input::Push(DIK_F) || Input::Push(DIK_R))
+	{
+		//座標を移動する処理(X座標)
+		if (Input::Push(DIK_F))
+		{
+			obj1.AddRotation(1.0f, 0, 0);
+		}
+		else if (Input::Push(DIK_R))
+		{
+			obj1.AddRotation(-1.0f, 0, 0);
 
 		}
 
@@ -184,10 +207,8 @@ void GamePlay::Update()
 
 #pragma region オブジェクトアップデート
 
-	for (int i = 0; i < 5; i++)
-	{
-		obj1[i].Update();
-	}
+	obj1.Update();
+	
 	obj2.Update();
 
 #pragma endregion
@@ -200,7 +221,7 @@ void GamePlay::Draw()
 	DX12Init::BeginDraw();
 
 	//背景スプライト描画ここから
-	sprite1.SpriteDraw();
+	//sprite1.SpriteDraw();
 
 
 
@@ -209,10 +230,8 @@ void GamePlay::Draw()
 
 
 	//オブジェクト描画ここから
-	for (int i = 0; i < 5; i++)
-	{
-		obj1[i].Draw();
-	}
+	obj1.Draw();
+	
 	obj2.Draw();
 
 	//オブジェクト描画ここまで
