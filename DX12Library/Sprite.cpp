@@ -195,12 +195,12 @@ void Sprite::FirstInit()
 
 void Sprite::Initialize(UINT texnumber, const wchar_t * filename, XMFLOAT2 anchorpoint, bool isFlipX, bool isFlipY)
 {
-	Sprite::SpriteLoadTexture(texnumber, filename);
-	SpriteSetTexNumber(texnumber);
+	Sprite::LoadTexture(texnumber, filename);
+	SetTexNumber(texnumber);
 	GenerateSprite(anchorpoint, isFlipX, isFlipY);
 }
 
-void Sprite::SpriteLoadTexture(UINT texnumber, const wchar_t* filename)
+void Sprite::LoadTexture(UINT texnumber, const wchar_t* filename)
 {
 	HRESULT result = S_FALSE;
 
@@ -403,7 +403,7 @@ void Sprite::SpriteSetPipeline()
 	DX12Init::GetCmdList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 }
 
-void Sprite::SpriteDraw()
+void Sprite::Draw()
 {
 	SpriteSetPipeline();
 
@@ -414,6 +414,7 @@ void Sprite::SpriteDraw()
 	spriteMatWorld = XMMatrixIdentity();
 	spriteMatWorld *= XMMatrixRotationZ(XMConvertToRadians(spriteRotation));
 	spriteMatWorld *= XMMatrixTranslationFromVector(spritePosition);
+
 	//行列の転送
 	ConstBufferData* constMap = nullptr;
 	HRESULT result = spriteConstBuff->Map(0, nullptr, (void**)&constMap);
@@ -446,41 +447,60 @@ void Sprite::SpriteDraw()
 	DX12Init::GetCmdList()->DrawInstanced(4, 1, 0, 0);
 }
 
-void Sprite::SpriteSetSize(float width, float height)
-{
-	this->width = width;
-	this->height = height;
-
-	SpriteUpdateVertBuff();
-}
-
-void Sprite::SpriteSetAnchorpoint(XMFLOAT2 anchorpoint)
+void Sprite::SetAnchorpoint(XMFLOAT2 anchorpoint)
 {
 	this->anchorpoint = anchorpoint;
-
-	SpriteUpdateVertBuff();
+	UpdateVertBuff();
 }
 
-void Sprite::SpriteSetTexNumber(UINT texnumber)
+void Sprite::SetIsDisplay(bool isDisplay)
+{
+	this->isDisplay = isDisplay;
+}
+
+void Sprite::SetTexNumber(UINT texnumber)
 {
 	texNumber = texnumber;
+	UpdateVertBuff();
 }
 
-void Sprite::SpriteSetIsFlipX(bool isFlipX)
+void Sprite::SetPosition(XMFLOAT2 pos)
+{
+	spritePosition = DirectX::XMVectorSet(pos.x, pos.y, 0, 0);
+	UpdateVertBuff();
+}
+
+void Sprite::SetColor(XMFLOAT4 color)
+{
+	spriteColor = color;
+	UpdateVertBuff();
+}
+
+void Sprite::SetRotation(float rotation)
+{
+	spriteRotation = rotation;
+	UpdateVertBuff();
+}
+
+void Sprite::SetScale(XMFLOAT2 scale)
+{
+	width = scale.x; height = scale.y;
+	UpdateVertBuff();
+}
+
+void Sprite::SetIsFlipX(bool isFlipX)
 {
 	this->isFlipX = isFlipX;
-
-	SpriteUpdateVertBuff();
+	UpdateVertBuff();
 }
 
-void Sprite::SpriteSetIsFlipY(bool isFlipY)
+void Sprite::SetIsFlipY(bool isFlipY)
 {
 	this->isFlipY = isFlipY;
-
-	SpriteUpdateVertBuff();
+	UpdateVertBuff();
 }
 
-void Sprite::SpriteSetDrawRectangle(float tex_x, float tex_y, float tex_width, float tex_height)
+void Sprite::SetDrawRectangle(float tex_x, float tex_y, float tex_width, float tex_height)
 {
 	this->tex_x = tex_x;
 	this->tex_y = tex_y;
@@ -490,11 +510,11 @@ void Sprite::SpriteSetDrawRectangle(float tex_x, float tex_y, float tex_width, f
 	width = tex_width;
 	height = tex_height;
 
-	SpriteUpdateVertBuff();
+	UpdateVertBuff();
 
 }
 
-void Sprite::SpriteUpdateVertBuff()
+void Sprite::UpdateVertBuff()
 {
 	HRESULT result = S_FALSE;
 
@@ -515,6 +535,11 @@ void Sprite::SpriteUpdateVertBuff()
 		&CD3DX12_RESOURCE_DESC::Buffer(sizeof(vertices)),
 		D3D12_RESOURCE_STATE_GENERIC_READ, nullptr, IID_PPV_ARGS(&spriteVertBuff)
 	);
+
+	if (FAILED(result))
+	{
+		assert(0);
+	}
 
 	//画像の大きさから表示サイズを設定
 	//左下、左上、右下、右上

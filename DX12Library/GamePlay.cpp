@@ -17,8 +17,8 @@ void GamePlay::Initialize()
 {
 	obj1.Initialize();
 
-	model1.LoadOBJ("PLAYER", 1);
-	model2.CreatePoll(100, 5, 10, 0);
+	model1.LoadOBJ("Sphere", 1);
+	model2.CreatePoll(6, 1, 30, 0);
 
 	model1.Initialize();
 	model2.Initialize();
@@ -221,7 +221,7 @@ void GamePlay::Draw()
 	DX12Init::BeginDraw();
 
 	//背景スプライト描画ここから
-	//sprite1.SpriteDraw();
+	sprite1.Draw();
 
 
 
@@ -238,7 +238,7 @@ void GamePlay::Draw()
 
 	//前景スプライト描画ここから
 
-	//sprite2.SpriteDraw();
+	sprite2.Draw();
 	DebugText::DrawAll();
 
 	//前景スプライト描画ここまで

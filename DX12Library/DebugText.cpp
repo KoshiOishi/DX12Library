@@ -9,9 +9,11 @@ UINT DebugText::debugTextTexNumber;
 
 void DebugText::Initialize(UINT debugTextTexNumber, const wchar_t* texfilename)
 {
+	Sprite::LoadTexture(debugTextTexNumber, texfilename);
 	for (int i = 0; i < _countof(sprites); i++)
 	{
-		sprites[i].Initialize(debugTextTexNumber, texfilename);
+		sprites[i].SetTexNumber(debugTextTexNumber);
+		sprites[i].GenerateSprite();
 	}
 }
 
@@ -43,9 +45,9 @@ void DebugText::Print(const std::string& text, float x, float y, float scale)
 		int fontIndexX = fontIndex % fontLineCount;
 
 		//座標計算
-		sprites[spriteIndex].spritePosition = { x + fontWidth * scale * i, y };
-		sprites[spriteIndex].SpriteSetDrawRectangle(fontIndexX * fontWidth, fontIndexY * fontHeight, fontWidth, fontHeight);
-		sprites[spriteIndex].SpriteSetSize(fontWidth * scale, fontHeight * scale);
+		sprites[spriteIndex].SetPosition(Sprite::XMFLOAT2({x + fontWidth * scale * i, y}));
+		sprites[spriteIndex].SetDrawRectangle(fontIndexX * fontWidth, fontIndexY * fontHeight, fontWidth, fontHeight);
+		sprites[spriteIndex].SetScale(Sprite::XMFLOAT2({fontWidth * scale, fontHeight * scale}));
 
 		//文字を1つ進める
 		spriteIndex++;
@@ -69,7 +71,7 @@ void DebugText::DrawAll()
 	for (int i = 0; i < spriteIndex; i++)
 	{
 		//スプライト描画
-		sprites[i].SpriteDraw();
+		sprites[i].Draw();
 	}
 
 	spriteIndex = 0;
