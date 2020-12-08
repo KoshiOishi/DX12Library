@@ -1,9 +1,13 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(391,5): warning MSB8028: 中間ディレクトリ (x64\Release\) に別のプロジェクト (Project1.vcxproj) と共有されているファイルが含まれています。これにより、クリーンしてリビルド動作が適切に行われない可能性があります。
+  GamePlay.cpp
+  c:\program files (x86)\windows kits\10\include\10.0.18362.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+d:\k019g1301\ライブラリ\dx12library\dx12library\input.h(4): warning C4005: 'DIRECTINPUT_VERSION': マクロが再定義されました。
+  c:\program files (x86)\windows kits\10\include\10.0.18362.0\um\dinput.h(48): note: 'DIRECTINPUT_VERSION' の以前の定義を確認してください
   Model.cpp
   c:\program files (x86)\windows kits\10\include\10.0.18362.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
 d:\k019g1301\ライブラリ\dx12library\dx12library\model.cpp(62): warning C4101: 'result': ローカル変数は 1 度も使われていません。
-d:\k019g1301\ライブラリ\dx12library\dx12library\model.cpp(370): warning C4267: '=': 'size_t' から 'UINT' に変換しました。データが失われているかもしれません。
-d:\k019g1301\ライブラリ\dx12library\dx12library\model.cpp(389): warning C4267: '=': 'size_t' から 'UINT' に変換しました。データが失われているかもしれません。
+d:\k019g1301\ライブラリ\dx12library\dx12library\model.cpp(371): warning C4267: '=': 'size_t' から 'UINT' に変換しました。データが失われているかもしれません。
+d:\k019g1301\ライブラリ\dx12library\dx12library\model.cpp(390): warning C4267: '=': 'size_t' から 'UINT' に変換しました。データが失われているかもしれません。
 c:\program files (x86)\microsoft visual studio\2017\professional\vc\tools\msvc\14.16.27023\include\xmemory0(879): warning C4267: '初期化中': 'size_t' から '_Objty' に変換しました。データが失われているかもしれません。
           with
           [
@@ -34,8 +38,8 @@ c:\program files (x86)\microsoft visual studio\2017\professional\vc\tools\msvc\1
               _Ty=unsigned short
           ]
   コード生成しています。
-  1 of 1067 functions (<0.1%) were compiled, the rest were copied from previous compilation.
+  3 of 1217 functions ( 0.2%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    1 functions had inline decision re-evaluated but remain unchanged
+    3 functions had inline decision re-evaluated but remain unchanged
   コード生成が終了しました。
   DX12Library.vcxproj -> D:\K019G1301\ライブラリ\DX12Library\x64\Release\DX12Library.exe

@@ -5,7 +5,6 @@
 #include "DebugText.h"
 #include "Collision.h"
 #include "FPSManager.h"
-#include "Object3D.h"
 
 GamePlay::GamePlay()
 {
@@ -20,14 +19,15 @@ void GamePlay::Initialize()
 {
 	Object3D::SetEye(DirectX::XMFLOAT3(0, 0, -100));
 
-	model1.CreateSquareTex(15.0f,"itapori.png",1);
-	model2.CreateBox(3.0f,3.0f,3.0f,2);
+	model1.LoadOBJ("Rasen", 1);
+	model2.CreatePoll(6, 1, 30, 0);
 
 	model1.Initialize();
 	model2.Initialize();
 
 	obj1.SetModel(model1);
 	obj1.Initialize();
+	obj1.SetColorAs0To255(255, 255, 64, 255);
 
 	obj2.SetModel(model1);
 	obj2.Initialize();
@@ -62,89 +62,42 @@ void GamePlay::Update()
 	{
 		if (Input::Push(DIK_SPACE))
 		{
-			if (Input::Push(DIK_LSHIFT))
+			//視点座標を加算する処理（Z）
+			if (Input::Push(DIK_UP))
 			{
-				//視点座標を加算する処理（Z）
-				if (Input::Push(DIK_UP))
-				{
-					Object3D::AddEye(0, 0, 3.0f);
-				}
-				else if (Input::Push(DIK_DOWN))
-				{
-					Object3D::AddEye(0, 0, -3.0f);
-
-				}
+				Object3D::MoveCamera(0, 0, 3.0f);
 			}
-			else {
-				//カメラの位置を移動する処理（Z）
-				if (Input::Push(DIK_UP))
-				{
-					Object3D::MoveCamera(0, 0, 3.0f);
-				}
-				else if (Input::Push(DIK_DOWN))
-				{
-					Object3D::MoveCamera(0, 0, -3.0f);
+			else if (Input::Push(DIK_DOWN))
+			{
+				Object3D::MoveCamera(0, 0, -3.0f);
 
-				}
 			}
 		}
 		else
 		{
-			if (Input::Push(DIK_LSHIFT))
+			//視点座標を加算する処理（Y）
+			if (Input::Push(DIK_UP))
 			{
-				//視点座標を加算する処理（Y）
-				if (Input::Push(DIK_UP))
-				{
-					Object3D::AddEye(0, 3.0f, 0);
-				}
-				else if (Input::Push(DIK_DOWN))
-				{
-					Object3D::AddEye(0, -3.0f, 0);
-
-				}
+				Object3D::MoveCamera(0, 3.0f, 0);
 			}
-			else {
-				//カメラの位置を移動する処理（Y）
-				if (Input::Push(DIK_UP))
-				{
-					Object3D::MoveCamera(0, 3.0f, 0);
-				}
-				else if (Input::Push(DIK_DOWN))
-				{
-					Object3D::MoveCamera(0, -3.0f, 0);
+			else if (Input::Push(DIK_DOWN))
+			{
+				Object3D::MoveCamera(0, -3.0f, 0);
 
-				}
 			}
 		}
-
-
 	}
 
 	if (Input::Push(DIK_LEFT) || Input::Push(DIK_RIGHT))
 	{
-		if (Input::Push(DIK_LSHIFT))
+		//視点座標を加算する処理（X）
+		if (Input::Push(DIK_LEFT))
 		{
-			//視点座標を加算する処理（X）
-			if (Input::Push(DIK_LEFT))
-			{
-				Object3D::AddEye(-3.0f, 0, 0);
-			}
-			else if (Input::Push(DIK_RIGHT))
-			{
-				Object3D::AddEye(3.0f, 0, 0);
-			}
+			Object3D::MoveCamera(-3.0f, 0, 0);
 		}
-		else {
-
-			//カメラの位置を移動する処理（X）
-			if (Input::Push(DIK_LEFT))
-			{
-				Object3D::MoveCamera(-3.0f, 0, 0);
-			}
-			else if (Input::Push(DIK_RIGHT))
-			{
-				Object3D::MoveCamera(3.0f, 0, 0);
-			}
+		else if (Input::Push(DIK_RIGHT))
+		{
+			Object3D::MoveCamera(3.0f, 0, 0);
 		}
 	}
 
