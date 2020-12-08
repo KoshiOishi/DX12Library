@@ -1,14 +1,13 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(391,5): warning MSB8028: 中間ディレクトリ (x64\Release\) に別のプロジェクト (Project1.vcxproj) と共有されているファイルが含まれています。これにより、クリーンしてリビルド動作が適切に行われない可能性があります。
-  DebugText.cpp
-d:\k019g1301\ライブラリ\dx12library\dx12library\debugtext.cpp(49): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
   GamePlay.cpp
   c:\program files (x86)\windows kits\10\include\10.0.18362.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
 d:\k019g1301\ライブラリ\dx12library\dx12library\input.h(4): warning C4005: 'DIRECTINPUT_VERSION': マクロが再定義されました。
   c:\program files (x86)\windows kits\10\include\10.0.18362.0\um\dinput.h(48): note: 'DIRECTINPUT_VERSION' の以前の定義を確認してください
-  Object3D.cpp
+  Model.cpp
   c:\program files (x86)\windows kits\10\include\10.0.18362.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
-d:\k019g1301\ライブラリ\dx12library\dx12library\object3d.cpp(489): warning C4267: '=': 'size_t' から 'UINT' に変換しました。データが失われているかもしれません。
-d:\k019g1301\ライブラリ\dx12library\dx12library\object3d.cpp(508): warning C4267: '=': 'size_t' から 'UINT' に変換しました。データが失われているかもしれません。
+d:\k019g1301\ライブラリ\dx12library\dx12library\model.cpp(62): warning C4101: 'result': ローカル変数は 1 度も使われていません。
+d:\k019g1301\ライブラリ\dx12library\dx12library\model.cpp(363): warning C4267: '=': 'size_t' から 'UINT' に変換しました。データが失われているかもしれません。
+d:\k019g1301\ライブラリ\dx12library\dx12library\model.cpp(382): warning C4267: '=': 'size_t' から 'UINT' に変換しました。データが失われているかもしれません。
 c:\program files (x86)\microsoft visual studio\2017\professional\vc\tools\msvc\14.16.27023\include\xmemory0(879): warning C4267: '初期化中': 'size_t' から '_Objty' に変換しました。データが失われているかもしれません。
           with
           [
@@ -33,21 +32,17 @@ c:\program files (x86)\microsoft visual studio\2017\professional\vc\tools\msvc\1
           [
               _Ty=unsigned short
           ]
-  d:\k019g1301\ライブラリ\dx12library\dx12library\object3d.cpp(441): note: コンパイル対象の関数 テンプレート インスタンス化 'void std::vector<unsigned short,std::allocator<_Ty>>::emplace_back<unsigned __int64>(unsigned __int64 &&)' のリファレンスを確認してください
+  d:\k019g1301\ライブラリ\dx12library\dx12library\model.cpp(160): note: コンパイル対象の関数 テンプレート インスタンス化 'void std::vector<unsigned short,std::allocator<_Ty>>::emplace_back<unsigned __int64>(unsigned __int64 &&)' のリファレンスを確認してください
           with
           [
               _Ty=unsigned short
           ]
-  Sprite.cpp
+  Object3D.cpp
   c:\program files (x86)\windows kits\10\include\10.0.18362.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
-d:\k019g1301\ライブラリ\dx12library\dx12library\sprite.cpp(345): warning C4244: '=': 'UINT64' から 'float' への変換です。データが失われる可能性があります。
-d:\k019g1301\ライブラリ\dx12library\dx12library\sprite.cpp(346): warning C4244: '=': 'UINT' から 'float' への変換です。データが失われる可能性があります。
-d:\k019g1301\ライブラリ\dx12library\dx12library\sprite.cpp(385): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
-d:\k019g1301\ライブラリ\dx12library\dx12library\sprite.cpp(391): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
   main.cpp
   コード生成しています。
-  3 of 1121 functions ( 0.3%) were compiled, the rest were copied from previous compilation.
+  4 of 1217 functions ( 0.3%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    0 functions had inline decision re-evaluated but remain unchanged
+    2 functions had inline decision re-evaluated but remain unchanged
   コード生成が終了しました。
   DX12Library.vcxproj -> D:\K019G1301\ライブラリ\DX12Library\x64\Release\DX12Library.exe

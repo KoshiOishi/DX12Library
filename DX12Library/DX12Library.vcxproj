@@ -148,9 +148,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="DX12Init.cpp" />
+    <ClCompile Include="Collision.cpp" />
+    <ClCompile Include="CollisionPrimitive.cpp" />
+    <ClCompile Include="DX12Util.cpp" />
     <ClCompile Include="FPSManager.cpp" />
     <ClCompile Include="GamePlay.cpp" />
+    <ClCompile Include="Interpolation.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="Object3D.cpp" />
     <ClCompile Include="DebugText.cpp" />
@@ -233,9 +236,12 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DX12Init.h" />
+    <ClInclude Include="Collision.h" />
+    <ClInclude Include="CollisionPrimitive.h" />
+    <ClInclude Include="DX12Util.h" />
     <ClInclude Include="FPSManager.h" />
     <ClInclude Include="GamePlay.h" />
+    <ClInclude Include="Interpolation.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="Object3D.h" />
     <ClInclude Include="DebugText.h" />

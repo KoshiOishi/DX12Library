@@ -5,7 +5,7 @@
 #include "Sprite.h"
 #include "DebugText.h"
 #include "Sound.h"
-#include "DX12Init.h"
+#include "DX12Util.h"
 #include "SceneManager.h"
 #include "FPSManager.h"
 #include "GamePlay.h"
@@ -28,11 +28,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	}
 #endif
 
-	DX12Init::Initialize();
-	Input::Initialize(DX12Init::GetHwnd());
+	DX12Util::Initialize();
+	Input::Initialize(DX12Util::GetHwnd());
 	Sound::Initialize();
-	Sprite::FirstInit();
 	Object3D::FirstInit();
+	Sprite::FirstInit();
 
 	//デバッグテキスト初期化
 	DebugText::Initialize(0, L"Resources/debugfont.png");
@@ -60,6 +60,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	}
 	// ウィンドウクラスを登録解除
 	SceneManager::DeleteScene();
-	DX12Init::End();
+	DX12Util::End();
 }
 

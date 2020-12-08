@@ -4,7 +4,7 @@
 #include <DirectXTex.h>
 #include <wrl.h>
 #include "Sprite.h"
-#include "DX12Init.h"
+#include "DX12Util.h"
 
 #pragma comment(lib, "d3dcompiler.lib")
 
@@ -18,7 +18,7 @@ ComPtr<ID3D12PipelineState> Sprite::spritePipelineState = nullptr;	//ƒpƒCƒvƒ‰ƒCƒ
 ComPtr<ID3DBlob> Sprite::vsBlob = nullptr; // ’¸“_ƒVƒF[ƒ_ƒIƒuƒWƒFƒNƒg
 ComPtr<ID3DBlob> Sprite::psBlob = nullptr; // ƒsƒNƒZƒ‹ƒVƒF[ƒ_ƒIƒuƒWƒFƒNƒg
 ComPtr<ID3DBlob> Sprite::errorBlob = nullptr; // ƒGƒ‰[ƒIƒuƒWƒFƒNƒg
-XMMATRIX Sprite::spriteMatProjection;		//Ë‰es—ñ
+XMMATRIX Sprite::spriteMatProjection{};		//Ë‰es—ñ
 ComPtr <ID3D12DescriptorHeap> Sprite::spriteDescHeap = nullptr;
 const int Sprite::spriteSRVCount = 512;
 ComPtr <ID3D12Resource> Sprite::spriteTexbuff[Sprite::spriteSRVCount];	//ƒeƒNƒXƒ`ƒƒƒoƒbƒtƒ@
@@ -172,14 +172,14 @@ void Sprite::FirstInit()
 	result = D3DX12SerializeVersionedRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1_0,
 		&rootSigBlob, &errorBlob);
 
-	result = DX12Init::GetDevice()->CreateRootSignature(0, rootSigBlob.Get()->GetBufferPointer(), rootSigBlob.Get()->GetBufferSize(),
+	result = DX12Util::GetDevice()->CreateRootSignature(0, rootSigBlob.Get()->GetBufferPointer(), rootSigBlob.Get()->GetBufferSize(),
 		IID_PPV_ARGS(&spriteRootSignature));
 
 	// ƒpƒCƒvƒ‰ƒCƒ“‚Éƒ‹[ƒgƒVƒOƒlƒ`ƒƒ‚ğƒZƒbƒg
 	gpipeline.pRootSignature = spriteRootSignature.Get();
 
 	//ƒpƒCƒvƒ‰ƒCƒ“ƒXƒe[ƒg‚Ì¶¬
-	result = DX12Init::GetDevice()->CreateGraphicsPipelineState(&gpipeline, IID_PPV_ARGS(&spritePipelineState));
+	result = DX12Util::GetDevice()->CreateGraphicsPipelineState(&gpipeline, IID_PPV_ARGS(&spritePipelineState));
 
 
 	//ƒXƒvƒ‰ƒCƒg—pƒfƒXƒNƒŠƒvƒ^ƒq[ƒv‚Ì¶¬
@@ -187,7 +187,7 @@ void Sprite::FirstInit()
 	descHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
 	descHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
 	descHeapDesc.NumDescriptors = spriteSRVCount;
-	result = DX12Init::GetDevice()->CreateDescriptorHeap(
+	result = DX12Util::GetDevice()->CreateDescriptorHeap(
 		&descHeapDesc, IID_PPV_ARGS(&spriteDescHeap)
 	);
 
@@ -237,7 +237,7 @@ void Sprite::LoadTexture(UINT texnumber, const wchar_t* filename)
 		(UINT16)metadata.mipLevels
 	);
 
-	result = DX12Init::GetDevice()->CreateCommittedResource(	//GPUƒŠƒ\[ƒX‚Ì¶¬
+	result = DX12Util::GetDevice()->CreateCommittedResource(	//GPUƒŠƒ\[ƒX‚Ì¶¬
 		&CD3DX12_HEAP_PROPERTIES(D3D12_CPU_PAGE_PROPERTY_WRITE_BACK, D3D12_MEMORY_POOL_L0),
 		D3D12_HEAP_FLAG_NONE,
 		&texresDesc,
@@ -264,13 +264,13 @@ void Sprite::LoadTexture(UINT texnumber, const wchar_t* filename)
 	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;	//2DƒeƒNƒXƒ`ƒƒ
 	srvDesc.Texture2D.MipLevels = 1;
 
-	DX12Init::GetDevice()->CreateShaderResourceView(
+	DX12Util::GetDevice()->CreateShaderResourceView(
 		spriteTexbuff[texnumber].Get(),	//ƒrƒ…[‚ÆŠÖ˜A•t‚¯‚éƒoƒbƒtƒ@
 		&srvDesc,	//ƒeƒNƒXƒ`ƒƒİ’èî•ñ
 		CD3DX12_CPU_DESCRIPTOR_HANDLE(
 		spriteDescHeap->GetCPUDescriptorHandleForHeapStart(),
 			texnumber,
-			DX12Init::GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)
+			DX12Util::GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)
 		)
 	);
 
@@ -294,7 +294,7 @@ void Sprite::GenerateSprite(XMFLOAT2 anchorpoint, bool isFlipX, bool isFlipY)
 	};
 
 	//’¸“_ƒoƒbƒtƒ@¶¬
-	result = DX12Init::GetDevice()->CreateCommittedResource(
+	result = DX12Util::GetDevice()->CreateCommittedResource(
 		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
 		D3D12_HEAP_FLAG_NONE,
 		&CD3DX12_RESOURCE_DESC::Buffer(sizeof(vertices)),
@@ -369,7 +369,7 @@ void Sprite::GenerateSprite(XMFLOAT2 anchorpoint, bool isFlipX, bool isFlipY)
 	spriteVBView.StrideInBytes = sizeof(vertices[0]);
 
 	//’è”ƒoƒbƒtƒ@‚Ì¶¬
-	result = DX12Init::GetDevice()->CreateCommittedResource(
+	result = DX12Util::GetDevice()->CreateCommittedResource(
 		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
 		D3D12_HEAP_FLAG_NONE,
 		&CD3DX12_RESOURCE_DESC::Buffer((sizeof(ConstBufferData) + 0xff)&~0xff),
@@ -382,13 +382,13 @@ void Sprite::GenerateSprite(XMFLOAT2 anchorpoint, bool isFlipX, bool isFlipY)
 	result = spriteConstBuff->Map(0, nullptr, (void**)&constMap);
 	constMap->color = XMFLOAT4(1, 1, 1, 1);		//Fw’è (RGBA)
 	constMap->mat = XMMatrixOrthographicOffCenterLH(
-		0.0f, DX12Init::GetWindowWidth(), DX12Init::GetWindowHeight(), 0.0f, 0.0f, 1.0f);	//•½s“Š‰es—ñ‚Ì‡¬
+		0.0f, DX12Util::GetWindowWidth(), DX12Util::GetWindowHeight(), 0.0f, 0.0f, 1.0f);	//•½s“Š‰es—ñ‚Ì‡¬
 	spriteConstBuff->Unmap(0, nullptr);
 
 
 	//s—ñ‰Šú‰»
 	spriteMatProjection = XMMatrixOrthographicOffCenterLH(
-		0.0f, DX12Init::GetWindowWidth(), DX12Init::GetWindowHeight(), 0.0f, 0.0f, 1.0f
+		0.0f, DX12Util::GetWindowWidth(), DX12Util::GetWindowHeight(), 0.0f, 0.0f, 1.0f
 	);
 
 }
@@ -396,11 +396,11 @@ void Sprite::GenerateSprite(XMFLOAT2 anchorpoint, bool isFlipX, bool isFlipY)
 void Sprite::SpriteSetPipeline()
 {
 	//ƒpƒCƒvƒ‰ƒCƒ“ƒXƒe[ƒg‚Ìİ’è
-	DX12Init::GetCmdList()->SetPipelineState(spritePipelineState.Get());
+	DX12Util::GetCmdList()->SetPipelineState(spritePipelineState.Get());
 	//ƒ‹[ƒgƒVƒOƒlƒ`ƒƒ‚Ìİ’è
-	DX12Init::GetCmdList()->SetGraphicsRootSignature(spriteRootSignature.Get());
+	DX12Util::GetCmdList()->SetGraphicsRootSignature(spriteRootSignature.Get());
 	//ƒvƒŠƒ~ƒeƒBƒuŒ`ó‚ğİ’è
-	DX12Init::GetCmdList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+	DX12Util::GetCmdList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 }
 
 void Sprite::Draw()
@@ -425,26 +425,26 @@ void Sprite::Draw()
 
 	//ƒfƒXƒNƒŠƒvƒ^ƒq[ƒv‚Ì”z—ñ
 	ID3D12DescriptorHeap* ppHeaps[] = { spriteDescHeap.Get() };
-	DX12Init::GetCmdList()->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
+	DX12Util::GetCmdList()->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 
 	//’¸“_ƒoƒbƒtƒ@‚ğƒZƒbƒg
-	DX12Init::GetCmdList()->IASetVertexBuffers(0, 1, &spriteVBView);
+	DX12Util::GetCmdList()->IASetVertexBuffers(0, 1, &spriteVBView);
 
 	//’è”ƒoƒbƒtƒ@‚ğƒZƒbƒg
-	DX12Init::GetCmdList()->SetGraphicsRootConstantBufferView(0, spriteConstBuff->GetGPUVirtualAddress());
+	DX12Util::GetCmdList()->SetGraphicsRootConstantBufferView(0, spriteConstBuff->GetGPUVirtualAddress());
 
 
 	//ƒVƒF[ƒ_ƒŠƒ\[ƒXƒrƒ…[‚ğƒZƒbƒg
-	DX12Init::GetCmdList()->SetGraphicsRootDescriptorTable(1,
+	DX12Util::GetCmdList()->SetGraphicsRootDescriptorTable(1,
 		CD3DX12_GPU_DESCRIPTOR_HANDLE(
 			spriteDescHeap->GetGPUDescriptorHandleForHeapStart(),
 			texNumber,
-			DX12Init::GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)
+			DX12Util::GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)
 		)
 	);
 
 	//•`‰æƒRƒ}ƒ“ƒh
-	DX12Init::GetCmdList()->DrawInstanced(4, 1, 0, 0);
+	DX12Util::GetCmdList()->DrawInstanced(4, 1, 0, 0);
 }
 
 void Sprite::SetAnchorpoint(XMFLOAT2 anchorpoint)
@@ -529,7 +529,7 @@ void Sprite::UpdateVertBuff()
 	};
 
 	//’¸“_ƒoƒbƒtƒ@¶¬
-	result = DX12Init::GetDevice()->CreateCommittedResource(
+	result = DX12Util::GetDevice()->CreateCommittedResource(
 		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
 		D3D12_HEAP_FLAG_NONE,
 		&CD3DX12_RESOURCE_DESC::Buffer(sizeof(vertices)),

@@ -1,7 +1,7 @@
 #include "Model.h"
 #include <fstream>
 #include <sstream>
-#include "DX12Init.h"
+#include "DX12Util.h"
 #include <DirectXTex.h>
 #include <d3dcompiler.h>
 #include <d3dx12.h>
@@ -14,7 +14,7 @@ void Model::Initialize()
 	HRESULT result;
 
 	//定数バッファの作成
-	result = DX12Init::GetDevice()->CreateCommittedResource(
+	result = DX12Util::GetDevice()->CreateCommittedResource(
 		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD), 	// アップロード可能
 		D3D12_HEAP_FLAG_NONE,
 		&CD3DX12_RESOURCE_DESC::Buffer((sizeof(ConstBufferDataB1) + 0xff)&~0xff),
@@ -40,21 +40,21 @@ void Model::Update()
 void Model::Draw()
 {
 	//インデックスバッファのセットコマンド
-	DX12Init::GetCmdList()->IASetIndexBuffer(&ibView);
+	DX12Util::GetCmdList()->IASetIndexBuffer(&ibView);
 
 	//プリミティブ形状の設定コマンド(三角形リスト)
-	DX12Init::GetCmdList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	DX12Util::GetCmdList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	//頂点バッファの設定コマンド
-	DX12Init::GetCmdList()->IASetVertexBuffers(0, 1, &vbView);
+	DX12Util::GetCmdList()->IASetVertexBuffers(0, 1, &vbView);
 
-	DX12Init::GetCmdList()->SetGraphicsRootConstantBufferView(1, constBuffB1->GetGPUVirtualAddress());
+	DX12Util::GetCmdList()->SetGraphicsRootConstantBufferView(1, constBuffB1->GetGPUVirtualAddress());
 	
 	// シェーダリソースビューをセット
-	DX12Init::GetCmdList()->SetGraphicsRootDescriptorTable(2, gpuDescHandleSRV);
+	DX12Util::GetCmdList()->SetGraphicsRootDescriptorTable(2, gpuDescHandleSRV);
 
 	//描画コマンド
-	DX12Init::GetCmdList()->DrawIndexedInstanced((UINT)indices.size(), 1, 0, 0, 0);
+	DX12Util::GetCmdList()->DrawIndexedInstanced((UINT)indices.size(), 1, 0, 0, 0);
 }
 
 void Model::LoadOBJ(const std::string & modelname, int index)
@@ -268,7 +268,7 @@ bool Model::LoadTexture(const std::string & directoryPath, const std::string & f
 	);
 
 	// テクスチャ用バッファの生成
-	result = DX12Init::GetDevice()->CreateCommittedResource(
+	result = DX12Util::GetDevice()->CreateCommittedResource(
 		&CD3DX12_HEAP_PROPERTIES(D3D12_CPU_PAGE_PROPERTY_WRITE_BACK, D3D12_MEMORY_POOL_L0),
 		D3D12_HEAP_FLAG_NONE,
 		&texresDesc,
@@ -292,7 +292,7 @@ bool Model::LoadTexture(const std::string & directoryPath, const std::string & f
 	}
 
 	// デスクリプタサイズを取得
-	UINT descriptorHandleIncrementSize = DX12Init::GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+	UINT descriptorHandleIncrementSize = DX12Util::GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 
 	// シェーダリソースビュー作成
 	cpuDescHandleSRV = CD3DX12_CPU_DESCRIPTOR_HANDLE(Object3D::GetDescHeap()->GetCPUDescriptorHandleForHeapStart(), index, descriptorHandleIncrementSize);
@@ -306,7 +306,7 @@ bool Model::LoadTexture(const std::string & directoryPath, const std::string & f
 	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;//2Dテクスチャ
 	srvDesc.Texture2D.MipLevels = 1;
 
-	DX12Init::GetDevice()->CreateShaderResourceView(texbuff.Get(), //ビューと関連付けるバッファ
+	DX12Util::GetDevice()->CreateShaderResourceView(texbuff.Get(), //ビューと関連付けるバッファ
 		&srvDesc, //テクスチャ設定情報
 		cpuDescHandleSRV
 	);
@@ -328,7 +328,7 @@ void Model::CreateBuffer()
 	//頂点バッファ用 GPU リソースの生成
 
 		// 頂点バッファの生成
-	result = DX12Init::GetDevice()->CreateCommittedResource(
+	result = DX12Util::GetDevice()->CreateCommittedResource(
 		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD), // ヒープ設定
 		D3D12_HEAP_FLAG_NONE,
 		&CD3DX12_RESOURCE_DESC::Buffer(sizeVB), // リソース設定
@@ -337,7 +337,7 @@ void Model::CreateBuffer()
 		IID_PPV_ARGS(&vertBuff));
 
 	//インデックスバッファの生成
-	result = DX12Init::GetDevice()->CreateCommittedResource(
+	result = DX12Util::GetDevice()->CreateCommittedResource(
 		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD), // ヒープ設定
 		D3D12_HEAP_FLAG_NONE,
 		&CD3DX12_RESOURCE_DESC::Buffer(sizeIB), // リソース設定

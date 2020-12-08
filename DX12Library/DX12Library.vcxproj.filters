@@ -30,9 +30,6 @@
     <ClCompile Include="DebugText.cpp">
       <Filter>ソース ファイル\ライブラリ</Filter>
     </ClCompile>
-    <ClCompile Include="DX12Init.cpp">
-      <Filter>ソース ファイル\ライブラリ</Filter>
-    </ClCompile>
     <ClCompile Include="Input.cpp">
       <Filter>ソース ファイル\ライブラリ</Filter>
     </ClCompile>
@@ -66,6 +63,18 @@
     <ClCompile Include="Model.cpp">
       <Filter>ソース ファイル\ライブラリ</Filter>
     </ClCompile>
+    <ClCompile Include="Collision.cpp">
+      <Filter>ソース ファイル\ライブラリ</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionPrimitive.cpp">
+      <Filter>ソース ファイル\ライブラリ</Filter>
+    </ClCompile>
+    <ClCompile Include="DX12Util.cpp">
+      <Filter>ソース ファイル\ライブラリ</Filter>
+    </ClCompile>
+    <ClCompile Include="Interpolation.cpp">
+      <Filter>ソース ファイル\ライブラリ</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="BasicVertexShader.hlsl">
@@ -89,9 +98,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DebugText.h">
-      <Filter>ヘッダー ファイル\ライブラリ</Filter>
-    </ClInclude>
-    <ClInclude Include="DX12Init.h">
       <Filter>ヘッダー ファイル\ライブラリ</Filter>
     </ClInclude>
     <ClInclude Include="Input.h">
@@ -122,6 +128,18 @@
       <Filter>ヘッダー ファイル\ライブラリ</Filter>
     </ClInclude>
     <ClInclude Include="Model.h">
+      <Filter>ヘッダー ファイル\ライブラリ</Filter>
+    </ClInclude>
+    <ClInclude Include="Collision.h">
+      <Filter>ヘッダー ファイル\ライブラリ</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionPrimitive.h">
+      <Filter>ヘッダー ファイル\ライブラリ</Filter>
+    </ClInclude>
+    <ClInclude Include="DX12Util.h">
+      <Filter>ヘッダー ファイル\ライブラリ</Filter>
+    </ClInclude>
+    <ClInclude Include="Interpolation.h">
       <Filter>ヘッダー ファイル\ライブラリ</Filter>
     </ClInclude>
   </ItemGroup>

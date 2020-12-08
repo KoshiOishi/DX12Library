@@ -1,8 +1,10 @@
 #include "GamePlay.h"
-#include "DX12Init.h"
+#include "DX12Util.h"
 #include "Input.h"
 #include "Sound.h"
 #include "DebugText.h"
+#include "Collision.h"
+#include "FPSManager.h"
 
 GamePlay::GamePlay()
 {
@@ -15,7 +17,7 @@ GamePlay::~GamePlay()
 
 void GamePlay::Initialize()
 {
-	obj1.Initialize();
+	Object3D::SetEye(DirectX::XMFLOAT3(0, 0, -100));
 
 	model1.LoadOBJ("Sphere", 1);
 	model2.CreatePoll(6, 1, 30, 0);
@@ -24,24 +26,36 @@ void GamePlay::Initialize()
 	model2.Initialize();
 
 	obj1.SetModel(model1);
+	obj1.Initialize();
 	obj1.SetColorAs0To255(255, 255, 64, 255);
 
-	obj2.SetModel(model2);
+	obj2.SetModel(model1);
 	obj2.Initialize();
-	obj2.SetPosition({ 30, 0, 0 });
+	obj2.SetPosition({ 6, 0, 0 });
+
+	obj3.SetModel(model1);
+	obj3.Initialize();
+	obj3.SetPosition({ -30, 0, -10 });
+	obj3.SetColorAs0To255(64, 255, 64, 255);
 
 	sprite1.Initialize(1, L"Resources/haikeidayo.png");
 	sprite2.Initialize(2, L"Resources/gazoudayo.png");
 
+	sphere1.center = DirectX::XMVectorSet(obj1.GetPosition().x, obj1.GetPosition().y, obj1.GetPosition().z, 1);
+	sphere1.radius = 2.5f;
+	sphere2.center = DirectX::XMVectorSet(obj2.GetPosition().x, obj2.GetPosition().y, obj2.GetPosition().z, 1);
+	sphere2.radius = 2.5f;
+
+	ip.Start(3.0f);
 }
 
 void GamePlay::Update()
 {
 	// DirectX 毎フレーム処理 ここから
 
-	//キーボード情報の取得開始
-	Input::Update();
 	//入力処理ここから
+
+	ip.Update(600);
 
 #pragma region 更新処理
 	if (Input::Push(DIK_UP) || Input::Push(DIK_DOWN))
@@ -51,11 +65,11 @@ void GamePlay::Update()
 			//視点座標を加算する処理（Z）
 			if (Input::Push(DIK_UP))
 			{
-				Object3D::AddEye(0, 0, 3.0f);
+				Object3D::MoveCamera(0, 0, 3.0f);
 			}
 			else if (Input::Push(DIK_DOWN))
 			{
-				Object3D::AddEye(0, 0, -3.0f);
+				Object3D::MoveCamera(0, 0, -3.0f);
 
 			}
 		}
@@ -64,11 +78,11 @@ void GamePlay::Update()
 			//視点座標を加算する処理（Y）
 			if (Input::Push(DIK_UP))
 			{
-				Object3D::AddEye(0, 3.0f, 0);
+				Object3D::MoveCamera(0, 3.0f, 0);
 			}
 			else if (Input::Push(DIK_DOWN))
 			{
-				Object3D::AddEye(0, -3.0f, 0);
+				Object3D::MoveCamera(0, -3.0f, 0);
 
 			}
 		}
@@ -79,11 +93,11 @@ void GamePlay::Update()
 		//視点座標を加算する処理（X）
 		if (Input::Push(DIK_LEFT))
 		{
-			Object3D::AddEye(-3.0f, 0, 0);
+			Object3D::MoveCamera(-3.0f, 0, 0);
 		}
 		else if (Input::Push(DIK_RIGHT))
 		{
-			Object3D::AddEye(3.0f, 0, 0);
+			Object3D::MoveCamera(3.0f, 0, 0);
 		}
 	}
 
@@ -162,54 +176,35 @@ void GamePlay::Update()
 
 	}
 
-	//if (Input::Trigger(DIK_SPACE))
-	//{
-	//	Sound::PlayWave("Resources/Alarm01.wav");
-	//}
+	if (Input::Trigger(DIK_1))
+	{
+	 	obj1.SetIsWireFlame(!obj1.GetIsWireFlame());
+		obj2.SetIsWireFlame(!obj2.GetIsWireFlame());
+	}
+
+	obj3.SetPosition(Interpolation::EaseInOut(-30, 30, ip.GetTimeRate()), 0, -10);
 
 #pragma endregion
 
 
 #pragma region 球当たり判定
 
-		////各オブジェクトの半径
-		//const float radius1 = 15;
-		//const float radius2 = 15;
+	sphere1.center = DirectX::XMVectorSet(obj1.GetPosition().x, obj1.GetPosition().y, obj1.GetPosition().z, 1);
+	sphere2.center = DirectX::XMVectorSet(obj2.GetPosition().x, obj2.GetPosition().y, obj2.GetPosition().z, 1);
 
-		////ワールド座標を行列から読み取る
-		//XMFLOAT3 position1 = { obj1.matWorld.r[3].m128_f32[0],
-		//	obj1.matWorld.r[3].m128_f32[1],obj1.matWorld.r[3].m128_f32[2] };
-		//XMFLOAT3 position2 = { obj2.matWorld.r[3].m128_f32[0],
-		//	obj2.matWorld.r[3].m128_f32[1],obj2.matWorld.r[3].m128_f32[2] };
-
-		////2つの座標の差
-		//XMVECTOR position_sub = XMVectorSet(
-		//	position1.x - position2.x,
-		//	position1.y - position2.y,
-		//	position1.z - position2.z,
-		//	0
-		//);
-
-		////2つの座標の距離
-		//position_sub = XMVector3Length(position_sub);
-		//float distance = position_sub.m128_f32[0];
-
-		////距離が半径の和以下なら当たっている
-		//if (distance <= radius1 + radius2) {
-		//	debugText.Print("Hit", 100, 100, 10.0f);
-		//}
-
-
+	if (Collision::CheckSphere2Sphere(sphere1,sphere2))
+		DebugText::Print("HIT", 0, 0);
 
 #pragma endregion
 
-	DebugText::Print(100, 0, 0);
 
 #pragma region オブジェクトアップデート
 
 	obj1.Update();
 	
 	obj2.Update();
+
+	obj3.Update();
 
 #pragma endregion
 
@@ -218,7 +213,7 @@ void GamePlay::Update()
 void GamePlay::Draw()
 {
 	//描画開始
-	DX12Init::BeginDraw();
+	DX12Util::BeginDraw();
 
 	//背景スプライト描画ここから
 	sprite1.Draw();
@@ -226,7 +221,7 @@ void GamePlay::Draw()
 
 
 	//背景描画ここまで
-	DX12Init::ClearDepthBuffer();
+	DX12Util::ClearDepthBuffer();
 
 
 	//オブジェクト描画ここから
@@ -234,15 +229,17 @@ void GamePlay::Draw()
 	
 	obj2.Draw();
 
+	obj3.Draw();
+
 	//オブジェクト描画ここまで
 
 	//前景スプライト描画ここから
 
-	sprite2.Draw();
+	//sprite2.Draw();
 	DebugText::DrawAll();
 
 	//前景スプライト描画ここまで
 
 	//描画終了
-	DX12Init::EndDraw();
+	DX12Util::EndDraw();
 }

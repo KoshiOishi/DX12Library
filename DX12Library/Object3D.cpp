@@ -3,7 +3,7 @@
 #include <d3dcompiler.h>
 #include <d3dx12.h>
 #include "Object3D.h"
-#include "DX12Init.h"
+#include "DX12Util.h"
 #include <fstream>
 #include <sstream>
 
@@ -33,9 +33,9 @@ void Object3D::FirstInit()
 	D3D12_DESCRIPTOR_HEAP_DESC descHeapDesc{};
 	descHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
 	descHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE; // シェーダーから見える
-	descHeapDesc.NumDescriptors = 128; // SRV1つ
+	descHeapDesc.NumDescriptors = 32; // SRV1つ
 	// 生成
-	result = DX12Init::GetDevice()->CreateDescriptorHeap(&descHeapDesc, IID_PPV_ARGS(&basicDescHeap));
+	result = DX12Util::GetDevice()->CreateDescriptorHeap(&descHeapDesc, IID_PPV_ARGS(&basicDescHeap));
 
 	InitPipelineMath();
 	InitPipelineOBJ();
@@ -205,14 +205,14 @@ void Object3D::InitPipelineOBJ()
 	result = D3DX12SerializeVersionedRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1_0,
 		&rootSigBlob, &errorBlob);
 
-	result = DX12Init::GetDevice()->CreateRootSignature(0, rootSigBlob.Get()->GetBufferPointer(), rootSigBlob.Get()->GetBufferSize(),
+	result = DX12Util::GetDevice()->CreateRootSignature(0, rootSigBlob.Get()->GetBufferPointer(), rootSigBlob.Get()->GetBufferSize(),
 		IID_PPV_ARGS(&rootsignatureOBJ));
 
 	// パイプラインにルートシグネチャをセット
 	gpipeline.pRootSignature = rootsignatureOBJ.Get();
 
 	//パイプラインステートの生成
-	result = DX12Init::GetDevice()->CreateGraphicsPipelineState(&gpipeline, IID_PPV_ARGS(&pipelinestateOBJ));
+	result = DX12Util::GetDevice()->CreateGraphicsPipelineState(&gpipeline, IID_PPV_ARGS(&pipelinestateOBJ));
 
 	//ワイヤフレーム用パイプラインを作る
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC gpipeline_wire{};
@@ -220,7 +220,7 @@ void Object3D::InitPipelineOBJ()
 	gpipeline_wire.RasterizerState.FillMode = D3D12_FILL_MODE_WIREFRAME;
 
 	//パイプラインステートの生成
-	result = DX12Init::GetDevice()->CreateGraphicsPipelineState(&gpipeline_wire, IID_PPV_ARGS(&pipelinestateOBJ_wire));
+	result = DX12Util::GetDevice()->CreateGraphicsPipelineState(&gpipeline_wire, IID_PPV_ARGS(&pipelinestateOBJ_wire));
 }
 
 void Object3D::InitPipelineMath()
@@ -388,14 +388,14 @@ void Object3D::InitPipelineMath()
 	result = D3DX12SerializeVersionedRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1_0,
 		&rootSigBlob, &errorBlob);
 
-	result = DX12Init::GetDevice()->CreateRootSignature(0, rootSigBlob.Get()->GetBufferPointer(), rootSigBlob.Get()->GetBufferSize(),
+	result = DX12Util::GetDevice()->CreateRootSignature(0, rootSigBlob.Get()->GetBufferPointer(), rootSigBlob.Get()->GetBufferSize(),
 		IID_PPV_ARGS(&rootsignatureMath));
 
 	// パイプラインにルートシグネチャをセット
 	gpipeline.pRootSignature = rootsignatureMath.Get();
 
 	//パイプラインステートの生成
-	result = DX12Init::GetDevice()->CreateGraphicsPipelineState(&gpipeline, IID_PPV_ARGS(&pipelinestateMath));
+	result = DX12Util::GetDevice()->CreateGraphicsPipelineState(&gpipeline, IID_PPV_ARGS(&pipelinestateMath));
 
 	//ワイヤフレーム用パイプラインを作る
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC gpipeline_wire{};
@@ -403,7 +403,7 @@ void Object3D::InitPipelineMath()
 	gpipeline_wire.RasterizerState.FillMode = D3D12_FILL_MODE_WIREFRAME;
 
 	//パイプラインステートの生成
-	result = DX12Init::GetDevice()->CreateGraphicsPipelineState(&gpipeline_wire, IID_PPV_ARGS(&pipelinestateMath_wire));
+	result = DX12Util::GetDevice()->CreateGraphicsPipelineState(&gpipeline_wire, IID_PPV_ARGS(&pipelinestateMath_wire));
 
 }
 
@@ -412,7 +412,7 @@ void Object3D::Initialize()
 	HRESULT result;
 
 	//定数バッファの作成
-	result = DX12Init::GetDevice()->CreateCommittedResource(
+	result = DX12Util::GetDevice()->CreateCommittedResource(
 		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD), 	// アップロード可能
 		D3D12_HEAP_FLAG_NONE,
 		&CD3DX12_RESOURCE_DESC::Buffer((sizeof(ConstBufferDataB0) + 0xff)&~0xff),
@@ -425,7 +425,7 @@ void Object3D::Initialize()
 	//透視投影
 	matProjection = XMMatrixPerspectiveFovLH(
 		XMConvertToRadians(60.0f),
-		(float)DX12Init::GetWindowWidth() / DX12Init::GetWindowHeight(),
+		(float)DX12Util::GetWindowWidth() / DX12Util::GetWindowHeight(),
 		0.1f,
 		1000.0f
 	);
@@ -485,45 +485,45 @@ void Object3D::Draw()
 {
 	if (model.GetIsOBJ())
 	{
-		if (isWireFlane)
+		if (isWireFlame)
 		{
 			//パイプラインステートの設定コマンド
-			DX12Init::GetCmdList()->SetPipelineState(pipelinestateOBJ_wire.Get());
+			DX12Util::GetCmdList()->SetPipelineState(pipelinestateOBJ_wire.Get());
 		}
 		else
 		{
 			//パイプラインステートの設定コマンド
-			DX12Init::GetCmdList()->SetPipelineState(pipelinestateOBJ.Get());
+			DX12Util::GetCmdList()->SetPipelineState(pipelinestateOBJ.Get());
 		}
 
 		//ルートシグネチャの設定コマンド
-		DX12Init::GetCmdList()->SetGraphicsRootSignature(rootsignatureOBJ.Get());
+		DX12Util::GetCmdList()->SetGraphicsRootSignature(rootsignatureOBJ.Get());
 	}
 	else
 	{
-		if (isWireFlane)
+		if (isWireFlame)
 		{
 			//パイプラインステートの設定コマンド
-			DX12Init::GetCmdList()->SetPipelineState(pipelinestateMath_wire.Get());
+			DX12Util::GetCmdList()->SetPipelineState(pipelinestateMath_wire.Get());
 		}
 		else
 		{
 			//パイプラインステートの設定コマンド
-			DX12Init::GetCmdList()->SetPipelineState(pipelinestateMath.Get());
+			DX12Util::GetCmdList()->SetPipelineState(pipelinestateMath.Get());
 		}
 
 		//ルートシグネチャの設定コマンド
-		DX12Init::GetCmdList()->SetGraphicsRootSignature(rootsignatureMath.Get());
+		DX12Util::GetCmdList()->SetGraphicsRootSignature(rootsignatureMath.Get());
 	}
 
 
 
 	// デスクリプタヒープの配列
 	ID3D12DescriptorHeap* ppHeaps[] = { basicDescHeap.Get() };
-	DX12Init::GetCmdList()->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
+	DX12Util::GetCmdList()->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 
 	// 定数バッファビューをセット
-	DX12Init::GetCmdList()->SetGraphicsRootConstantBufferView(0, constBuffB0->GetGPUVirtualAddress());
+	DX12Util::GetCmdList()->SetGraphicsRootConstantBufferView(0, constBuffB0->GetGPUVirtualAddress());
 
 	model.Draw();
 }
@@ -556,6 +556,18 @@ void Object3D::AddUp(const float upX, const float upY, const float upZ)
 	Object3D::up.y += upY;
 	Object3D::up.z += upZ;
 	UpdateViewMatrix();
+}
+
+void Object3D::MoveCamera(const XMFLOAT3 & vector)
+{
+	AddEye(vector.x, vector.y, vector.z);
+	AddTarget(vector.x, vector.y, vector.z);
+}
+
+void Object3D::MoveCamera(const float x, const float y, const float z)
+{
+	XMFLOAT3 vector = {x,y,z};
+	MoveCamera(vector);
 }
 
 void Object3D::UpdateViewMatrix()

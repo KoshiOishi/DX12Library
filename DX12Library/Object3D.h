@@ -43,22 +43,22 @@ private:
 
 
 	// スケーリング倍率
-	XMFLOAT3 scale;
+	XMFLOAT3 scale{};
 
 	// 回転角
-	XMFLOAT3 rotation;
+	XMFLOAT3 rotation{};
 
 	// 座標
-	XMFLOAT3 position;
+	XMFLOAT3 position{};
 
 	// ワールド座標
-	XMMATRIX matWorld;
+	XMMATRIX matWorld{};
 
 	//モデル
 	Model model;
 
 	//ワイヤフレーム表示
-	bool isWireFlane;
+	bool isWireFlame = false;
 
 	//色
 	XMFLOAT4 color = { 1,1,1,1 };
@@ -183,7 +183,20 @@ public:
 	static void AddTarget(const float targetX, const float targetY, const float targetZ);
 	static void AddUp(const float upX, const float upY, const float upZ);
 
-	
+	/// <summary>
+	/// カメラを移動させる処理
+	/// </summary>
+	/// <param name="vector">移動量ベクトル</param>
+	static void MoveCamera(const XMFLOAT3& vector);
+
+	/// <summary>
+	/// カメラを移動させる処理
+	/// </summary>
+	/// <param name="x">移動量x</param>
+	/// <param name="y">移動量y</param>
+	/// <param name="z">移動量z</param>
+	static void MoveCamera(const float x, const float y, const float z);
+		
 #pragma endregion
 
 //静的メンバ関数
@@ -224,7 +237,7 @@ public:
 	/// ワイヤフレーム描画フラグを取得
 	/// </summary>
 	/// <returns>ワイヤフレームフラグ</returns>
-	const bool& GetIsWireFlame() { return isWireFlane; }
+	const bool& GetIsWireFlame() { return isWireFlame; }
 
 	/// <summary>
 	/// 色(RGBA)を取得する
@@ -284,10 +297,27 @@ public:
 	void SetScale(const XMFLOAT3 scale) { this->scale = scale; }
 
 	/// <summary>
+	/// スケールをセット
+	/// </summary>
+	/// <param name="x">x</param>
+	/// <param name="y">y</param>
+	/// <param name="z">z</param>
+	void SetScale(const float x, const float y, const float z) { this->scale = {x,y,z}; }
+
+	/// <summary>
 	/// 回転角をセット
 	/// </summary>
 	/// <param name="rotation">回転角</param>
 	void SetRotation(const XMFLOAT3 rotation) { this->rotation = rotation; }
+
+	/// <summary>
+	/// 回転角をセット
+	/// </summary>
+	/// <param name="x">x</param>
+	/// <param name="y">y</param>
+	/// <param name="z">z</param>
+	void SetRotation(const float x, const float y, const float z) { this->rotation = { x,y,z }; }
+
 
 	/// <summary>
 	/// 座標をセット
@@ -296,9 +326,17 @@ public:
 	void SetPosition(const XMFLOAT3 position) { this->position = position; }
 
 	/// <summary>
+	/// 座標をセット
+	/// </summary>
+	/// <param name="x">x</param>
+	/// <param name="y">y</param>
+	/// <param name="z">z</param>
+	void SetPosition(const float x, const float y, const float z) { this->position = { x,y,z }; }
+
+	/// <summary>
 	/// ワイヤフレームフラグをセット
 	/// </summary>
-	void SetIsWireFlame(const bool isWireFlame) { this->isWireFlane = isWireFlame; }
+	void SetIsWireFlame(const bool isWireFlame) { this->isWireFlame = isWireFlame; }
 
 	/// <summary>
 	/// 色(RGBA)をセット
