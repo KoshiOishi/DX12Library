@@ -19,7 +19,7 @@ void GamePlay::Initialize()
 {
 	Object3D::SetEye(DirectX::XMFLOAT3(0, 0, -100));
 
-	model1.LoadOBJ("Sphere", 1);
+	model1.LoadOBJ("Rasen", 1);
 	model2.CreatePoll(6, 1, 30, 0);
 
 	model1.Initialize();

@@ -168,6 +168,8 @@ void Model::LoadOBJ(const std::string & modelname, int index)
 
 void Model::LoadMaterial(const std::string & directoryPath, const std::string & filename, int index)
 {
+	bool isLoadTexture = false;
+
 	//ファイルストリーム
 	std::ifstream file;
 	//マテリアルファイルを開く
@@ -224,13 +226,19 @@ void Model::LoadMaterial(const std::string & directoryPath, const std::string & 
 			//テクスチャのファイル名読み込み
 			line_stream >> material.textureFilename;
 			//テクスチャ読み込み
-			LoadTexture(directoryPath, material.textureFilename, index);
+			LoadTexture("Resources/", material.textureFilename, index);
+			isLoadTexture = true;
 		}
 	}
 
 	//ファイルを閉じる
 	file.close();
 
+	if (!isLoadTexture)
+	{
+		//テクスチャがないときは白テクスチャを読み込む
+		LoadTexture(directoryPath, "white1x1.png", index);
+	}
 }
 
 bool Model::LoadTexture(const std::string & directoryPath, const std::string & filename, int index)
