@@ -152,7 +152,6 @@
     <ClCompile Include="CollisionPrimitive.cpp" />
     <ClCompile Include="DX12Util.cpp" />
     <ClCompile Include="FPSManager.cpp" />
-    <ClCompile Include="GamePlay.cpp" />
     <ClCompile Include="Interpolation.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="Object3D.cpp" />
@@ -240,7 +239,6 @@
     <ClInclude Include="CollisionPrimitive.h" />
     <ClInclude Include="DX12Util.h" />
     <ClInclude Include="FPSManager.h" />
-    <ClInclude Include="GamePlay.h" />
     <ClInclude Include="Interpolation.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="Object3D.h" />

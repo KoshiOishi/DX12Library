@@ -32,7 +32,11 @@ public:
 		XMMATRIX mat;	//3D変換行列
 	};
 
-
+	enum BillboardType {
+		NONE,
+		Billboard,
+		BillboardY,
+	};
 
 //定数
 private:
@@ -63,6 +67,9 @@ private:
 	//色
 	XMFLOAT4 color = { 1,1,1,1 };
 
+	//ビルボードタイプ
+	BillboardType billboardType = BillboardType::NONE;
+
 #pragma region 初期化回りの変数
 
 
@@ -82,6 +89,12 @@ private:
 
 	// ビュー変換行列
 	static XMMATRIX matView;
+
+	//ビルボード行列
+	static XMMATRIX matBillboard;
+
+	//Y軸回りビルボード行列
+	static XMMATRIX matBillboardY;
 
 	// 視点座標
 	static XMFLOAT3 eye;
@@ -254,6 +267,8 @@ public:
 		return c;
 	}
 
+	const BillboardType GetBillboardType() { return billboardType; }
+
 //静的メンバ関数
 public:
 	/// <summary>
@@ -382,6 +397,9 @@ public:
 		XMFLOAT4 c = { color.x / 255, color.y / 255, color.z / 255, color.w / 255 };
 		SetColor(c);
 	}
+
+	void SetBillboardType(BillboardType billboardType) { this->billboardType = billboardType; }
+
 //静的メンバ関数
 public:
 	/// <summary>
