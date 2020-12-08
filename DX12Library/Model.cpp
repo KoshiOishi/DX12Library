@@ -255,7 +255,6 @@ bool Model::LoadTexture(const std::string & directoryPath, const std::string & f
 	//ユニコード文字列に変換する
 	wchar_t wfilepath[128];
 	int iBufferSize = MultiByteToWideChar(CP_ACP, 0, filepath.c_str(), -1, wfilepath, _countof(wfilepath));
-	directoryPath + filename;
 
 	result = LoadFromWICFile(
 		wfilepath, WIC_FLAGS_NONE,
@@ -321,6 +320,90 @@ bool Model::LoadTexture(const std::string & directoryPath, const std::string & f
 
 	return true;
 
+}
+
+bool Model::LoadTextureReturnTexSize(const std::string & directoryPath, const std::string & filename, int index, float* texWidth, float* texHeight)
+{
+	HRESULT result = S_FALSE;
+
+	// WICテクスチャのロード
+	TexMetadata metadata{};
+	ScratchImage scratchImg{};
+
+	//ファイルパスを結合
+	string filepath = directoryPath + filename;
+
+	//ユニコード文字列に変換する
+	wchar_t wfilepath[128];
+	int iBufferSize = MultiByteToWideChar(CP_ACP, 0, filepath.c_str(), -1, wfilepath, _countof(wfilepath));
+
+	result = LoadFromWICFile(
+		wfilepath, WIC_FLAGS_NONE,
+		&metadata, scratchImg);
+	if (FAILED(result)) {
+		return false;
+	}
+
+	const Image* img = scratchImg.GetImage(0, 0, 0); // 生データ抽出
+
+	// リソース設定
+	CD3DX12_RESOURCE_DESC texresDesc = CD3DX12_RESOURCE_DESC::Tex2D(
+		metadata.format,
+		metadata.width,
+		(UINT)metadata.height,
+		(UINT16)metadata.arraySize,
+		(UINT16)metadata.mipLevels
+	);
+
+	// テクスチャ用バッファの生成
+	result = DX12Util::GetDevice()->CreateCommittedResource(
+		&CD3DX12_HEAP_PROPERTIES(D3D12_CPU_PAGE_PROPERTY_WRITE_BACK, D3D12_MEMORY_POOL_L0),
+		D3D12_HEAP_FLAG_NONE,
+		&texresDesc,
+		D3D12_RESOURCE_STATE_GENERIC_READ, // テクスチャ用指定
+		nullptr,
+		IID_PPV_ARGS(&texbuff));
+	if (FAILED(result)) {
+		return false;
+	}
+
+	// テクスチャバッファにデータ転送
+	result = texbuff->WriteToSubresource(
+		0,
+		nullptr, // 全領域へコピー
+		img->pixels,    // 元データアドレス
+		(UINT)img->rowPitch,  // 1ラインサイズ
+		(UINT)img->slicePitch // 1枚サイズ
+	);
+	if (FAILED(result)) {
+		return false;
+	}
+
+	// デスクリプタサイズを取得
+	UINT descriptorHandleIncrementSize = DX12Util::GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+
+	// シェーダリソースビュー作成
+	cpuDescHandleSRV = CD3DX12_CPU_DESCRIPTOR_HANDLE(Object3D::GetDescHeap()->GetCPUDescriptorHandleForHeapStart(), index, descriptorHandleIncrementSize);
+	gpuDescHandleSRV = CD3DX12_GPU_DESCRIPTOR_HANDLE(Object3D::GetDescHeap()->GetGPUDescriptorHandleForHeapStart(), index, descriptorHandleIncrementSize);
+
+	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{}; // 設定構造体
+	D3D12_RESOURCE_DESC resDesc = texbuff->GetDesc();
+
+	srvDesc.Format = resDesc.Format;
+	srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;//2Dテクスチャ
+	srvDesc.Texture2D.MipLevels = 1;
+
+	DX12Util::GetDevice()->CreateShaderResourceView(texbuff.Get(), //ビューと関連付けるバッファ
+		&srvDesc, //テクスチャ設定情報
+		cpuDescHandleSRV
+	);
+
+	if (texWidth != nullptr)
+		*texWidth = metadata.width;
+	if (texHeight != nullptr)
+		*texHeight = metadata.height;
+	return false;
 }
 
 void Model::CreateBuffer()
@@ -394,7 +477,10 @@ void Model::CreateBox(float width, float height, float depth, int index)
 {
 	isOBJ = false;
 
-	material.name = "default";
+	material.ambient = { 1,1,1 };
+	material.diffuse = { 0.5f,0.5f,0.5f };
+
+	material.name = "default_box";
 
 	material.textureFilename = "white1x1.png";
 	LoadTexture("Resources/" , material.textureFilename, index);
@@ -518,13 +604,17 @@ void Model::CreateBox(float width, float height, float depth, int index)
 
 void Model::CreateSphere(float radius, int index)
 {
+	assert("まだ実装してねええええええ");
 }
 
 void Model::CreatePoll(int vertex, float radius, float height, int index)
 {
 	isOBJ = false;
 
-	material.name = "default";
+	material.ambient = { 1,1,1 };
+	material.diffuse = { 0.5f,0.5f,0.5f };
+
+	material.name = "default_poll";
 
 	material.textureFilename = "white1x1.png";
 	LoadTexture("Resources/", material.textureFilename, index);
@@ -660,6 +750,91 @@ void Model::CreatePoll(int vertex, float radius, float height, int index)
 		XMStoreFloat3(&vertices[index2].normal, normal);
 
 	}
+
+	CreateBuffer();
+}
+
+void Model::CreateSquare(float width, float height, int index)
+{
+	isOBJ = false;
+
+	material.ambient = { 1,1,1 };
+	material.diffuse = { 0.5f,0.5f,0.5f };
+
+	material.name = "default_square";
+
+	material.textureFilename = "white1x1.png";
+	LoadTexture("Resources/", material.textureFilename, index);
+
+	float div2Width = width / 2.0f;
+	float div2Height = height / 2.0f;
+
+	vertices.push_back({ {-div2Width,-div2Height,0.0f},{0,0,1},{0,1} });	//左下
+	vertices.push_back({ {-div2Width,+div2Height,0.0f},{0,0,1},{0,0} });	//左上
+	vertices.push_back({ {+div2Width,-div2Height,0.0f},{0,0,1},{1,1} });	//右下
+	vertices.push_back({ {+div2Width,+div2Height,0.0f},{0,0,1},{1,0} });	//右上
+
+	indices.push_back(0);
+	indices.push_back(1);
+	indices.push_back(2);//三角形1
+
+	indices.push_back(2);
+	indices.push_back(1);
+	indices.push_back(3);//三角形2
+
+	CreateBuffer();
+
+}
+
+void Model::CreateSquareTex(float standardLength, std::string texName, int index)
+{
+	isOBJ = false;
+
+	material.ambient = { 1,1,1 };
+	material.diffuse = { 0.5f,0.5f,0.5f };
+
+	material.name = "square_tex";
+
+	material.textureFilename = texName;
+	float* texWidth = new float();
+	float* texHeight = new float();
+	LoadTextureReturnTexSize("Resources/", material.textureFilename, index, texWidth, texHeight);
+
+	float than = 0.0f;
+	float div2Width = 0.0f;
+	float div2Height = 0.0f;
+	float width = 0.0f;
+	float height = 0.0f;
+	if (*texWidth >= *texHeight)//横長
+	{
+		than = *texWidth / *texHeight;
+		width = standardLength * than;
+		height = standardLength;
+	}
+	else
+	{
+		than = *texHeight / *texWidth;
+		width = standardLength;
+		height = standardLength * than;
+	}
+	div2Width = width / 2.0f;
+	div2Height = height / 2.0f;
+
+	vertices.push_back({ {-div2Width,-div2Height,0.0f},{0,0,1},{0,1} });	//左下
+	vertices.push_back({ {-div2Width,+div2Height,0.0f},{0,0,1},{0,0} });	//左上
+	vertices.push_back({ {+div2Width,-div2Height,0.0f},{0,0,1},{1,1} });	//右下
+	vertices.push_back({ {+div2Width,+div2Height,0.0f},{0,0,1},{1,0} });	//右上
+
+	indices.push_back(0);
+	indices.push_back(1);
+	indices.push_back(2);//三角形1
+
+	indices.push_back(2);
+	indices.push_back(1);
+	indices.push_back(3);//三角形2
+
+	delete texWidth;
+	delete texHeight;
 
 	CreateBuffer();
 }
