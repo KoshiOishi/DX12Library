@@ -52,7 +52,7 @@ public:
 		std::string textureFilename;	//テクスチャファイル名
 		//コンストラクタ
 		Material() {
-			ambient = { 0.3f, 0.3f, 0.3f };
+			ambient = { 0.5f, 0.5f, 0.5f };
 			diffuse = { 0.0f, 0.0f, 0.0f };
 			specular = { 0.0f,0.0f,0.0f };
 			alpha = 1.0f;
@@ -110,6 +110,7 @@ public:
 	void LoadOBJ(const std::string & modelname, int index);
 	void LoadMaterial(const std::string & directoryPath, const std::string & filename, int index);
 	bool LoadTexture(const std::string & directoryPath, const std::string & filename, int index);
+	bool LoadTextureReturnTexSize(const std::string & directoryPath, const std::string & filename, int index, float* texWidth = nullptr, float* texHeight = nullptr);
 	void CreateBuffer();
 
 	/// <summary>
@@ -143,5 +144,22 @@ public:
 	/// <param name="height">高さ</param>
 	/// <param name="index">インデックス（重複しないように指定）</param>
 	void CreatePoll(int vertex, float radius, float height, int index);
+
+	/// <summary>
+	/// 四角形板ポリゴンを作成
+	/// </summary>
+	/// <param name="width">横幅</param>
+	/// <param name="height">縦幅</param>
+	/// <param name="index">インデックス（重複しないように指定）</param>
+	void CreateSquare(float width, float height, int index);
+
+	/// <summary>
+	/// テクスチャあり四角形板ポリゴンを作成
+	/// </summary>
+	/// <param name="standardLength">ポリゴンの基準の長さ テクスチャが横長の場合は縦幅に、縦長の場合は横幅に適応され、もう片方は自動で合わせる。</param>
+	/// <param name="texName">テクスチャの名前</param>
+	/// <param name="index">インデックス（重複しないように指定）</param>
+	void CreateSquareTex(float standardLength, string texName, int index);
+
 };
 
