@@ -21,11 +21,11 @@ XMMATRIX Object3D::matBillboardY{};
 Object3D::ComPtr <ID3D12DescriptorHeap> Object3D::basicDescHeap = nullptr;
 Object3D::ComPtr <ID3D12RootSignature> Object3D::rootsignatureOBJ = nullptr;
 Object3D::ComPtr <ID3D12RootSignature> Object3D::rootsignatureMath = nullptr;
-Object3D::ComPtr <ID3D12RootSignature> Object3D::rootsignatureNoShade = nullptr;
 Object3D::ComPtr <ID3D12PipelineState> Object3D::pipelinestateOBJ = nullptr;
 Object3D::ComPtr <ID3D12PipelineState> Object3D::pipelinestateOBJ_wire = nullptr;
 Object3D::ComPtr <ID3D12PipelineState> Object3D::pipelinestateMath = nullptr;
 Object3D::ComPtr <ID3D12PipelineState> Object3D::pipelinestateMath_wire = nullptr;
+Object3D::ComPtr <ID3D12RootSignature> Object3D::rootsignatureNoShade = nullptr;
 Object3D::ComPtr <ID3D12PipelineState> Object3D::pipelinestateNoShade = nullptr;
 Object3D::ComPtr <ID3D12PipelineState> Object3D::pipelinestateNoShade_wire = nullptr;
 
@@ -44,7 +44,7 @@ void Object3D::FirstInit()
 
 	InitPipelineOBJ();
 	InitPipelineMath();
-	//InitPipelineNoShade();
+	InitPipelineNoShade();
 }
 
 void Object3D::InitPipelineOBJ()
@@ -458,7 +458,7 @@ void Object3D::InitPipelineNoShade()
 		vsPath, // シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
-		"VSmain", "vs_5_0",	// エントリーポイント名、シェーダーモデル指定
+		"main", "vs_5_0",	// エントリーポイント名、シェーダーモデル指定
 		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
 		0,
 		&vsBlob, &errorBlob);
@@ -488,7 +488,7 @@ void Object3D::InitPipelineNoShade()
 		psPath, // シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
-		"PSmain", "ps_5_0",	// エントリーポイント名、シェーダーモデル指定
+		"main", "ps_5_0",	// エントリーポイント名、シェーダーモデル指定
 		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
 		0,
 		&psBlob, &errorBlob);

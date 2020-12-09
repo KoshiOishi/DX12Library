@@ -22,14 +22,12 @@ void GamePlay::Initialize()
 
 	model1.CreateSquareTex(15.0f,"itapori.png",1);
 	model2.CreateBox(3.0f,3.0f,3.0f,2);
-	
 
 	model1.Initialize();
 	model2.Initialize();
 
 	obj1.SetModel(model1);
 	obj1.Initialize();
-	//obj1.SetIsLight(false);
 
 	obj2.SetModel(model1);
 	obj2.Initialize();
