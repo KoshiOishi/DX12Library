@@ -20,7 +20,7 @@ void GamePlay::Initialize()
 {
 	Object3D::SetEye(DirectX::XMFLOAT3(0, 0, -100));
 
-	model1.CreateSquareTex(15.0f,"itapori.png",1);
+	model1.CreateSquareTex(15.0f,"5.png",1);
 	model2.CreateBox(3.0f,3.0f,3.0f,2);
 
 	model1.Initialize();
@@ -28,6 +28,7 @@ void GamePlay::Initialize()
 
 	obj1.SetModel(model1);
 	obj1.Initialize();
+	obj1.SetIsLight(false);
 
 	obj2.SetModel(model1);
 	obj2.Initialize();

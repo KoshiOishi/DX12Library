@@ -4,6 +4,6 @@ d:\k019g1301\ライブラリ\dx12library\dx12library\input.h(4): warning C4005: 
   c:\program files (x86)\windows kits\10\include\10.0.18362.0\um\dinput.h(48): note: 'DIRECTINPUT_VERSION' の以前の定義を確認してください
   main.cpp
   コード生成しています。
-  All 1065 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  All 1072 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
   コード生成が終了しました。
   Game.vcxproj -> D:\K019G1301\ライブラリ\DX12Library\x64\Release\Game.exe
