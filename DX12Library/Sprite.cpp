@@ -33,14 +33,20 @@ void Sprite::FirstInit()
 	psBlob = nullptr; // ピクセルシェーダオブジェクト
 	errorBlob = nullptr; // エラーオブジェクト
 	// 頂点シェーダの読み込みとコンパイル
+	const wchar_t* vsPath = L"../DX12Library/Shader/SpriteVertexShader.hlsl";
+	if (!DX12Util::IsFileExist(vsPath))
+	{
+		vsPath = L"Shader/SpriteVertexShader.hlsl";
+	}
 	result = D3DCompileFromFile(
-		L"SpriteVertexShader.hlsl", // シェーダファイル名
+		vsPath, // シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
 		"VSmain", "vs_5_0", // エントリーポイント名、シェーダーモデル指定
 		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
 		0,
 		&vsBlob, &errorBlob);
+
 
 	if (FAILED(result)) {
 		// errorBlob からエラー内容を string 型にコピー
@@ -56,14 +62,20 @@ void Sprite::FirstInit()
 	}
 
 	// ピクセルシェーダの読み込みとコンパイル
+	const wchar_t* psPath = L"../DX12Library/Shader/SpritePixelShader.hlsl";
+	if (!DX12Util::IsFileExist(psPath))
+	{
+		psPath = L"Shader/SpritePixelShader.hlsl";
+	}
 	result = D3DCompileFromFile(
-		L"SpritePixelShader.hlsl", // シェーダファイル名
+		psPath, // シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
 		"PSmain", "ps_5_0", // エントリーポイント名、シェーダーモデル指定
 		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
 		0,
 		&psBlob, &errorBlob);
+
 
 	if (FAILED(result)) {
 		// errorBlob からエラー内容を string 型にコピー

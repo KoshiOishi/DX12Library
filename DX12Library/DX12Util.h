@@ -59,6 +59,13 @@ public:
 	static const int GetWindowWidth();
 	static const int GetWindowHeight();
 
+	/// <summary>
+	/// ファイルが存在するかを返す
+	/// </summary>
+	/// <param name="path">ファイルパス</param>
+	/// <returns>ファイルが存在するか否か</returns>
+	static bool IsFileExist(const wchar_t* path);
+
 	static void ClearDepthBuffer();
 };
 

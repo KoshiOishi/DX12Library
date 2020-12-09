@@ -13,23 +13,23 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="ヘッダー ファイル\シーン">
-      <UniqueIdentifier>{d1b0bc47-6894-4c12-85f8-fbf1bdfeebec}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\シーン">
-      <UniqueIdentifier>{431d67a5-e91f-4313-b839-132fc867f965}</UniqueIdentifier>
+      <UniqueIdentifier>{5eca5e29-7e62-46ca-9b05-4d0f2e9a6229}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\シーン">
+      <UniqueIdentifier>{31722203-0be6-4f0b-bcfe-31f7561d39da}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\DX12Library\main.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="..\DX12Library\GamePlay.cpp">
+    <ClCompile Include="GamePlay.cpp">
       <Filter>ソース ファイル\シーン</Filter>
     </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\DX12Library\GamePlay.h">
+    <ClInclude Include="GamePlay.h">
       <Filter>ヘッダー ファイル\シーン</Filter>
     </ClInclude>
   </ItemGroup>
