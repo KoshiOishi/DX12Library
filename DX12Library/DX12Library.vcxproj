@@ -97,9 +97,12 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PreBuildEvent>
-      <Command>xcopy $(SolutionDir)DX12Library\Resources $(TargetDir)Resources /I
-xcopy $(SolutionDir)DX12Library\Shader $(TargetDir)Shader /I</Command>
+      <Command>xcopy $(SolutionDir)$(ProjectName)\Resources $(TargetDir)Resources /D/E/C/I/H/Y
+xcopy $(SolutionDir)$(ProjectName)\Shader $(TargetDir)Shader /D/E/C/I/H/Y</Command>
     </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>copy $(TargetDir)DX12Library.lib $(SolutionDir)lib出力フォルダ\DX12Library.lib </Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -115,9 +118,12 @@ xcopy $(SolutionDir)DX12Library\Shader $(TargetDir)Shader /I</Command>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PreBuildEvent>
-      <Command>xcopy $(SolutionDir)DX12Library\Resources $(TargetDir)Resources /I
-xcopy $(SolutionDir)DX12Library\Shader $(TargetDir)Shader /I</Command>
+      <Command>xcopy $(SolutionDir)$(ProjectName)\Resources $(TargetDir)Resources /D/E/C/I/H/Y
+xcopy $(SolutionDir)$(ProjectName)\Shader $(TargetDir)Shader /D/E/C/I/H/Y</Command>
     </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>copy $(TargetDir)DX12Library.lib $(SolutionDir)lib出力フォルダ\DX12Library.lib </Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -137,9 +143,12 @@ xcopy $(SolutionDir)DX12Library\Shader $(TargetDir)Shader /I</Command>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PreBuildEvent>
-      <Command>xcopy $(SolutionDir)DX12Library\Resources $(TargetDir)Resources /I
-xcopy $(SolutionDir)DX12Library\Shader $(TargetDir)Shader /I</Command>
+      <Command>xcopy $(SolutionDir)$(ProjectName)\Resources $(TargetDir)Resources /D/E/C/I/H/Y
+xcopy $(SolutionDir)$(ProjectName)\Shader $(TargetDir)Shader /D/E/C/I/H/Y</Command>
     </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>copy $(TargetDir)DX12Library.lib $(SolutionDir)lib出力フォルダ\DX12Library.lib </Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -159,9 +168,12 @@ xcopy $(SolutionDir)DX12Library\Shader $(TargetDir)Shader /I</Command>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PreBuildEvent>
-      <Command>xcopy $(SolutionDir)DX12Library\Resources $(TargetDir)Resources /I
-xcopy $(SolutionDir)DX12Library\Shader $(TargetDir)Shader /I</Command>
+      <Command>xcopy $(SolutionDir)$(ProjectName)\Resources $(TargetDir)Resources /D/E/C/I/H/Y
+xcopy $(SolutionDir)$(ProjectName)\Shader $(TargetDir)Shader /D/E/C/I/H/Y</Command>
     </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>copy $(TargetDir)DX12Library.lib $(SolutionDir)lib出力フォルダ\DX12Library.lib </Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Collision.cpp" />

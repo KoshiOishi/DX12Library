@@ -1,27 +1,5 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(391,5): warning MSB8028: 中間ディレクトリ (x64\Debug\) に別のプロジェクト (Project1.vcxproj) と共有されているファイルが含まれています。これにより、クリーンしてリビルド動作が適切に行われない可能性があります。
-  D:\K019G1301\ライブラリ\DX12Library\DX12Library\Resources\1.png
-  D:\K019G1301\ライブラリ\DX12Library\DX12Library\Resources\2.png
-  D:\K019G1301\ライブラリ\DX12Library\DX12Library\Resources\3.png
-  D:\K019G1301\ライブラリ\DX12Library\DX12Library\Resources\4.png
-  D:\K019G1301\ライブラリ\DX12Library\DX12Library\Resources\5.png
-  D:\K019G1301\ライブラリ\DX12Library\DX12Library\Resources\6.png
-  D:\K019G1301\ライブラリ\DX12Library\DX12Library\Resources\Alarm01.wav
-  D:\K019G1301\ライブラリ\DX12Library\DX12Library\Resources\debugfont.png
-  D:\K019G1301\ライブラリ\DX12Library\DX12Library\Resources\gazoudayo.png
-  D:\K019G1301\ライブラリ\DX12Library\DX12Library\Resources\haikeidayo.png
-  D:\K019G1301\ライブラリ\DX12Library\DX12Library\Resources\itapori.png
-  D:\K019G1301\ライブラリ\DX12Library\DX12Library\Resources\obj1.png
-  D:\K019G1301\ライブラリ\DX12Library\DX12Library\Resources\obj2.png
-  D:\K019G1301\ライブラリ\DX12Library\DX12Library\Resources\white1x1.png
-  14 個のファイルをコピーしました
-  D:\K019G1301\ライブラリ\DX12Library\DX12Library\Shader\BasicPixelShader.hlsl
-  D:\K019G1301\ライブラリ\DX12Library\DX12Library\Shader\BasicShaderHeader.hlsli
-  D:\K019G1301\ライブラリ\DX12Library\DX12Library\Shader\BasicVertexShader.hlsl
-  D:\K019G1301\ライブラリ\DX12Library\DX12Library\Shader\OBJPixelShader.hlsl
-  D:\K019G1301\ライブラリ\DX12Library\DX12Library\Shader\OBJShaderHeader.hlsli
-  D:\K019G1301\ライブラリ\DX12Library\DX12Library\Shader\OBJVertexShader.hlsl
-  D:\K019G1301\ライブラリ\DX12Library\DX12Library\Shader\SpritePixelShader.hlsl
-  D:\K019G1301\ライブラリ\DX12Library\DX12Library\Shader\SpriteShaderHeader.hlsli
-  D:\K019G1301\ライブラリ\DX12Library\DX12Library\Shader\SpriteVertexShader.hlsl
-  9 個のファイルをコピーしました
+  0 個のファイルをコピーしました
+  0 個のファイルをコピーしました
   DX12Library.vcxproj -> D:\K019G1301\ライブラリ\DX12Library\x64\Debug\DX12Library.lib
+          1 個のファイルをコピーしました。
