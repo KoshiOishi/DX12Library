@@ -97,7 +97,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PreBuildEvent>
-      <Command>xcopy $(SolutionDir)$(ProjectName)\Resources $(TargetDir)Resources /D/E/C/I/H/Y
+      <Command>xcopy $(SolutionDir)$(ProjectName)\Resources $(SolutionDir)Game\Resources
+xcopy $(SolutionDir)$(ProjectName)\Resources $(TargetDir)Resources /D/E/C/I/H/Y
 xcopy $(SolutionDir)$(ProjectName)\Shader $(TargetDir)Shader /D/E/C/I/H/Y</Command>
     </PreBuildEvent>
     <PostBuildEvent>
@@ -118,7 +119,8 @@ xcopy $(SolutionDir)$(ProjectName)\Shader $(TargetDir)Shader /D/E/C/I/H/Y</Comma
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PreBuildEvent>
-      <Command>xcopy $(SolutionDir)$(ProjectName)\Resources $(TargetDir)Resources /D/E/C/I/H/Y
+      <Command>xcopy $(SolutionDir)$(ProjectName)\Resources $(SolutionDir)Game\Resources
+xcopy $(SolutionDir)$(ProjectName)\Resources $(TargetDir)Resources /D/E/C/I/H/Y
 xcopy $(SolutionDir)$(ProjectName)\Shader $(TargetDir)Shader /D/E/C/I/H/Y</Command>
     </PreBuildEvent>
     <PostBuildEvent>
@@ -143,7 +145,8 @@ xcopy $(SolutionDir)$(ProjectName)\Shader $(TargetDir)Shader /D/E/C/I/H/Y</Comma
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PreBuildEvent>
-      <Command>xcopy $(SolutionDir)$(ProjectName)\Resources $(TargetDir)Resources /D/E/C/I/H/Y
+      <Command>xcopy $(SolutionDir)$(ProjectName)\Resources $(SolutionDir)Game\Resources
+xcopy $(SolutionDir)$(ProjectName)\Resources $(TargetDir)Resources /D/E/C/I/H/Y
 xcopy $(SolutionDir)$(ProjectName)\Shader $(TargetDir)Shader /D/E/C/I/H/Y</Command>
     </PreBuildEvent>
     <PostBuildEvent>
@@ -168,7 +171,8 @@ xcopy $(SolutionDir)$(ProjectName)\Shader $(TargetDir)Shader /D/E/C/I/H/Y</Comma
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PreBuildEvent>
-      <Command>xcopy $(SolutionDir)$(ProjectName)\Resources $(TargetDir)Resources /D/E/C/I/H/Y
+      <Command>xcopy $(SolutionDir)$(ProjectName)\Resources $(SolutionDir)Game\Resources
+xcopy $(SolutionDir)$(ProjectName)\Resources $(TargetDir)Resources /D/E/C/I/H/Y
 xcopy $(SolutionDir)$(ProjectName)\Shader $(TargetDir)Shader /D/E/C/I/H/Y</Command>
     </PreBuildEvent>
     <PostBuildEvent>
@@ -209,11 +213,6 @@ xcopy $(SolutionDir)$(ProjectName)\Shader $(TargetDir)Shader /D/E/C/I/H/Y</Comma
     <ClInclude Include="XAudio2VoiceCallback.h" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DirectXTex\DirectXTex_Desktop_2017_Win10.vcxproj">
-      <Project>{371b9fa9-4c90-4ac6-a123-aced756d6c77}</Project>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <FxCompile Include="Shader\BasicPixelShader.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
@@ -242,6 +241,8 @@ xcopy $(SolutionDir)$(ProjectName)\Shader $(TargetDir)Shader /D/E/C/I/H/Y</Comma
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
+    <FxCompile Include="Shader\NoShadePixelShader.hlsl" />
+    <FxCompile Include="Shader\NoShadeVertexShader.hlsl" />
     <FxCompile Include="Shader\OBJPixelShader.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
@@ -293,8 +294,14 @@ xcopy $(SolutionDir)$(ProjectName)\Shader $(TargetDir)Shader /D/E/C/I/H/Y</Comma
   </ItemGroup>
   <ItemGroup>
     <None Include="Shader\BasicShaderHeader.hlsli" />
+    <None Include="Shader\NoShadeShaderHeader.hlsli" />
     <None Include="Shader\OBJShaderHeader.hlsli" />
     <None Include="Shader\SpriteShaderHeader.hlsli" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DirectXTex\DirectXTex_Desktop_2017_Win10.vcxproj">
+      <Project>{371b9fa9-4c90-4ac6-a123-aced756d6c77}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

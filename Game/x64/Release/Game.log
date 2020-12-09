@@ -1,8 +1,38 @@
-﻿  GamePlay.cpp
-  c:\program files (x86)\windows kits\10\include\10.0.18362.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
-d:\k019g1301\ライブラリ\dx12library\dx12library\input.h(4): warning C4005: 'DIRECTINPUT_VERSION': マクロが再定義されました。
-  c:\program files (x86)\windows kits\10\include\10.0.18362.0\um\dinput.h(48): note: 'DIRECTINPUT_VERSION' の以前の定義を確認してください
-  main.cpp
+﻿  D:\K019G1301\ライブラリ\DX12Library\Game\Resources\1.png
+  D:\K019G1301\ライブラリ\DX12Library\Game\Resources\2.png
+  D:\K019G1301\ライブラリ\DX12Library\Game\Resources\3.png
+  D:\K019G1301\ライブラリ\DX12Library\Game\Resources\4.png
+  D:\K019G1301\ライブラリ\DX12Library\Game\Resources\5.png
+  D:\K019G1301\ライブラリ\DX12Library\Game\Resources\6.png
+  D:\K019G1301\ライブラリ\DX12Library\Game\Resources\Alarm01.wav
+  D:\K019G1301\ライブラリ\DX12Library\Game\Resources\debugfont.png
+  D:\K019G1301\ライブラリ\DX12Library\Game\Resources\gazoudayo.png
+  D:\K019G1301\ライブラリ\DX12Library\Game\Resources\haikeidayo.png
+  D:\K019G1301\ライブラリ\DX12Library\Game\Resources\itapori.png
+  D:\K019G1301\ライブラリ\DX12Library\Game\Resources\obj1.png
+  D:\K019G1301\ライブラリ\DX12Library\Game\Resources\obj2.png
+  D:\K019G1301\ライブラリ\DX12Library\Game\Resources\white1x1.png
+  D:\K019G1301\ライブラリ\DX12Library\Game\Resources\.mayaSwatches\1.png_hcm.swatch
+  D:\K019G1301\ライブラリ\DX12Library\Game\Resources\.mayaSwatches\haikeidayo.png_hcm.swatch
+  D:\K019G1301\ライブラリ\DX12Library\Game\Resources\.mayaSwatches\obj1.png_hcm.swatch
+  D:\K019G1301\ライブラリ\DX12Library\Game\Resources\PLAYER\PLAYER.mtl
+  D:\K019G1301\ライブラリ\DX12Library\Game\Resources\PLAYER\PLAYER.obj
+  D:\K019G1301\ライブラリ\DX12Library\Game\Resources\PLAYER\PLAYER.png
+  D:\K019G1301\ライブラリ\DX12Library\Game\Resources\post\post.mtl
+  D:\K019G1301\ライブラリ\DX12Library\Game\Resources\post\post.obj
+  D:\K019G1301\ライブラリ\DX12Library\Game\Resources\post\post.png
+  D:\K019G1301\ライブラリ\DX12Library\Game\Resources\Rasen\Rasen.mtl
+  D:\K019G1301\ライブラリ\DX12Library\Game\Resources\Rasen\Rasen.obj
+  D:\K019G1301\ライブラリ\DX12Library\Game\Resources\Sphere\Sphere.mtl
+  D:\K019G1301\ライブラリ\DX12Library\Game\Resources\Sphere\Sphere.obj
+  D:\K019G1301\ライブラリ\DX12Library\Game\Resources\Sphere\white1x1.png
+  D:\K019G1301\ライブラリ\DX12Library\Game\Resources\Test\snap.png
+  D:\K019G1301\ライブラリ\DX12Library\Game\Resources\Test\Test.mtl
+  D:\K019G1301\ライブラリ\DX12Library\Game\Resources\Test\Test.obj
+  D:\K019G1301\ライブラリ\DX12Library\Game\Resources\vending_machine\vending_machine.mtl
+  D:\K019G1301\ライブラリ\DX12Library\Game\Resources\vending_machine\vending_machine.obj
+  D:\K019G1301\ライブラリ\DX12Library\Game\Resources\vending_machine\vending_machine.png
+  34 個のファイルをコピーしました
   コード生成しています。
   All 1065 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
   コード生成が終了しました。
