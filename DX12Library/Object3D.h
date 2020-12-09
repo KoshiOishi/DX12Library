@@ -70,6 +70,9 @@ private:
 	//ビルボードタイプ
 	BillboardType billboardType = BillboardType::NONE;
 
+	//ライト効果の有無
+	bool isLight = true;
+
 #pragma region 初期化回りの変数
 
 
@@ -112,20 +115,30 @@ private:
 	// OBJ用ルートシグネチャ
 	static ComPtr <ID3D12RootSignature> rootsignatureOBJ;
 
-	// 数式用ルートシグネチャ
-	static ComPtr <ID3D12RootSignature> rootsignatureMath;
-
 	// OBJ用パイプラインステート
 	static ComPtr <ID3D12PipelineState> pipelinestateOBJ;
 
 	// OBJ用ワイヤフレームパイプラインステート
 	static ComPtr <ID3D12PipelineState> pipelinestateOBJ_wire;
 
+	// 数式用ルートシグネチャ
+	static ComPtr <ID3D12RootSignature> rootsignatureMath;
+
 	// 数式オブジェクト用パイプラインステート
 	static ComPtr <ID3D12PipelineState> pipelinestateMath;
 
 	// 数式オブジェクト用ワイヤフレームパイプラインステート
 	static ComPtr <ID3D12PipelineState> pipelinestateMath_wire;
+
+	// 影無しオブジェクト用ルートシグネチャ
+	static ComPtr <ID3D12RootSignature> rootsignatureNoShade;
+
+	// 影無しオブジェクト用パイプラインステート
+	static ComPtr <ID3D12PipelineState> pipelinestateNoShade;
+
+	// 影無しオブジェクト用ワイヤフレームパイプラインステート
+	static ComPtr <ID3D12PipelineState> pipelinestateNoShade_wire;
+
 
 //メンバ関数
 
@@ -224,6 +237,8 @@ public:
 
 	static void InitPipelineMath();
 
+	static void InitPipelineNoShade();
+
 #pragma region Getter
 //メンバ関数
 public:
@@ -267,7 +282,17 @@ public:
 		return c;
 	}
 
+	/// <summary>
+	/// ビルボードの種類を返す
+	/// </summary>
+	/// <returns>ビルボードの種類</returns>
 	const BillboardType GetBillboardType() { return billboardType; }
+
+	/// <summary>
+	/// ライトの有無を返す
+	/// </summary>
+	/// <returns>ライトの有無</returns>
+	const bool GetIsLight() { return isLight; }
 
 //静的メンバ関数
 public:
@@ -398,7 +423,17 @@ public:
 		SetColor(c);
 	}
 
+	/// <summary>
+	/// ビルボードの種類をセットする 引数はObject3D::BillboardTypeで渡す
+	/// </summary>
+	/// <param name="billboardType">ビルボードの種類</param>
 	void SetBillboardType(BillboardType billboardType) { this->billboardType = billboardType; }
+
+	/// <summary>
+	/// ライトの有無フラグをセット
+	/// </summary>
+	/// <param name="isLight">ライトの有無</param>
+	void SetIsLight(bool isLight) { this->isLight = isLight; }
 
 //静的メンバ関数
 public:
