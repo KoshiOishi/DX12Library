@@ -39,8 +39,8 @@ void Object3D::FirstInit()
 	// 生成
 	result = DX12Util::GetDevice()->CreateDescriptorHeap(&descHeapDesc, IID_PPV_ARGS(&basicDescHeap));
 
-	InitPipelineMath();
 	InitPipelineOBJ();
+	InitPipelineMath();
 }
 
 void Object3D::InitPipelineOBJ()
@@ -57,14 +57,20 @@ void Object3D::InitPipelineOBJ()
 	errorBlob = nullptr; // エラーオブジェクト
 
 	// 頂点シェーダの読み込みとコンパイル
+	const wchar_t* vsPath = L"../DX12Library/Shader/OBJVertexShader.hlsl";
+	if (!DX12Util::IsFileExist(vsPath))
+	{
+		vsPath = L"Shader/OBJVertexShader.hlsl";
+	}
 	result = D3DCompileFromFile(
-		L"OBJVertexShader.hlsl",	// シェーダファイル名
+		vsPath, // シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
 		"main", "vs_5_0",	// エントリーポイント名、シェーダーモデル指定
 		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
 		0,
 		&vsBlob, &errorBlob);
+
 
 	if (FAILED(result)) {
 		// errorBlobからエラー内容をstring型にコピー
@@ -81,14 +87,20 @@ void Object3D::InitPipelineOBJ()
 	}
 
 	// ピクセルシェーダの読み込みとコンパイル
+	const wchar_t* psPath = L"../DX12Library/Shader/OBJPixelShader.hlsl";
+	if (!DX12Util::IsFileExist(psPath))
+	{
+		psPath = L"Shader/OBJPixelShader.hlsl";
+	}
 	result = D3DCompileFromFile(
-		L"OBJPixelShader.hlsl",	// シェーダファイル名
+		psPath, // シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
 		"main", "ps_5_0",	// エントリーポイント名、シェーダーモデル指定
 		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
 		0,
 		&psBlob, &errorBlob);
+
 
 	if (FAILED(result)) {
 		// errorBlobからエラー内容をstring型にコピー
@@ -239,8 +251,13 @@ void Object3D::InitPipelineMath()
 	errorBlob = nullptr; // エラーオブジェクト
 
 	// 頂点シェーダの読み込みとコンパイル
+	const wchar_t* vsPath = L"../DX12Library/Shader/BasicVertexShader.hlsl";
+	if (!DX12Util::IsFileExist(vsPath))
+	{
+		vsPath = L"Shader/BasicVertexShader.hlsl";
+	}
 	result = D3DCompileFromFile(
-		L"BasicVertexShader.hlsl",	// シェーダファイル名
+		vsPath, // シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
 		"VSmain", "vs_5_0",	// エントリーポイント名、シェーダーモデル指定
@@ -263,8 +280,13 @@ void Object3D::InitPipelineMath()
 	}
 
 	// ピクセルシェーダの読み込みとコンパイル
+	const wchar_t* psPath = L"../DX12Library/Shader/BasicPixelShader.hlsl";
+	if (!DX12Util::IsFileExist(psPath))
+	{
+		psPath = L"Shader/BasicPixelShader.hlsl";
+	}
 	result = D3DCompileFromFile(
-		L"BasicPixelShader.hlsl",	// シェーダファイル名
+		psPath, // シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
 		"PSmain", "ps_5_0",	// エントリーポイント名、シェーダーモデル指定

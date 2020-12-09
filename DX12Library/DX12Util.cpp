@@ -7,12 +7,14 @@
 #include <DirectXMath.h>
 #include <d3dcompiler.h>
 #include <dinput.h>
+#include <shlwapi.h>
 #include "DX12Util.h"
 #pragma comment(lib, "d3d12.lib")
 #pragma comment(lib, "dxgi.lib")
 #pragma comment(lib, "d3dcompiler.lib")
 #pragma comment(lib, "dinput8.lib")
 #pragma comment(lib, "dxguid.lib")
+#pragma comment(lib, "shlwapi.lib")
 
  const int DX12Util::window_width = 1280;// â°ïù
  const int DX12Util::window_height = 720; // ècïù
@@ -340,6 +342,11 @@ const int DX12Util::GetWindowWidth()
 const int DX12Util::GetWindowHeight()
 {
 	return window_height;
+}
+
+bool DX12Util::IsFileExist(const wchar_t * path)
+{
+	return PathFileExists(path);
 }
 
 void DX12Util::ClearDepthBuffer()

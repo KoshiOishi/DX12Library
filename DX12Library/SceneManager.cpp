@@ -43,7 +43,6 @@ void SceneManager::Initialize()
 
 void SceneManager::Update()
 {
-	Input::Update();
 	scenes[sceneNum]->Update();
 }
 

@@ -1,9 +1,44 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(391,5): warning MSB8028: 中間ディレクトリ (x64\Release\) に別のプロジェクト (Project1.vcxproj) と共有されているファイルが含まれています。これにより、クリーンしてリビルド動作が適切に行われない可能性があります。
+  D:\K019G1301\ライブラリ\DX12Library\DX12Library\Resources\1.png
+  D:\K019G1301\ライブラリ\DX12Library\DX12Library\Resources\2.png
+  D:\K019G1301\ライブラリ\DX12Library\DX12Library\Resources\3.png
+  D:\K019G1301\ライブラリ\DX12Library\DX12Library\Resources\4.png
+  D:\K019G1301\ライブラリ\DX12Library\DX12Library\Resources\5.png
+  D:\K019G1301\ライブラリ\DX12Library\DX12Library\Resources\6.png
+  D:\K019G1301\ライブラリ\DX12Library\DX12Library\Resources\Alarm01.wav
+  D:\K019G1301\ライブラリ\DX12Library\DX12Library\Resources\debugfont.png
+  D:\K019G1301\ライブラリ\DX12Library\DX12Library\Resources\gazoudayo.png
+  D:\K019G1301\ライブラリ\DX12Library\DX12Library\Resources\haikeidayo.png
+  D:\K019G1301\ライブラリ\DX12Library\DX12Library\Resources\itapori.png
+  D:\K019G1301\ライブラリ\DX12Library\DX12Library\Resources\obj1.png
+  D:\K019G1301\ライブラリ\DX12Library\DX12Library\Resources\obj2.png
+  D:\K019G1301\ライブラリ\DX12Library\DX12Library\Resources\white1x1.png
+  14 個のファイルをコピーしました
+  D:\K019G1301\ライブラリ\DX12Library\DX12Library\Shader\BasicPixelShader.hlsl
+  D:\K019G1301\ライブラリ\DX12Library\DX12Library\Shader\BasicShaderHeader.hlsli
+  D:\K019G1301\ライブラリ\DX12Library\DX12Library\Shader\BasicVertexShader.hlsl
+  D:\K019G1301\ライブラリ\DX12Library\DX12Library\Shader\OBJPixelShader.hlsl
+  D:\K019G1301\ライブラリ\DX12Library\DX12Library\Shader\OBJShaderHeader.hlsli
+  D:\K019G1301\ライブラリ\DX12Library\DX12Library\Shader\OBJVertexShader.hlsl
+  D:\K019G1301\ライブラリ\DX12Library\DX12Library\Shader\SpritePixelShader.hlsl
+  D:\K019G1301\ライブラリ\DX12Library\DX12Library\Shader\SpriteShaderHeader.hlsli
+  D:\K019G1301\ライブラリ\DX12Library\DX12Library\Shader\SpriteVertexShader.hlsl
+  9 個のファイルをコピーしました
+  compilation object save succeeded; see D:\K019G1301\ライブラリ\DX12Library\x64\Release\BasicPixelShader.cso
+  compilation object save succeeded; see D:\K019G1301\ライブラリ\DX12Library\x64\Release\BasicVertexShader.cso
+  compilation object save succeeded; see D:\K019G1301\ライブラリ\DX12Library\x64\Release\OBJPixelShader.cso
+  compilation object save succeeded; see D:\K019G1301\ライブラリ\DX12Library\x64\Release\OBJVertexShader.cso
+  compilation object save succeeded; see D:\K019G1301\ライブラリ\DX12Library\x64\Release\SpritePixelShader.cso
+  compilation object save succeeded; see D:\K019G1301\ライブラリ\DX12Library\x64\Release\SpriteVertexShader.cso
+  DX12Util.cpp
+d:\k019g1301\ライブラリ\dx12library\dx12library\dx12util.cpp(263): warning C4305: '初期化中': 'double' から 'float' へ切り詰めます。
   Model.cpp
   c:\program files (x86)\windows kits\10\include\10.0.18362.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
 d:\k019g1301\ライブラリ\dx12library\dx12library\model.cpp(62): warning C4101: 'result': ローカル変数は 1 度も使われていません。
-d:\k019g1301\ライブラリ\dx12library\dx12library\model.cpp(370): warning C4267: '=': 'size_t' から 'UINT' に変換しました。データが失われているかもしれません。
-d:\k019g1301\ライブラリ\dx12library\dx12library\model.cpp(389): warning C4267: '=': 'size_t' から 'UINT' に変換しました。データが失われているかもしれません。
+d:\k019g1301\ライブラリ\dx12library\dx12library\model.cpp(403): warning C4244: '=': 'size_t' から 'float' への変換です。データが失われる可能性があります。
+d:\k019g1301\ライブラリ\dx12library\dx12library\model.cpp(405): warning C4244: '=': 'size_t' から 'float' への変換です。データが失われる可能性があります。
+d:\k019g1301\ライブラリ\dx12library\dx12library\model.cpp(454): warning C4267: '=': 'size_t' から 'UINT' に変換しました。データが失われているかもしれません。
+d:\k019g1301\ライブラリ\dx12library\dx12library\model.cpp(473): warning C4267: '=': 'size_t' から 'UINT' に変換しました。データが失われているかもしれません。
 c:\program files (x86)\microsoft visual studio\2017\professional\vc\tools\msvc\14.16.27023\include\xmemory0(879): warning C4267: '初期化中': 'size_t' から '_Objty' に変換しました。データが失われているかもしれません。
           with
           [
@@ -33,9 +68,13 @@ c:\program files (x86)\microsoft visual studio\2017\professional\vc\tools\msvc\1
           [
               _Ty=unsigned short
           ]
-  コード生成しています。
-  1 of 1067 functions (<0.1%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    1 functions had inline decision re-evaluated but remain unchanged
-  コード生成が終了しました。
-  DX12Library.vcxproj -> D:\K019G1301\ライブラリ\DX12Library\x64\Release\DX12Library.exe
+  Object3D.cpp
+  c:\program files (x86)\windows kits\10\include\10.0.18362.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+  SceneManager.cpp
+  Sprite.cpp
+  c:\program files (x86)\windows kits\10\include\10.0.18362.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+d:\k019g1301\ライブラリ\dx12library\dx12library\sprite.cpp(357): warning C4244: '=': 'UINT64' から 'float' への変換です。データが失われる可能性があります。
+d:\k019g1301\ライブラリ\dx12library\dx12library\sprite.cpp(358): warning C4244: '=': 'UINT' から 'float' への変換です。データが失われる可能性があります。
+d:\k019g1301\ライブラリ\dx12library\dx12library\sprite.cpp(397): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+d:\k019g1301\ライブラリ\dx12library\dx12library\sprite.cpp(403): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+  DX12Library.vcxproj -> D:\K019G1301\ライブラリ\DX12Library\x64\Release\DX12Library.lib
