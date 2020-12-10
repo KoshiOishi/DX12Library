@@ -93,8 +93,8 @@ private:
 	//定数バッファ
 	ComPtr<ID3D12Resource> constBuffB1;
 
-	//OBJか否か
-	bool isOBJ = true;
+	//OBJから読み込まれたか否か
+	bool isLoadFromOBJFile = true;
 
 //メンバ関数
 public:
@@ -117,9 +117,9 @@ public:
 	/// OBJファイルから作られたモデルであるかどうか返す
 	/// </summary>
 	/// <returns></returns>
-	bool GetIsOBJ() { return isOBJ; }
+	bool GetIsOBJ() { return isLoadFromOBJFile; }
 
-	//以下図形作成
+	//以下ポリゴン作成
 	/// <summary>
 	/// 四角形ポリゴンを作成。中心基準。
 	/// </summary>
@@ -132,9 +132,11 @@ public:
 	/// <summary>
 	/// 球ポリゴンを作成
 	/// </summary>
+	/// <param name="vertexX">軸の分割数 (3以上)</param>
+	/// <param name="vertexY">高さの分割数 (3以上)</param>
 	/// <param name="radius">半径</param>
 	/// <param name="index">インデックス（重複しないように指定）</param>
-	void CreateSphere(float radius, int index);
+	void CreateSphere(int vertexX, int vertexY, float radius, int index);
 
 	/// <summary>
 	/// 円柱ポリゴンを作成

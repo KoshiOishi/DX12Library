@@ -82,7 +82,7 @@ public:
 	/// <param name="anchorpoint">アンカーポイント(省略可)</param>
 	/// <param name="isFlipX">横反転フラグ(省略可)</param>
 	/// <param name="isFlipY">縦反転フラグ(省略可)</param>
-	void Initialize(UINT texnumber, const wchar_t* filename, XMFLOAT2 anchorpoint = { 0,0 }, bool isFlipX = false, bool isFlipY = false);
+	void Initialize(UINT texnumber, const wchar_t* filename = nullptr, XMFLOAT2 anchorpoint = { 0,0 }, bool isFlipX = false, bool isFlipY = false);
 
 	/// <summary>
 	/// スプライトの生成

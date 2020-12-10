@@ -475,7 +475,7 @@ void Model::CreateBuffer()
 
 void Model::CreateBox(float width, float height, float depth, int index)
 {
-	isOBJ = false;
+	isLoadFromOBJFile = false;
 
 	material.ambient = { 1,1,1 };
 	material.diffuse = { 0.5f,0.5f,0.5f };
@@ -602,16 +602,156 @@ void Model::CreateBox(float width, float height, float depth, int index)
 	CreateBuffer();
 }
 
-void Model::CreateSphere(float radius, int index)
+void Model::CreateSphere(int vertexX, int vertexY, float radius, int index)
 {
-	assert("まだ実装してねええええええ");
+	isLoadFromOBJFile = false;
+
+	material.ambient = { 0.5f,0.5f,0.5f };
+	material.diffuse = { 0.5f,0.5f,0.5f };
+
+	material.name = "default_sphere";
+
+	material.textureFilename = "white1x1.png";
+	LoadTexture("Resources/", material.textureFilename, index);
+
+
+	if (vertexX < 3 || vertexY < 3) {
+		assert(0);
+		return;
+	}
+
+	Vertex upper, downer;
+	upper.pos = { 0,radius,0 };
+	downer.pos = { 0,-radius,0 };
+
+	vector<vector<Vertex>> side;
+
+	for (int i = 1; i < vertexY; i++)
+	{
+		float fY = 180.0f / vertexY;
+		float radY = XMConvertToRadians(fY * i);
+		vector<Vertex> v;
+		side.emplace_back(v);
+		for (int j = 0; j < vertexX; j++)
+		{
+			Vertex vert;
+			float fX = 360.0f / vertexX;
+			float radXZ = XMConvertToRadians(fX * j);
+			vert.pos = { std::cos(radXZ) * std::sin(radY) * radius, std::cos(radY) * radius, std::sin(radXZ) * std::sin(radY) * radius };
+			side[i - 1].emplace_back(vert);
+		}
+	}
+
+	//上
+	for (int i = 0; i < vertexX; i++)
+	{
+		Vertex v[3];
+		if (i < vertexX - 1)
+		{
+			v[0] = upper;
+			v[1] = side[0][i + 1];
+			v[2] = side[0][i];
+		}
+		else
+		{
+			v[0] = upper;
+			v[1] = side[0][0];
+			v[2] = side[0][i];
+		}
+		for (int j = 0; j < 3; j++)
+			vertices.emplace_back(v[j]);
+	}
+
+	//下
+	for (int i = 0; i < vertexX; i++)
+	{
+		Vertex v[3];
+		if (i < vertexX - 1)
+		{
+			v[0] = downer;
+			v[1] = side[vertexY - 2][i];
+			v[2] = side[vertexY - 2][i + 1];
+		}
+		else
+		{
+			v[0] = downer;
+			v[1] = side[vertexY - 2][i];
+			v[2] = side[vertexY - 2][0];
+		}
+		for (int j = 0; j < 3; j++)
+			vertices.emplace_back(v[j]);
+	}
+
+	//横
+	for (int i = 0; i < vertexY - 2; i++)
+	{
+		for (int j = 0; j < vertexX; j++)
+		{
+			Vertex v[4];
+			if (j < vertexX - 1)
+			{
+				v[0] = side[i + 1][j];	//左下
+				v[1] = side[i][j];		//左上
+				v[2] = side[i + 1][j + 1];	//右下
+				v[3] = side[i][j + 1];		//右上
+			}
+			else
+			{
+				v[0] = side[i + 1][j];	//左下
+				v[1] = side[i][j];		//左上
+				v[2] = side[i + 1][0];	//右下
+				v[3] = side[i][0];		//右上
+			}
+			vertices.emplace_back(v[0]);
+			vertices.emplace_back(v[1]);
+			vertices.emplace_back(v[2]);
+			vertices.emplace_back(v[2]);
+			vertices.emplace_back(v[1]);
+			vertices.emplace_back(v[3]);
+
+		}
+	}
+
+
+	for (int i = 0; i < vertexX * 6 + vertexX * 6 * (vertexY - 2); i++)
+	{
+		indices.emplace_back(i);
+	}
+
+	//法線の計算
+	for (int i = 0; i < vertices.size() / 3; i++)
+	{
+		//三角形1つごとに計算していく
+		//三角形のインデックスを取り出して、一時的な変数に入れる
+		unsigned short index0 = indices[i * 3 + 0];
+		unsigned short index1 = indices[i * 3 + 1];
+		unsigned short index2 = indices[i * 3 + 2];
+		//三角形を構成する頂点座標をベクトルに代入
+		XMVECTOR p0 = XMLoadFloat3(&vertices[index0].pos);
+		XMVECTOR p1 = XMLoadFloat3(&vertices[index1].pos);
+		XMVECTOR p2 = XMLoadFloat3(&vertices[index2].pos);
+		//p0⇒p1ベクトル、p0⇒p2ベクトルを計算（ベクトルの減算）
+		XMVECTOR v1 = XMVectorSubtract(p1, p0);
+		XMVECTOR v2 = XMVectorSubtract(p2, p0);
+		//外積は両方から垂直なベクトル
+		XMVECTOR normal = XMVector3Cross(v1, v2);
+		//正規化（長さを1にする）
+		normal = XMVector3Normalize(normal);
+		//求めた法線を頂点データに代入
+		XMStoreFloat3(&vertices[index0].normal, normal);
+		XMStoreFloat3(&vertices[index1].normal, normal);
+		XMStoreFloat3(&vertices[index2].normal, normal);
+
+	}
+
+	CreateBuffer();
 }
 
 void Model::CreatePoll(int vertex, float radius, float height, int index)
 {
-	isOBJ = false;
+	isLoadFromOBJFile = false;
 
-	material.ambient = { 1,1,1 };
+	material.ambient = { 0.5f,0.5f,0.5f };
 	material.diffuse = { 0.5f,0.5f,0.5f };
 
 	material.name = "default_poll";
@@ -629,7 +769,7 @@ void Model::CreatePoll(int vertex, float radius, float height, int index)
 	{
 		Vertex vert;
 		float f = 360.0f / vertex;
-		float rad = (f * i) * (3.14159265f / 180);
+		float rad = XMConvertToRadians(f * i);
 		vert.pos = { std::cos(rad) * radius, height / 2, std::sin(rad) * radius };
 		v.emplace_back(vert);
 	}
@@ -643,7 +783,7 @@ void Model::CreatePoll(int vertex, float radius, float height, int index)
 	{
 		Vertex vert;
 		float f = 360.0f / vertex;
-		float rad = (f * i) * (3.14159265f / 180);
+		float rad = XMConvertToRadians(f * i);
 		vert.pos = { std::cos(rad) * radius, -height / 2, std::sin(rad) * radius };
 		v.emplace_back(vert);
 	}
@@ -756,9 +896,9 @@ void Model::CreatePoll(int vertex, float radius, float height, int index)
 
 void Model::CreateSquare(float width, float height, int index)
 {
-	isOBJ = false;
+	isLoadFromOBJFile = false;
 
-	material.ambient = { 1,1,1 };
+	material.ambient = { 0.5f,0.5f,0.5f };
 	material.diffuse = { 0.5f,0.5f,0.5f };
 
 	material.name = "default_square";
@@ -788,9 +928,9 @@ void Model::CreateSquare(float width, float height, int index)
 
 void Model::CreateSquareTex(float standardLength, std::string texName, int index)
 {
-	isOBJ = false;
+	isLoadFromOBJFile = false;
 
-	material.ambient = { 1,1,1 };
+	material.ambient = { 0.5f,0.5f,0.5f };
 	material.diffuse = { 0.5f,0.5f,0.5f };
 
 	material.name = "square_tex";

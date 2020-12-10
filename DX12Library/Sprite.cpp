@@ -207,7 +207,8 @@ void Sprite::FirstInit()
 
 void Sprite::Initialize(UINT texnumber, const wchar_t * filename, XMFLOAT2 anchorpoint, bool isFlipX, bool isFlipY)
 {
-	Sprite::LoadTexture(texnumber, filename);
+	if (filename != nullptr)
+		Sprite::LoadTexture(texnumber, filename);
 	SetTexNumber(texnumber);
 	GenerateSprite(anchorpoint, isFlipX, isFlipY);
 }

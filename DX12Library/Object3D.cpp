@@ -181,7 +181,7 @@ void Object3D::InitPipelineOBJ()
 
 	// ブレンドステートに設定する
 	gpipeline.BlendState.RenderTarget[0] = blenddesc;
-
+	gpipeline.BlendState.AlphaToCoverageEnable = true;
 
 	//頂点レイアウトの設定
 	gpipeline.InputLayout.pInputElementDescs = inputLayout;
@@ -199,6 +199,7 @@ void Object3D::InitPipelineOBJ()
 	//標準的な設定(深度テストを行う、書き込み許可、深度が小さければ合格)
 	gpipeline.DepthStencilState = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);
 	gpipeline.DSVFormat = DXGI_FORMAT_D32_FLOAT;
+
 
 	//デスクリプタテーブルの設定
 	CD3DX12_DESCRIPTOR_RANGE descRangeSRV;
@@ -392,6 +393,7 @@ void Object3D::InitPipelineMath()
 	//標準的な設定(深度テストを行う、書き込み許可、深度が小さければ合格)
 	gpipeline.DepthStencilState = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);
 	gpipeline.DSVFormat = DXGI_FORMAT_D32_FLOAT;
+	gpipeline.BlendState.AlphaToCoverageEnable = true;
 
 	//デスクリプタテーブルの設定
 	CD3DX12_DESCRIPTOR_RANGE descRangeSRV;
@@ -587,6 +589,7 @@ void Object3D::InitPipelineNoShade()
 	//標準的な設定(深度テストを行う、書き込み許可、深度が小さければ合格)
 	gpipeline.DepthStencilState = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);
 	gpipeline.DSVFormat = DXGI_FORMAT_D32_FLOAT;
+	gpipeline.BlendState.AlphaToCoverageEnable = true;
 
 	//デスクリプタテーブルの設定
 	CD3DX12_DESCRIPTOR_RANGE descRangeSRV;
