@@ -474,7 +474,6 @@ void Sprite::SetIsDisplay(bool isDisplay)
 void Sprite::SetTexNumber(UINT texnumber)
 {
 	texNumber = texnumber;
-	UpdateVertBuff();
 }
 
 void Sprite::SetPosition(XMFLOAT2 pos)
@@ -541,18 +540,6 @@ void Sprite::UpdateVertBuff()
 
 	};
 
-	//頂点バッファ生成
-	result = DX12Util::GetDevice()->CreateCommittedResource(
-		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
-		D3D12_HEAP_FLAG_NONE,
-		&CD3DX12_RESOURCE_DESC::Buffer(sizeof(vertices)),
-		D3D12_RESOURCE_STATE_GENERIC_READ, nullptr, IID_PPV_ARGS(&spriteVertBuff)
-	);
-
-	if (FAILED(result))
-	{
-		assert(0);
-	}
 
 	//画像の大きさから表示サイズを設定
 	//左下、左上、右下、右上

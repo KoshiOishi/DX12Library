@@ -22,12 +22,10 @@ Object3D::ComPtr <ID3D12DescriptorHeap> Object3D::basicDescHeap = nullptr;
 Object3D::ComPtr <ID3D12RootSignature> Object3D::rootsignatureOBJ = nullptr;
 Object3D::ComPtr <ID3D12RootSignature> Object3D::rootsignatureMath = nullptr;
 Object3D::ComPtr <ID3D12PipelineState> Object3D::pipelinestateOBJ = nullptr;
-Object3D::ComPtr <ID3D12PipelineState> Object3D::pipelinestateOBJ_wire = nullptr;
 Object3D::ComPtr <ID3D12PipelineState> Object3D::pipelinestateMath = nullptr;
-Object3D::ComPtr <ID3D12PipelineState> Object3D::pipelinestateMath_wire = nullptr;
 Object3D::ComPtr <ID3D12RootSignature> Object3D::rootsignatureNoShade = nullptr;
 Object3D::ComPtr <ID3D12PipelineState> Object3D::pipelinestateNoShade = nullptr;
-Object3D::ComPtr <ID3D12PipelineState> Object3D::pipelinestateNoShade_wire = nullptr;
+Object3D::ComPtr <ID3D12PipelineState> Object3D::pipelinestateWire = nullptr;
 
 void Object3D::FirstInit()
 {
@@ -232,14 +230,6 @@ void Object3D::InitPipelineOBJ()
 
 	//パイプラインステートの生成
 	result = DX12Util::GetDevice()->CreateGraphicsPipelineState(&gpipeline, IID_PPV_ARGS(&pipelinestateOBJ));
-
-	//ワイヤフレーム用パイプラインを作る
-	D3D12_GRAPHICS_PIPELINE_STATE_DESC gpipeline_wire{};
-	gpipeline_wire = gpipeline;
-	gpipeline_wire.RasterizerState.FillMode = D3D12_FILL_MODE_WIREFRAME;
-
-	//パイプラインステートの生成
-	result = DX12Util::GetDevice()->CreateGraphicsPipelineState(&gpipeline_wire, IID_PPV_ARGS(&pipelinestateOBJ_wire));
 }
 
 void Object3D::InitPipelineMath()
@@ -426,15 +416,6 @@ void Object3D::InitPipelineMath()
 
 	//パイプラインステートの生成
 	result = DX12Util::GetDevice()->CreateGraphicsPipelineState(&gpipeline, IID_PPV_ARGS(&pipelinestateMath));
-
-	//ワイヤフレーム用パイプラインを作る
-	D3D12_GRAPHICS_PIPELINE_STATE_DESC gpipeline_wire{};
-	gpipeline_wire = gpipeline;
-	gpipeline_wire.RasterizerState.FillMode = D3D12_FILL_MODE_WIREFRAME;
-
-	//パイプラインステートの生成
-	result = DX12Util::GetDevice()->CreateGraphicsPipelineState(&gpipeline_wire, IID_PPV_ARGS(&pipelinestateMath_wire));
-
 }
 
 void Object3D::InitPipelineNoShade()
@@ -629,7 +610,7 @@ void Object3D::InitPipelineNoShade()
 	gpipeline_wire.RasterizerState.FillMode = D3D12_FILL_MODE_WIREFRAME;
 
 	//パイプラインステートの生成
-	result = DX12Util::GetDevice()->CreateGraphicsPipelineState(&gpipeline_wire, IID_PPV_ARGS(&pipelinestateNoShade_wire));
+	result = DX12Util::GetDevice()->CreateGraphicsPipelineState(&gpipeline_wire, IID_PPV_ARGS(&pipelinestateWire));
 }
 
 void Object3D::Initialize()
@@ -704,57 +685,44 @@ void Object3D::Update()
 
 void Object3D::Draw()
 {
-	if (isLight)
+	if (isWireFlame)
 	{
-		if (model.GetIsOBJ())
+		//パイプラインステートの設定コマンド
+		DX12Util::GetCmdList()->SetPipelineState(pipelinestateWire.Get());
+
+		//ルートシグネチャの設定コマンド
+		DX12Util::GetCmdList()->SetGraphicsRootSignature(rootsignatureNoShade.Get());
+	}
+	else
+	{
+		if (isLight)
 		{
-			if (isWireFlame)
-			{
-				//パイプラインステートの設定コマンド
-				DX12Util::GetCmdList()->SetPipelineState(pipelinestateOBJ_wire.Get());
-			}
-			else
+			if (model.GetIsOBJ())
 			{
 				//パイプラインステートの設定コマンド
 				DX12Util::GetCmdList()->SetPipelineState(pipelinestateOBJ.Get());
-			}
 
-			//ルートシグネチャの設定コマンド
-			DX12Util::GetCmdList()->SetGraphicsRootSignature(rootsignatureOBJ.Get());
-		}
-		else
-		{
-			if (isWireFlame)
-			{
-				//パイプラインステートの設定コマンド
-				DX12Util::GetCmdList()->SetPipelineState(pipelinestateMath_wire.Get());
+				//ルートシグネチャの設定コマンド
+				DX12Util::GetCmdList()->SetGraphicsRootSignature(rootsignatureOBJ.Get());
 			}
 			else
 			{
 				//パイプラインステートの設定コマンド
 				DX12Util::GetCmdList()->SetPipelineState(pipelinestateMath.Get());
+
+				//ルートシグネチャの設定コマンド
+				DX12Util::GetCmdList()->SetGraphicsRootSignature(rootsignatureMath.Get());
 			}
 
-			//ルートシグネチャの設定コマンド
-			DX12Util::GetCmdList()->SetGraphicsRootSignature(rootsignatureMath.Get());
 		}
-
-	}
-	else {
-		if (isWireFlame)
-		{
-			//パイプラインステートの設定コマンド
-			DX12Util::GetCmdList()->SetPipelineState(pipelinestateNoShade_wire.Get());
-		}
-		else
+		else 
 		{
 			//パイプラインステートの設定コマンド
 			DX12Util::GetCmdList()->SetPipelineState(pipelinestateNoShade.Get());
-		}
 
-		//ルートシグネチャの設定コマンド
-		DX12Util::GetCmdList()->SetGraphicsRootSignature(rootsignatureNoShade.Get());
-		
+			//ルートシグネチャの設定コマンド
+			DX12Util::GetCmdList()->SetGraphicsRootSignature(rootsignatureNoShade.Get());
+		}
 	}
 
 
@@ -913,14 +881,32 @@ void Object3D::SetEye(const XMFLOAT3 eye)
 	UpdateViewMatrix();
 }
 
-void Object3D::SetTarSet(const XMFLOAT3 target)
+void Object3D::SetEye(const float x, const float y, const float z)
+{
+	Object3D::eye = {x, y, z};
+	UpdateViewMatrix();
+}
+
+void Object3D::SetTarget(const XMFLOAT3 target)
 {
 	Object3D::target = target;
+	UpdateViewMatrix();
+}
+
+void Object3D::SetTarget(const float x, const float y, const float z)
+{
+	Object3D::target = { x, y, z };
 	UpdateViewMatrix();
 }
 
 void Object3D::SetUp(const XMFLOAT3 up)
 {
 	Object3D::up = up;
+	UpdateViewMatrix();
+}
+
+void Object3D::SetUp(const float x, const float y, const float z)
+{
+	Object3D::up = { x, y, z };
 	UpdateViewMatrix();
 }

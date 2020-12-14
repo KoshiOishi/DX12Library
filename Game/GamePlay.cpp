@@ -20,7 +20,7 @@ void GamePlay::Initialize()
 {
 	Object3D::SetEye(DirectX::XMFLOAT3(0, 0, -100));
 
-	model1.CreateSphere(10,10,30,1);
+	model1.CreateSphere(20,20,30,1);
 	model2.CreatePoll(20,10,10,2);
 
 	model1.Initialize();
@@ -263,7 +263,7 @@ void GamePlay::Draw()
 	DX12Util::BeginDraw();
 
 	//”wŒiƒXƒvƒ‰ƒCƒg•`‰æ‚±‚±‚©‚ç
-	sprite1.Draw();
+	//sprite1.Draw();
 
 
 

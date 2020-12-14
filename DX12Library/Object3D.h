@@ -118,17 +118,11 @@ private:
 	// OBJ用パイプラインステート
 	static ComPtr <ID3D12PipelineState> pipelinestateOBJ;
 
-	// OBJ用ワイヤフレームパイプラインステート
-	static ComPtr <ID3D12PipelineState> pipelinestateOBJ_wire;
-
 	// 数式用ルートシグネチャ
 	static ComPtr <ID3D12RootSignature> rootsignatureMath;
 
 	// 数式オブジェクト用パイプラインステート
 	static ComPtr <ID3D12PipelineState> pipelinestateMath;
-
-	// 数式オブジェクト用ワイヤフレームパイプラインステート
-	static ComPtr <ID3D12PipelineState> pipelinestateMath_wire;
 
 	// 影無しオブジェクト用ルートシグネチャ
 	static ComPtr <ID3D12RootSignature> rootsignatureNoShade;
@@ -136,8 +130,8 @@ private:
 	// 影無しオブジェクト用パイプラインステート
 	static ComPtr <ID3D12PipelineState> pipelinestateNoShade;
 
-	// 影無しオブジェクト用ワイヤフレームパイプラインステート
-	static ComPtr <ID3D12PipelineState> pipelinestateNoShade_wire;
+	// ワイヤフレーム用パイプラインステート
+	static ComPtr <ID3D12PipelineState> pipelinestateWire;
 
 
 //メンバ関数
@@ -193,9 +187,9 @@ public:
 	/// <summary>
 	/// 座標を指定分加算する
 	/// </summary>
-	/// <param name="positionX">座標X</param>
-	/// <param name="positionY">座標Y</param>
-	/// <param name="positionZ">座標Z</param>
+	/// <param name="positionX">X座標</param>
+	/// <param name="positionY">Y座標</param>
+	/// <param name="positionZ">Z座標</param>
 	void AddPosition(const float positionX, const float positionY, const float positionZ)
 	{
 		this->position.x += positionX; this->position.y += positionY; this->position.z += positionZ;
@@ -205,8 +199,28 @@ public:
 
 //静的メンバ関数
 public:
+	/// <summary>
+	/// 視点座標を指定分加算する
+	/// </summary>
+	/// <param name="eyeX">X座標</param>
+	/// <param name="eyeY">Y座標</param>
+	/// <param name="eyeZ">Z座標</param>
 	static void AddEye(const float eyeX, const float eyeY, const float eyeZ);
+
+	/// <summary>
+	/// 注視点座標を指定分加算する
+	/// </summary>
+	/// <param name="targetX">X座標</param>
+	/// <param name="targetY">Y座標</param>
+	/// <param name="targetZ">Z座標</param>
 	static void AddTarget(const float targetX, const float targetY, const float targetZ);
+	
+	/// <summary>
+	/// 上方向ベクトルを指定分加算する
+	/// </summary>
+	/// <param name="upX">x成分</param>
+	/// <param name="upY">y成分</param>
+	/// <param name="upZ">z成分</param>
 	static void AddUp(const float upX, const float upY, const float upZ);
 
 	/// <summary>
@@ -444,16 +458,40 @@ public:
 	static void SetEye(const XMFLOAT3 eye);
 
 	/// <summary>
+	/// 視点座標をセット
+	/// </summary>
+	/// <param name="x">x座標</param>
+	/// <param name="y">y座標</param>
+	/// <param name="z">z座標</param>
+	static void SetEye(const float x, const float y, const float z);
+
+	/// <summary>
 	/// 注視点座標をセット
 	/// </summary>
 	/// <param name="target">注視点座標</param>
-	static void SetTarSet(const XMFLOAT3 target);
+	static void SetTarget(const XMFLOAT3 target);
+
+	/// <summary>
+	/// 注視点座標をセット
+	/// </summary>
+	/// <param name="x">x座標</param>
+	/// <param name="y">y座標</param>
+	/// <param name="z">z座標</param>
+	static void SetTarget(const float x, const float y, const float z);
 
 	/// <summary>
 	/// 上方向ベクトルのセット
 	/// </summary>
 	/// <param name="up"></param>
 	static void SetUp(const XMFLOAT3 up);
+
+	/// <summary>
+	/// 上方向ベクトルのセット
+	/// </summary>
+	/// <param name="x">x座標</param>
+	/// <param name="y">y座標</param>
+	/// <param name="z">z座標</param>
+	static void SetUp(const float x, const float y, const float z);
 
 #pragma endregion
 };
