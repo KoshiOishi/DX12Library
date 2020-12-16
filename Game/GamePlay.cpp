@@ -25,7 +25,7 @@ void GamePlay::Initialize()
 	light.SetLightColor({ 1,1,1 });
 	Object3D::SetLight(light);
 
-	model1.CreateBox(10,8,6,0,true);
+	model1.CreateSphere(50, 50, 15, 0, true, { 0.5f,0.5f,0.5f }, { 0.5f,0.5f,0.5f }, {0.7f,0.7f,0.7f});
 	model2.CreateSphere(50, 50, 15, 1);
 
 	model1.Initialize();

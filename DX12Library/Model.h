@@ -145,7 +145,10 @@ public:
 	/// <param name="height">縦幅</param>
 	/// <param name="depth">奥行</param>
 	/// <param name="index">インデックス（重複しないように指定）</param>
-	void CreateBox(float width, float height, float depth, int index, bool smoothing = false);
+	/// <param name="ambient">アンビエント(環境光)</param>
+	/// <param name="diffuse">ディフューズ(拡散反射光)</param>
+	/// <param name="specular">スペキュラー(鏡面反射光)</param>
+	void CreateBox(float width, float height, float depth, int index, bool smoothing = false, XMFLOAT3 ambient = {0.5f,0.5f,0.5f}, XMFLOAT3 diffuse = { 0,0,0 }, XMFLOAT3 specular = { 0,0,0 });
 
 	/// <summary>
 	/// 球ポリゴンを作成
@@ -154,7 +157,10 @@ public:
 	/// <param name="vertexY">高さの分割数 (3以上)</param>
 	/// <param name="radius">半径</param>
 	/// <param name="index">インデックス（重複しないように指定）</param>
-	void CreateSphere(int vertexX, int vertexY, float radius, int index, bool smoothing = false);
+	/// <param name="ambient">アンビエント(環境光)</param>
+	/// <param name="diffuse">ディフューズ(拡散反射光)</param>
+	/// <param name="specular">スペキュラー(鏡面反射光)</param>
+	void CreateSphere(int vertexX, int vertexY, float radius, int index, bool smoothing = false, XMFLOAT3 ambient = { 0.5f,0.5f,0.5f }, XMFLOAT3 diffuse = { 0,0,0 }, XMFLOAT3 specular = { 0,0,0 });
 
 	/// <summary>
 	/// 円柱ポリゴンを作成
@@ -163,7 +169,10 @@ public:
 	/// <param name="radius">半径</param>
 	/// <param name="height">高さ</param>
 	/// <param name="index">インデックス（重複しないように指定）</param>
-	void CreatePoll(int vertex, float radius, float height, int index, bool smoothing = false);
+	/// <param name="ambient">アンビエント(環境光)</param>
+	/// <param name="diffuse">ディフューズ(拡散反射光)</param>
+	/// <param name="specular">スペキュラー(鏡面反射光)</param>
+	void CreatePoll(int vertex, float radius, float height, int index, bool smoothing = false, XMFLOAT3 ambient = { 0.5f,0.5f,0.5f }, XMFLOAT3 diffuse = { 0,0,0 }, XMFLOAT3 specular = { 0,0,0 });
 
 	/// <summary>
 	/// 四角形板ポリゴンを作成
@@ -171,7 +180,10 @@ public:
 	/// <param name="width">横幅</param>
 	/// <param name="height">縦幅</param>
 	/// <param name="index">インデックス（重複しないように指定）</param>
-	void CreateSquare(float width, float height, int index);
+	/// <param name="ambient">アンビエント(環境光)</param>
+	/// <param name="diffuse">ディフューズ(拡散反射光)</param>
+	/// <param name="specular">スペキュラー(鏡面反射光)</param>
+	void CreateSquare(float width, float height, int index, XMFLOAT3 ambient = { 0.5f,0.5f,0.5f }, XMFLOAT3 diffuse = { 0,0,0 }, XMFLOAT3 specular = { 0,0,0 });
 
 	/// <summary>
 	/// テクスチャあり四角形板ポリゴンを作成
@@ -179,7 +191,10 @@ public:
 	/// <param name="standardLength">ポリゴンの基準の長さ テクスチャが横長の場合は縦幅に、縦長の場合は横幅に適応され、もう片方は自動で合わせる。</param>
 	/// <param name="texName">テクスチャの名前</param>
 	/// <param name="index">インデックス（重複しないように指定）</param>
-	void CreateSquareTex(float standardLength, string texName, int index);
+	/// <param name="ambient">アンビエント(環境光)</param>
+	/// <param name="diffuse">ディフューズ(拡散反射光)</param>
+	/// <param name="specular">スペキュラー(鏡面反射光)</param>
+	void CreateSquareTex(float standardLength, string texName, int index, XMFLOAT3 ambient = { 0.5f,0.5f,0.5f }, XMFLOAT3 diffuse = { 0,0,0 }, XMFLOAT3 specular = { 0,0,0 });
 
 };
 

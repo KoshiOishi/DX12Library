@@ -509,14 +509,15 @@ void Model::CalculateSmoothedVertexNormals()
 
 }
 
-void Model::CreateBox(float width, float height, float depth, int index, bool smoothing)
+void Model::CreateBox(float width, float height, float depth, int index, bool smoothing, XMFLOAT3 ambient, XMFLOAT3 diffuse, XMFLOAT3 specular)
 {
 	isLoadFromOBJFile = false;
 
-	material.ambient = { 1,1,1 };
-	material.diffuse = { 0.5f,0.5f,0.5f };
+	material.ambient = ambient;
+	material.diffuse = diffuse;
+	material.specular = specular;
 
-	material.name = "default_box";
+	material.name = "default_box" + index;
 
 	material.textureFilename = "white1x1.png";
 	LoadTexture("Resources/" , material.textureFilename, index);
@@ -672,14 +673,15 @@ void Model::CreateBox(float width, float height, float depth, int index, bool sm
 	CreateBuffer();
 }
 
-void Model::CreateSphere(int vertexX, int vertexY, float radius, int index, bool smoothing)
+void Model::CreateSphere(int vertexX, int vertexY, float radius, int index, bool smoothing, XMFLOAT3 ambient, XMFLOAT3 diffuse, XMFLOAT3 specular)
 {
 	isLoadFromOBJFile = false;
 
-	material.ambient = { 0.5f,0.5f,0.5f };
-	material.diffuse = { 0.5f,0.5f,0.5f };
+	material.ambient = ambient;
+	material.diffuse = diffuse;
+	material.specular = specular;
 
-	material.name = "default_sphere";
+	material.name = "default_sphere" + index;
 
 	material.textureFilename = "white1x1.png";
 	LoadTexture("Resources/", material.textureFilename, index);
@@ -870,14 +872,15 @@ void Model::CreateSphere(int vertexX, int vertexY, float radius, int index, bool
 	CreateBuffer();
 }
 
-void Model::CreatePoll(int vertex, float radius, float height, int index, bool smoothing)
+void Model::CreatePoll(int vertex, float radius, float height, int index, bool smoothing, XMFLOAT3 ambient, XMFLOAT3 diffuse, XMFLOAT3 specular)
 {
 	isLoadFromOBJFile = false;
 
-	material.ambient = { 0.5f,0.5f,0.5f };
-	material.diffuse = { 0.5f,0.5f,0.5f };
+	material.ambient = ambient;
+	material.diffuse = diffuse;
+	material.specular = specular;
 
-	material.name = "default_poll";
+	material.name = "default_poll" + index;
 
 	material.textureFilename = "white1x1.png";
 	LoadTexture("Resources/", material.textureFilename, index);
@@ -1111,14 +1114,15 @@ void Model::CreatePoll(int vertex, float radius, float height, int index, bool s
 	CreateBuffer();
 }
 
-void Model::CreateSquare(float width, float height, int index)
+void Model::CreateSquare(float width, float height, int index, XMFLOAT3 ambient, XMFLOAT3 diffuse, XMFLOAT3 specular)
 {
 	isLoadFromOBJFile = false;
 
-	material.ambient = { 0.5f,0.5f,0.5f };
-	material.diffuse = { 0.5f,0.5f,0.5f };
+	material.ambient = ambient;
+	material.diffuse = diffuse;
+	material.specular = specular;
 
-	material.name = "default_square";
+	material.name = "default_square" + index;
 
 	material.textureFilename = "white1x1.png";
 	LoadTexture("Resources/", material.textureFilename, index);
@@ -1143,14 +1147,15 @@ void Model::CreateSquare(float width, float height, int index)
 
 }
 
-void Model::CreateSquareTex(float standardLength, std::string texName, int index)
+void Model::CreateSquareTex(float standardLength, std::string texName, int index, XMFLOAT3 ambient, XMFLOAT3 diffuse, XMFLOAT3 specular)
 {
 	isLoadFromOBJFile = false;
 
-	material.ambient = { 0.5f,0.5f,0.5f };
-	material.diffuse = { 0.5f,0.5f,0.5f };
+	material.ambient = ambient;
+	material.diffuse = diffuse;
+	material.specular = specular;
 
-	material.name = "square_tex";
+	material.name = "square_tex" + index;
 
 	material.textureFilename = texName;
 	float* texWidth = new float();

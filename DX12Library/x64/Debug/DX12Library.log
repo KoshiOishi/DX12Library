@@ -37,5 +37,8 @@ c:\program files (x86)\microsoft visual studio\2017\professional\vc\tools\msvc\1
           [
               _Ty=unsigned short
           ]
+  Object3D.cpp
+  c:\program files (x86)\windows kits\10\include\10.0.18362.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+  コードを生成中...
   DX12Library.vcxproj -> D:\K019G1301\ライブラリ\DX12Library\x64\Debug\DX12Library.lib
           1 個のファイルをコピーしました。
