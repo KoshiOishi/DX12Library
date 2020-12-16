@@ -57,7 +57,7 @@ void Model::Draw()
 	DX12Util::GetCmdList()->DrawIndexedInstanced((UINT)indices.size(), 1, 0, 0, 0);
 }
 
-void Model::LoadOBJ(const std::string & modelname, int index)
+void Model::CreateFromOBJ(const std::string & modelname, int index, bool smoothing)
 {
 	HRESULT result;
 
@@ -158,11 +158,21 @@ void Model::LoadOBJ(const std::string & modelname, int index)
 				vertices.emplace_back(vertex);
 				//インデックスデータの追加
 				indices.emplace_back(indices.size());
+				//エッジ平滑化用のデータを追加
+				if (smoothing) {
+					//vキー(座標データ)の番号と、全て合成した頂点のインデックスをセットで登録する
+					AddSmoothData(indexPosition, (unsigned short)vertices.size() - 1);
+				}
 			}
 		}
 	}
 
 	file.close();
+
+	if (smoothing) {
+		CalculateSmoothedVertexNormals();
+	}
+
 	CreateBuffer();
 }
 
@@ -226,7 +236,7 @@ void Model::LoadMaterial(const std::string & directoryPath, const std::string & 
 			//テクスチャのファイル名読み込み
 			line_stream >> material.textureFilename;
 			//テクスチャ読み込み
-			LoadTexture("Resources/", material.textureFilename, index);
+			LoadTexture(directoryPath, material.textureFilename, index);
 			isLoadTexture = true;
 		}
 	}
@@ -237,7 +247,7 @@ void Model::LoadMaterial(const std::string & directoryPath, const std::string & 
 	if (!isLoadTexture)
 	{
 		//テクスチャがないときは白テクスチャを読み込む
-		LoadTexture(directoryPath, "white1x1.png", index);
+		LoadTexture("Resources/", "white1x1.png", index);
 	}
 }
 
@@ -473,7 +483,33 @@ void Model::CreateBuffer()
 	ibView.SizeInBytes = sizeof(indices[0]) * indices.size();
 }
 
-void Model::CreateBox(float width, float height, float depth, int index)
+void Model::AddSmoothData(unsigned short indexPosition, unsigned short indexVertex)
+{
+	smoothData[indexPosition].emplace_back(indexVertex);
+}
+
+void Model::CalculateSmoothedVertexNormals()
+{
+	auto itr = smoothData.begin();
+	for (; itr != smoothData.end(); ++itr)
+	{
+		//各面用の共通頂点コレクション
+		std::vector<unsigned short>& v = itr->second;
+		//全頂点の法線を平均する
+		XMVECTOR normal = {};
+		for (unsigned short index : v) {
+			normal += XMVectorSet(vertices[index].normal.x, vertices[index].normal.y, vertices[index].normal.z, 0);
+		}
+		normal = XMVector3Normalize(normal / (float)v.size());
+		//共通座標を使用する全ての頂点データに書き込む
+		for (unsigned short index : v) {
+			vertices[index].normal = { normal.m128_f32[0],normal.m128_f32[1], normal.m128_f32[2] };
+		}
+	}
+
+}
+
+void Model::CreateBox(float width, float height, float depth, int index, bool smoothing)
 {
 	isLoadFromOBJFile = false;
 
@@ -519,6 +555,11 @@ void Model::CreateBox(float width, float height, float depth, int index)
 		vertex.pos = samplePos[n[i]];
 		vertex.uv = sampleUV[nUV[i]];
 		vertices.emplace_back(vertex);
+		//エッジ平滑化用のデータを追加
+		if (smoothing) {
+			//vキー(座標データ)の番号と、全て合成した頂点のインデックスをセットで登録する
+			AddSmoothData(n[i], (unsigned short)vertices.size() - 1);
+		}
 	}
 	//面2 2367
 	for (int i = 0; i < 6; i++)
@@ -528,6 +569,11 @@ void Model::CreateBox(float width, float height, float depth, int index)
 		vertex.pos = samplePos[n[i]];
 		vertex.uv = sampleUV[nUV[i]];
 		vertices.emplace_back(vertex);
+		//エッジ平滑化用のデータを追加
+		if (smoothing) {
+			//vキー(座標データ)の番号と、全て合成した頂点のインデックスをセットで登録する
+			AddSmoothData(n[i], (unsigned short)vertices.size() - 1);
+		}
 	}
 	//面3 6745
 	for (int i = 0; i < 6; i++)
@@ -537,6 +583,11 @@ void Model::CreateBox(float width, float height, float depth, int index)
 		vertex.pos = samplePos[n[i]];
 		vertex.uv = sampleUV[nUV[i]];
 		vertices.emplace_back(vertex);
+		//エッジ平滑化用のデータを追加
+		if (smoothing) {
+			//vキー(座標データ)の番号と、全て合成した頂点のインデックスをセットで登録する
+			AddSmoothData(n[i], (unsigned short)vertices.size() - 1);
+		}
 	}
 	//面4 4501
 	for (int i = 0; i < 6; i++)
@@ -546,6 +597,11 @@ void Model::CreateBox(float width, float height, float depth, int index)
 		vertex.pos = samplePos[n[i]];
 		vertex.uv = sampleUV[nUV[i]];
 		vertices.emplace_back(vertex);
+		//エッジ平滑化用のデータを追加
+		if (smoothing) {
+			//vキー(座標データ)の番号と、全て合成した頂点のインデックスをセットで登録する
+			AddSmoothData(n[i], (unsigned short)vertices.size() - 1);
+		}
 	}
 	//面5 1537
 	for (int i = 0; i < 6; i++)
@@ -555,6 +611,11 @@ void Model::CreateBox(float width, float height, float depth, int index)
 		vertex.pos = samplePos[n[i]];
 		vertex.uv = sampleUV[nUV[i]];
 		vertices.emplace_back(vertex);
+		//エッジ平滑化用のデータを追加
+		if (smoothing) {
+			//vキー(座標データ)の番号と、全て合成した頂点のインデックスをセットで登録する
+			AddSmoothData(n[i], (unsigned short)vertices.size() - 1);
+		}
 	}
 	//面6 4062
 	for (int i = 0; i < 6; i++)
@@ -564,6 +625,11 @@ void Model::CreateBox(float width, float height, float depth, int index)
 		vertex.pos = samplePos[n[i]];
 		vertex.uv = sampleUV[nUV[i]];
 		vertices.emplace_back(vertex);
+		//エッジ平滑化用のデータを追加
+		if (smoothing) {
+			//vキー(座標データ)の番号と、全て合成した頂点のインデックスをセットで登録する
+			AddSmoothData(n[i], (unsigned short)vertices.size() - 1);
+		}
 	}
 
 	//インデックス配列
@@ -598,11 +664,15 @@ void Model::CreateBox(float width, float height, float depth, int index)
 		XMStoreFloat3(&vertices[index2].normal, normal);
 
 	}
+
+	if (smoothing) {
+		CalculateSmoothedVertexNormals();
+	}
 	
 	CreateBuffer();
 }
 
-void Model::CreateSphere(int vertexX, int vertexY, float radius, int index)
+void Model::CreateSphere(int vertexX, int vertexY, float radius, int index, bool smoothing)
 {
 	isLoadFromOBJFile = false;
 
@@ -621,6 +691,7 @@ void Model::CreateSphere(int vertexX, int vertexY, float radius, int index)
 	}
 
 	Vertex upper, downer;
+	//upper...0 downer...1 side...side + 2
 	upper.pos = { 0,radius,0 };
 	downer.pos = { 0,-radius,0 };
 
@@ -646,40 +717,68 @@ void Model::CreateSphere(int vertexX, int vertexY, float radius, int index)
 	for (int i = 0; i < vertexX; i++)
 	{
 		Vertex v[3];
+		unsigned short indice[3];
 		if (i < vertexX - 1)
 		{
 			v[0] = upper;
 			v[1] = side[0][i + 1];
 			v[2] = side[0][i];
+			indice[0] = 0;
+			indice[1] = i + 1 + 2;
+			indice[2] = i + 2;
 		}
 		else
 		{
 			v[0] = upper;
 			v[1] = side[0][0];
 			v[2] = side[0][i];
+			indice[0] = 0;
+			indice[1] = 2;
+			indice[2] = i + 2;
 		}
-		for (int j = 0; j < 3; j++)
+		for (int j = 0; j < 3; j++) 
+		{
 			vertices.emplace_back(v[j]);
+			//エッジ平滑化用のデータを追加
+			if (smoothing) {
+				//vキー(座標データ)の番号と、全て合成した頂点のインデックスをセットで登録する
+				AddSmoothData(indice[j], (unsigned short)vertices.size() - 1);
+			}
+		}
 	}
 
 	//下
 	for (int i = 0; i < vertexX; i++)
 	{
 		Vertex v[3];
+		unsigned short indice[3];
 		if (i < vertexX - 1)
 		{
 			v[0] = downer;
 			v[1] = side[vertexY - 2][i];
 			v[2] = side[vertexY - 2][i + 1];
+			indice[0] = 1;
+			indice[1] = (vertexY - 2) * vertexX + i + 2;
+			indice[2] = (vertexY - 2) * vertexX + i + 1 + 2;
 		}
 		else
 		{
 			v[0] = downer;
 			v[1] = side[vertexY - 2][i];
 			v[2] = side[vertexY - 2][0];
+			indice[0] = 1;
+			indice[1] = (vertexY - 2) * vertexX + i + 2;
+			indice[2] = (vertexY - 2) * vertexX + 2;
 		}
 		for (int j = 0; j < 3; j++)
+		{
 			vertices.emplace_back(v[j]);
+			//エッジ平滑化用のデータを追加
+			if (smoothing) {
+				//vキー(座標データ)の番号と、全て合成した頂点のインデックスをセットで登録する
+				AddSmoothData(indice[j], (unsigned short)vertices.size() - 1);
+			}
+		}
 	}
 
 	//横
@@ -687,28 +786,48 @@ void Model::CreateSphere(int vertexX, int vertexY, float radius, int index)
 	{
 		for (int j = 0; j < vertexX; j++)
 		{
-			Vertex v[4];
+			Vertex v[6];
+			unsigned short indice[6];
 			if (j < vertexX - 1)
 			{
 				v[0] = side[i + 1][j];	//左下
 				v[1] = side[i][j];		//左上
 				v[2] = side[i + 1][j + 1];	//右下
-				v[3] = side[i][j + 1];		//右上
+				v[3] = side[i + 1][j + 1];	//右下
+				v[4] = side[i][j];		//左上
+				v[5] = side[i][j + 1];		//右上
+				indice[0] = (i + 1) * vertexX + j + 2;
+				indice[1] = (i) * vertexX + j + 2;
+				indice[2] = (i + 1) * vertexX + j + 1 + 2;
+				indice[3] = (i + 1) * vertexX + j + 1 + 2;
+				indice[4] = (i) * vertexX + j + 2;
+				indice[5] = (i) * vertexX + j + 1 + 2;
+
 			}
 			else
 			{
 				v[0] = side[i + 1][j];	//左下
 				v[1] = side[i][j];		//左上
 				v[2] = side[i + 1][0];	//右下
-				v[3] = side[i][0];		//右上
+				v[3] = side[i + 1][0];	//右下
+				v[4] = side[i][j];		//左上
+				v[5] = side[i][0];		//右上
+				indice[0] = (i + 1) * vertexX + j + 2;
+				indice[1] = (i)* vertexX + j + 2;
+				indice[2] = (i + 1) * vertexX + 2;
+				indice[3] = (i + 1) * vertexX + 2;
+				indice[4] = (i)* vertexX + j + 2;
+				indice[5] = (i)* vertexX + 2;
 			}
-			vertices.emplace_back(v[0]);
-			vertices.emplace_back(v[1]);
-			vertices.emplace_back(v[2]);
-			vertices.emplace_back(v[2]);
-			vertices.emplace_back(v[1]);
-			vertices.emplace_back(v[3]);
-
+			for (int k = 0; k < 6; k++)
+			{
+				vertices.emplace_back(v[k]);
+				//エッジ平滑化用のデータを追加
+				if (smoothing) {
+					//vキー(座標データ)の番号と、全て合成した頂点のインデックスをセットで登録する
+					AddSmoothData(indice[k], (unsigned short)vertices.size() - 1);
+				}
+			}
 		}
 	}
 
@@ -744,10 +863,14 @@ void Model::CreateSphere(int vertexX, int vertexY, float radius, int index)
 
 	}
 
+	if (smoothing) {
+		CalculateSmoothedVertexNormals();
+	}
+
 	CreateBuffer();
 }
 
-void Model::CreatePoll(int vertex, float radius, float height, int index)
+void Model::CreatePoll(int vertex, float radius, float height, int index, bool smoothing)
 {
 	isLoadFromOBJFile = false;
 
@@ -798,14 +921,44 @@ void Model::CreatePoll(int vertex, float radius, float height, int index)
 		if (i + 1 < vertex)
 		{
 			vertices.emplace_back(v[i + 1]);
+			//エッジ平滑化用のデータを追加
+			if (smoothing) {
+				//vキー(座標データ)の番号と、全て合成した頂点のインデックスをセットで登録する
+				AddSmoothData(i + 1, (unsigned short)vertices.size() - 1);
+			}
 			vertices.emplace_back(v[0]);
+			//エッジ平滑化用のデータを追加
+			if (smoothing) {
+				//vキー(座標データ)の番号と、全て合成した頂点のインデックスをセットで登録する
+				AddSmoothData(0, (unsigned short)vertices.size() - 1);
+			}
 			vertices.emplace_back(v[i + 2]);
+			//エッジ平滑化用のデータを追加
+			if (smoothing) {
+				//vキー(座標データ)の番号と、全て合成した頂点のインデックスをセットで登録する
+				AddSmoothData(i + 2, (unsigned short)vertices.size() - 1);
+			}
 		}
 		else
 		{
 			vertices.emplace_back(v[i + 1]);
+			//エッジ平滑化用のデータを追加
+			if (smoothing) {
+				//vキー(座標データ)の番号と、全て合成した頂点のインデックスをセットで登録する
+				AddSmoothData(i + 1, (unsigned short)vertices.size() - 1);
+			}
 			vertices.emplace_back(v[0]);
+			//エッジ平滑化用のデータを追加
+			if (smoothing) {
+				//vキー(座標データ)の番号と、全て合成した頂点のインデックスをセットで登録する
+				AddSmoothData(0, (unsigned short)vertices.size() - 1);
+			}
 			vertices.emplace_back(v[vertex - i]);
+			//エッジ平滑化用のデータを追加
+			if (smoothing) {
+				//vキー(座標データ)の番号と、全て合成した頂点のインデックスをセットで登録する
+				AddSmoothData(vertex - i, (unsigned short)vertices.size() - 1);
+			}
 		}
 	}
 
@@ -815,14 +968,44 @@ void Model::CreatePoll(int vertex, float radius, float height, int index)
 		if (i + 1 < vertex * 2)
 		{
 			vertices.emplace_back(v[i + 2]);
+			//エッジ平滑化用のデータを追加
+			if (smoothing) {
+				//vキー(座標データ)の番号と、全て合成した頂点のインデックスをセットで登録する
+				AddSmoothData(i + 2, (unsigned short)vertices.size() - 1);
+			}
 			vertices.emplace_back(v[i + 3]);
+			//エッジ平滑化用のデータを追加
+			if (smoothing) {
+				//vキー(座標データ)の番号と、全て合成した頂点のインデックスをセットで登録する
+				AddSmoothData(i + 3, (unsigned short)vertices.size() - 1);
+			}
 			vertices.emplace_back(v[vertex + 1]);
+			//エッジ平滑化用のデータを追加
+			if (smoothing) {
+				//vキー(座標データ)の番号と、全て合成した頂点のインデックスをセットで登録する
+				AddSmoothData(vertex + 1, (unsigned short)vertices.size() - 1);
+			}
 		}
 		else
 		{
 			vertices.emplace_back(v[i + 2]);
+			//エッジ平滑化用のデータを追加
+			if (smoothing) {
+				//vキー(座標データ)の番号と、全て合成した頂点のインデックスをセットで登録する
+				AddSmoothData(i + 2, (unsigned short)vertices.size() - 1);
+			}
 			vertices.emplace_back(v[vertex * 2 - i + vertex + 1]);
+			//エッジ平滑化用のデータを追加
+			if (smoothing) {
+				//vキー(座標データ)の番号と、全て合成した頂点のインデックスをセットで登録する
+				AddSmoothData(vertex * 2 - i + vertex + 1, (unsigned short)vertices.size() - 1);
+			}
 			vertices.emplace_back(v[vertex + 1]);
+			//エッジ平滑化用のデータを追加
+			if (smoothing) {
+				//vキー(座標データ)の番号と、全て合成した頂点のインデックスをセットで登録する
+				AddSmoothData(vertex + 1, (unsigned short)vertices.size() - 1);
+			}
 		}
 	}
 
@@ -845,11 +1028,41 @@ void Model::CreatePoll(int vertex, float radius, float height, int index)
 			n[3] = vertex + 2;
 		}
 		vertices.emplace_back(v[n[2]]);
+		//エッジ平滑化用のデータを追加
+		if (smoothing) {
+			//vキー(座標データ)の番号と、全て合成した頂点のインデックスをセットで登録する
+			AddSmoothData(n[2], (unsigned short)vertices.size() - 1);
+		}
 		vertices.emplace_back(v[n[0]]);
+		//エッジ平滑化用のデータを追加
+		if (smoothing) {
+			//vキー(座標データ)の番号と、全て合成した頂点のインデックスをセットで登録する
+			AddSmoothData(n[0], (unsigned short)vertices.size() - 1);
+		}
 		vertices.emplace_back(v[n[3]]);
+		//エッジ平滑化用のデータを追加
+		if (smoothing) {
+			//vキー(座標データ)の番号と、全て合成した頂点のインデックスをセットで登録する
+			AddSmoothData(n[3], (unsigned short)vertices.size() - 1);
+		}
 		vertices.emplace_back(v[n[3]]);
+		//エッジ平滑化用のデータを追加
+		if (smoothing) {
+			//vキー(座標データ)の番号と、全て合成した頂点のインデックスをセットで登録する
+			AddSmoothData(n[3], (unsigned short)vertices.size() - 1);
+		}
 		vertices.emplace_back(v[n[0]]);
+		//エッジ平滑化用のデータを追加
+		if (smoothing) {
+			//vキー(座標データ)の番号と、全て合成した頂点のインデックスをセットで登録する
+			AddSmoothData(n[0], (unsigned short)vertices.size() - 1);
+		}
 		vertices.emplace_back(v[n[1]]);
+		//エッジ平滑化用のデータを追加
+		if (smoothing) {
+			//vキー(座標データ)の番号と、全て合成した頂点のインデックスをセットで登録する
+			AddSmoothData(n[1], (unsigned short)vertices.size() - 1);
+		}
 
 	}
 
@@ -889,6 +1102,10 @@ void Model::CreatePoll(int vertex, float radius, float height, int index)
 		XMStoreFloat3(&vertices[index1].normal, normal);
 		XMStoreFloat3(&vertices[index2].normal, normal);
 
+	}
+
+	if (smoothing) {
+		CalculateSmoothedVertexNormals();
 	}
 
 	CreateBuffer();

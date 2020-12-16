@@ -19,9 +19,6 @@
     <Filter Include="ヘッダー ファイル\ライブラリ">
       <UniqueIdentifier>{9849a1dc-edf7-4029-a24d-6ac4e292993b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\ライブラリ\シーン">
-      <UniqueIdentifier>{0ff5b687-c359-4476-b750-2c60b5579670}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DebugText.cpp">
@@ -64,6 +61,9 @@
       <Filter>ソース ファイル\ライブラリ</Filter>
     </ClCompile>
     <ClCompile Include="Interpolation.cpp">
+      <Filter>ソース ファイル\ライブラリ</Filter>
+    </ClCompile>
+    <ClCompile Include="Light.cpp">
       <Filter>ソース ファイル\ライブラリ</Filter>
     </ClCompile>
   </ItemGroup>
@@ -110,8 +110,8 @@
     <ClInclude Include="Interpolation.h">
       <Filter>ヘッダー ファイル\ライブラリ</Filter>
     </ClInclude>
-    <ClInclude Include="GamePlay.h">
-      <Filter>ソース ファイル\ライブラリ\シーン</Filter>
+    <ClInclude Include="Light.h">
+      <Filter>ヘッダー ファイル\ライブラリ</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

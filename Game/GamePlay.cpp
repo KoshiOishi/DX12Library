@@ -20,31 +20,34 @@ void GamePlay::Initialize()
 {
 	Object3D::SetEye(DirectX::XMFLOAT3(0, 0, -100));
 
-	model1.CreateSphere(20,20,30,1);
-	model2.CreatePoll(20,10,10,2);
+	//ライト初期化
+	light.Initialize();
+	light.SetLightColor({ 1,1,1 });
+	Object3D::SetLight(light);
+
+	model1.CreateBox(10,8,6,0,true);
+	model2.CreateSphere(50, 50, 15, 1);
 
 	model1.Initialize();
 	model2.Initialize();
 
 	obj1.SetModel(model1);
 	obj1.Initialize();
+	obj1.SetPosition(0,-15,0);
+	obj1.SetColorAs0To255(227,185,83);
 
 	obj2.SetModel(model2);
 	obj2.Initialize();
 	obj2.SetPosition({ 6, 0, 0 });
-
-	obj3.SetModel(model1);
-	obj3.Initialize();
-	obj3.SetPosition({ -30, 0, -10 });
-	obj3.SetColorAs0To255(64, 255, 64, 255);
+	obj2.SetColorAs0To255(255,128,128);
 
 	sprite1.Initialize(1, L"Resources/haikeidayo.png");
 	sprite2.Initialize(2, L"Resources/gazoudayo.png");
 
-	sphere1.center = DirectX::XMVectorSet(obj1.GetPosition().x, obj1.GetPosition().y, obj1.GetPosition().z, 1);
-	sphere1.radius = 2.5f;
-	sphere2.center = DirectX::XMVectorSet(obj2.GetPosition().x, obj2.GetPosition().y, obj2.GetPosition().z, 1);
-	sphere2.radius = 2.5f;
+	sphere1.center = DirectX::XMVectorSet(obj1.GetPosition().x, obj1.GetPosition().y, obj1.GetPosition().z, 0);
+	sphere1.radius = 30.0f;
+	sphere2.center = DirectX::XMVectorSet(obj2.GetPosition().x, obj2.GetPosition().y, obj2.GetPosition().z, 0);
+	sphere2.radius = 15.0f;
 
 	ip.Start(3.0f);
 }
@@ -148,49 +151,52 @@ void GamePlay::Update()
 		}
 	}
 
-
-	if (Input::Push(DIK_W) || Input::Push(DIK_S))
+	if (!Input::Push(DIK_LCONTROL))
 	{
-		//座標を移動する処理(Y座標)
-		if (Input::Push(DIK_W))
-		{
-			obj1.AddPosition(0, 1.0f, 0);
 
-		}
-		else if (Input::Push(DIK_S))
+		if (Input::Push(DIK_W) || Input::Push(DIK_S))
 		{
-			obj1.AddPosition(0, -1.0f, 0);
+			//座標を移動する処理(Y座標)
+			if (Input::Push(DIK_W))
+			{
+				obj1.AddPosition(0, 1.0f, 0);
 
-		}
-	}
-	if (Input::Push(DIK_A) || Input::Push(DIK_D))
-	{
-		//座標を移動する処理(X座標)
-		if (Input::Push(DIK_A))
-		{
-			obj1.AddPosition(-1.0f, 0, 0);
-		}
-		else if (Input::Push(DIK_D))
-		{
-			obj1.AddPosition(1.0f, 0, 0);
+			}
+			else if (Input::Push(DIK_S))
+			{
+				obj1.AddPosition(0, -1.0f, 0);
 
+			}
 		}
-
-	}
-
-	if (Input::Push(DIK_Z) || Input::Push(DIK_X))
-	{
-		//座標を移動する処理(Z座標)
-		if (Input::Push(DIK_Z))
+		if (Input::Push(DIK_A) || Input::Push(DIK_D))
 		{
-			obj1.AddPosition(0, 0, -1.0f);
-		}
-		else if (Input::Push(DIK_X))
-		{
-			obj1.AddPosition(0, 0, 1.0f);
+			//座標を移動する処理(X座標)
+			if (Input::Push(DIK_A))
+			{
+				obj1.AddPosition(-1.0f, 0, 0);
+			}
+			else if (Input::Push(DIK_D))
+			{
+				obj1.AddPosition(1.0f, 0, 0);
+
+			}
 
 		}
 
+		if (Input::Push(DIK_Z) || Input::Push(DIK_X))
+		{
+			//座標を移動する処理(Z座標)
+			if (Input::Push(DIK_Z))
+			{
+				obj1.AddPosition(0, 0, -1.0f);
+			}
+			else if (Input::Push(DIK_X))
+			{
+				obj1.AddPosition(0, 0, 1.0f);
+
+			}
+
+		}
 	}
 
 	if (Input::Push(DIK_C) || Input::Push(DIK_V))
@@ -229,29 +235,48 @@ void GamePlay::Update()
 		obj2.SetIsWireFlame(!obj2.GetIsWireFlame());
 	}
 
-	obj3.SetPosition(Interpolation::EaseInOut(-30, 30, ip.GetTimeRate()), 0, -10);
+	obj2.SetPosition(Interpolation::EaseInOut(-30, 30, ip.GetTimeRate()), 0, -10);
+
+	obj1.AddRotation(0,1,0);
+	obj2.AddRotation(0, 1, 0);
 
 #pragma endregion
 
 
 #pragma region 球当たり判定
 
-	sphere1.center = DirectX::XMVectorSet(obj1.GetPosition().x, obj1.GetPosition().y, obj1.GetPosition().z, 1);
-	sphere2.center = DirectX::XMVectorSet(obj2.GetPosition().x, obj2.GetPosition().y, obj2.GetPosition().z, 1);
+	sphere1.center = DirectX::XMVectorSet(obj1.GetPosition().x, obj1.GetPosition().y, obj1.GetPosition().z, 0);
+	sphere2.center = DirectX::XMVectorSet(obj2.GetPosition().x, obj2.GetPosition().y, obj2.GetPosition().z, 0);
 
 	if (Collision::CheckSphere2Sphere(sphere1,sphere2))
-		DebugText::Print("HIT", 0, 0);
+		DebugText::Print("ATATTAYO", 0, 0);
 
 #pragma endregion
 
+#pragma region ライト
+	{
+		//光線方向初期値			  上 奥
+		static XMVECTOR lightDir = { 0, 1, 5, 0 };
+
+		if (Input::Push(DIK_LCONTROL))
+		{
+			if (Input::Push(DIK_W)) { lightDir.m128_f32[1] += 1.0f; }
+			else if (Input::Push(DIK_S)) { lightDir.m128_f32[1] -= 1.0f; }
+			if (Input::Push(DIK_D)) { lightDir.m128_f32[0] += 1.0f; }
+			else if (Input::Push(DIK_A)) { lightDir.m128_f32[0] -= 1.0f; }
+		}
+
+		light.SetLightDir(lightDir);
+
+	}
+#pragma endregion
 
 #pragma region オブジェクトアップデート
+	light.Update();
 
 	obj1.Update();
 	
 	obj2.Update();
-
-	obj3.Update();
 
 #pragma endregion
 
@@ -274,9 +299,7 @@ void GamePlay::Draw()
 	//オブジェクト描画ここから
 	obj1.Draw();
 	
-	obj2.Draw();
-
-	obj3.Draw();
+	//obj2.Draw();
 
 	//オブジェクト描画ここまで
 

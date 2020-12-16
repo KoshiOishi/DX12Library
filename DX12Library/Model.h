@@ -5,6 +5,7 @@
 #include <wrl.h>
 #include <vector>
 #include <string>
+#include <unordered_map>
 #pragma comment(lib, "d3d12.lib")
 
 class Model
@@ -96,6 +97,9 @@ private:
 	//OBJから読み込まれたか否か
 	bool isLoadFromOBJFile = true;
 
+	//頂点座標スムージング用データ
+	std::unordered_map<unsigned short, std::vector<unsigned short>> smoothData;
+
 //メンバ関数
 public:
 	void Initialize();
@@ -107,11 +111,25 @@ public:
 	/// </summary>
 	/// <param name="modelname">objファイルを格納してるフォルダ名</param>
 	/// <param name="index">インデックス（重複しないように指定）</param>
-	void LoadOBJ(const std::string & modelname, int index);
+	/// <param name="smoothing">エッジ平滑化フラグ</param>
+	void CreateFromOBJ(const std::string & modelname, int index, bool smoothing = false);
 	void LoadMaterial(const std::string & directoryPath, const std::string & filename, int index);
 	bool LoadTexture(const std::string & directoryPath, const std::string & filename, int index);
 	bool LoadTextureReturnTexSize(const std::string & directoryPath, const std::string & filename, int index, float* texWidth = nullptr, float* texHeight = nullptr);
 	void CreateBuffer();
+
+	/// <summary>
+	/// エッジ平滑化データの追加
+	/// </summary>
+	/// <param name="indexPosition">座標インデックス</param>
+	/// <param name="indexVertex">頂点インデックス</param>
+	void AddSmoothData(unsigned short indexPosition, unsigned short indexVertex);
+
+	/// <summary>
+	/// 平滑化された頂点法線の計算
+	/// </summary>
+	void CalculateSmoothedVertexNormals();
+
 
 	/// <summary>
 	/// OBJファイルから作られたモデルであるかどうか返す
@@ -127,7 +145,7 @@ public:
 	/// <param name="height">縦幅</param>
 	/// <param name="depth">奥行</param>
 	/// <param name="index">インデックス（重複しないように指定）</param>
-	void CreateBox(float width, float height, float depth, int index);
+	void CreateBox(float width, float height, float depth, int index, bool smoothing = false);
 
 	/// <summary>
 	/// 球ポリゴンを作成
@@ -136,7 +154,7 @@ public:
 	/// <param name="vertexY">高さの分割数 (3以上)</param>
 	/// <param name="radius">半径</param>
 	/// <param name="index">インデックス（重複しないように指定）</param>
-	void CreateSphere(int vertexX, int vertexY, float radius, int index);
+	void CreateSphere(int vertexX, int vertexY, float radius, int index, bool smoothing = false);
 
 	/// <summary>
 	/// 円柱ポリゴンを作成
@@ -145,7 +163,7 @@ public:
 	/// <param name="radius">半径</param>
 	/// <param name="height">高さ</param>
 	/// <param name="index">インデックス（重複しないように指定）</param>
-	void CreatePoll(int vertex, float radius, float height, int index);
+	void CreatePoll(int vertex, float radius, float height, int index, bool smoothing = false);
 
 	/// <summary>
 	/// 四角形板ポリゴンを作成

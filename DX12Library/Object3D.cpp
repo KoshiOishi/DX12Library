@@ -26,6 +26,7 @@ Object3D::ComPtr <ID3D12PipelineState> Object3D::pipelinestateMath = nullptr;
 Object3D::ComPtr <ID3D12RootSignature> Object3D::rootsignatureNoShade = nullptr;
 Object3D::ComPtr <ID3D12PipelineState> Object3D::pipelinestateNoShade = nullptr;
 Object3D::ComPtr <ID3D12PipelineState> Object3D::pipelinestateWire = nullptr;
+Light Object3D::light;
 
 void Object3D::FirstInit()
 {
@@ -204,10 +205,12 @@ void Object3D::InitPipelineOBJ()
 	descRangeSRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0); //t0 レジスタ
 
 	//ルートパラメータの設定
-	CD3DX12_ROOT_PARAMETER rootparams[3];
+	CD3DX12_ROOT_PARAMETER rootparams[4];
 	rootparams[0].InitAsConstantBufferView(0, 0, D3D12_SHADER_VISIBILITY_ALL);
 	rootparams[1].InitAsConstantBufferView(1, 0, D3D12_SHADER_VISIBILITY_ALL);
 	rootparams[2].InitAsDescriptorTable(1, &descRangeSRV, D3D12_SHADER_VISIBILITY_ALL);
+	rootparams[3].InitAsConstantBufferView(2, 0, D3D12_SHADER_VISIBILITY_ALL);
+
 
 	//サンプラーの設定
 	CD3DX12_STATIC_SAMPLER_DESC samplerDesc = CD3DX12_STATIC_SAMPLER_DESC(0);
@@ -390,10 +393,11 @@ void Object3D::InitPipelineMath()
 	descRangeSRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0); //t0 レジスタ
 
 	//ルートパラメータの設定
-	CD3DX12_ROOT_PARAMETER rootparams[3];
+	CD3DX12_ROOT_PARAMETER rootparams[4];
 	rootparams[0].InitAsConstantBufferView(0, 0, D3D12_SHADER_VISIBILITY_ALL);
 	rootparams[1].InitAsConstantBufferView(1, 0, D3D12_SHADER_VISIBILITY_ALL);
 	rootparams[2].InitAsDescriptorTable(1, &descRangeSRV, D3D12_SHADER_VISIBILITY_ALL);
+	rootparams[3].InitAsConstantBufferView(2, 0, D3D12_SHADER_VISIBILITY_ALL);
 
 	//サンプラーの設定
 	CD3DX12_STATIC_SAMPLER_DESC samplerDesc = CD3DX12_STATIC_SAMPLER_DESC(0);
@@ -677,7 +681,9 @@ void Object3D::Update()
 
 	result = constBuffB0->Map(0, nullptr, (void**)&constMap);
 	constMap->color = color;
-	constMap->mat = matWorld * matView * matProjection;	// 行列の合成
+	constMap->viewproj = matView * matProjection;
+	constMap->world = matWorld;
+	constMap->cameraPos = eye;
 	constBuffB0->Unmap(0, nullptr);
 
 	model.Update();
@@ -733,6 +739,11 @@ void Object3D::Draw()
 	// 定数バッファビューをセット
 	DX12Util::GetCmdList()->SetGraphicsRootConstantBufferView(0, constBuffB0->GetGPUVirtualAddress());
 
+	//ライトの描画
+	if (isLight)
+		light.Draw(3);
+
+	//モデルの描画
 	model.Draw();
 }
 

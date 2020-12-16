@@ -5,6 +5,7 @@
 #include <wrl.h>
 #include <vector>
 #include "Model.h"
+#include "Light.h"
 #pragma comment(lib, "d3d12.lib")
 
 class Object3D
@@ -29,7 +30,9 @@ public:
 	// 定数バッファ用データ構造体
 	struct ConstBufferDataB0 {
 		XMFLOAT4 color;	//色(RGBA)
-		XMMATRIX mat;	//3D変換行列
+		XMMATRIX viewproj;	//ビュープロジェクション行列
+		XMMATRIX world;		//ワールド行列
+		XMFLOAT3 cameraPos;	//カメラ座標（ワールド座標）
 	};
 
 	enum BillboardType {
@@ -108,7 +111,6 @@ private:
 	// 上方向ベクトル
 	static XMFLOAT3 up;
 
-
 	// デスクリプタヒープ
 	static ComPtr <ID3D12DescriptorHeap> basicDescHeap;
 
@@ -133,6 +135,8 @@ private:
 	// ワイヤフレーム用パイプラインステート
 	static ComPtr <ID3D12PipelineState> pipelinestateWire;
 
+	//ライト
+	static Light light;
 
 //メンバ関数
 
@@ -236,6 +240,12 @@ public:
 	/// <param name="y">移動量y</param>
 	/// <param name="z">移動量z</param>
 	static void MoveCamera(const float x, const float y, const float z);
+
+	/// <summary>
+	/// ライトのセット
+	/// </summary>
+	/// <param name="light">ライト</param>
+	static void SetLight(Light light) { Object3D::light = light; }
 		
 #pragma endregion
 
@@ -417,7 +427,7 @@ public:
 	/// <param name="G">緑</param>
 	/// <param name="B">青</param>
 	/// <param name="A">アルファ値</param>
-	void SetColorAs0To255(float R, float G, float B, float A)
+	void SetColorAs0To255(float R, float G, float B, float A = 255)
 	{
 		R = R / 255;
 		G = G / 255;
