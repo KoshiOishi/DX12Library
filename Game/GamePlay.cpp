@@ -26,20 +26,19 @@ void GamePlay::Initialize()
 	Object3D::SetLight(light);
 
 	model1.CreateSphere(50, 50, 15, 0, true, { 0.5f,0.5f,0.5f }, { 0.5f,0.5f,0.5f }, {0.7f,0.7f,0.7f});
-	model2.CreateSphere(50, 50, 15, 1);
 
 	model1.Initialize();
-	model2.Initialize();
 
 	obj1.SetModel(model1);
 	obj1.Initialize();
 	obj1.SetPosition(0,-15,0);
-	obj1.SetColorAs0To255(227,185,83);
+	obj1.SetColorAs0To255(64,64,64);
 
-	obj2.SetModel(model2);
+	obj2.SetModel(model1);
 	obj2.Initialize();
 	obj2.SetPosition({ 6, 0, 0 });
-	obj2.SetColorAs0To255(255,128,128);
+	obj2.SetColorAs0To255(255,255,255);
+	obj2.SetParent(&obj1);
 
 	sprite1.Initialize(1, L"Resources/haikeidayo.png");
 	sprite2.Initialize(2, L"Resources/gazoudayo.png");
@@ -50,6 +49,10 @@ void GamePlay::Initialize()
 	sphere2.radius = 15.0f;
 
 	ip.Start(3.0f);
+
+	Sound::LoadWave("Resources/Alarm01.wav", "01");
+	Sound::LoadWave("Resources/Don.wav", "don");
+	Sound::LoadWave("Resources/Ka.wav", "ka");
 }
 
 void GamePlay::Update()
@@ -58,7 +61,7 @@ void GamePlay::Update()
 
 	//入力処理ここから
 
-	ip.Update(600);
+	ip.Update(60);
 
 #pragma region 更新処理
 	if (Input::Push(DIK_UP) || Input::Push(DIK_DOWN))
@@ -240,6 +243,38 @@ void GamePlay::Update()
 	obj1.AddRotation(0,1,0);
 	obj2.AddRotation(0, 1, 0);
 
+	if (Input::Trigger(DIK_F1))
+	{
+		Sound::SetPitch("01", 1.5f);
+		if (!Sound::GetIsPlay("01"))
+			Sound::PlayWave("01");
+		else
+			Sound::PauseWave("01");
+
+		Sound::SetVolume("01", 100);
+		float f = Sound::GetVolume("01");
+	}
+
+	if (Input::Trigger(DIK_F2))
+	{
+		if (!Sound::GetIsPlay("01"))
+			Sound::PlayWave("01");
+		else
+			Sound::StopWave("01");
+
+		Sound::SetVolume("01", 50);
+		float f = Sound::GetVolume("01");
+	}
+
+	if (Input::Trigger(DIK_F) || Input::Trigger(DIK_J))
+	{
+		Sound::PlayWave("don");
+	}
+	if (Input::Trigger(DIK_R) || Input::Trigger(DIK_I))
+	{
+		Sound::PlayWave("ka");
+	}
+
 #pragma endregion
 
 
@@ -248,8 +283,8 @@ void GamePlay::Update()
 	sphere1.center = DirectX::XMVectorSet(obj1.GetPosition().x, obj1.GetPosition().y, obj1.GetPosition().z, 0);
 	sphere2.center = DirectX::XMVectorSet(obj2.GetPosition().x, obj2.GetPosition().y, obj2.GetPosition().z, 0);
 
-	if (Collision::CheckSphere2Sphere(sphere1,sphere2))
-		DebugText::Print("ATATTAYO", 0, 0);
+	//if (Collision::CheckSphere2Sphere(sphere1,sphere2))
+	//	DebugText::Print("ATATTAYO", 0, 0);
 
 #pragma endregion
 
@@ -288,7 +323,7 @@ void GamePlay::Draw()
 	DX12Util::BeginDraw();
 
 	//背景スプライト描画ここから
-	//sprite1.Draw();
+	sprite1.Draw();
 
 
 
@@ -299,7 +334,7 @@ void GamePlay::Draw()
 	//オブジェクト描画ここから
 	obj1.Draw();
 	
-	//obj2.Draw();
+	obj2.Draw();
 
 	//オブジェクト描画ここまで
 

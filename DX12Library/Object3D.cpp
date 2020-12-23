@@ -682,7 +682,10 @@ void Object3D::Update()
 	result = constBuffB0->Map(0, nullptr, (void**)&constMap);
 	constMap->color = color;
 	constMap->viewproj = matView * matProjection;
-	constMap->world = matWorld;
+	if (parent != nullptr)
+		constMap->world = matWorld * parent->GetMatWorld();
+	else
+		constMap->world = matWorld;
 	constMap->cameraPos = eye;
 	constBuffB0->Unmap(0, nullptr);
 

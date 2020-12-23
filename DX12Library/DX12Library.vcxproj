@@ -197,6 +197,7 @@ xcopy $(SolutionDir)$(ProjectName)\Shader $(TargetDir)Shader /D/E/C/I/H/Y</Comma
     <ClInclude Include="CollisionPrimitive.h" />
     <ClInclude Include="DX12Util.h" />
     <ClInclude Include="FPSManager.h" />
+    <ClInclude Include="SoundData.h" />
     <ClInclude Include="Interpolation.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="Model.h" />

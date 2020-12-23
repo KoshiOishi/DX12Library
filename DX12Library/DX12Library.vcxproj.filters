@@ -113,6 +113,9 @@
     <ClInclude Include="Light.h">
       <Filter>ヘッダー ファイル\ライブラリ</Filter>
     </ClInclude>
+    <ClInclude Include="SoundData.h">
+      <Filter>ヘッダー ファイル\ライブラリ</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shader\BasicPixelShader.hlsl">

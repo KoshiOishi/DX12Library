@@ -4,7 +4,7 @@ void Interpolation::Update(float fps)
 {
 	if (!isStart) return;
 
-	float add = second / fps;
+	float add = second / fps * 10.0f;
 	timeRate += add;
 	if (timeRate > 1.0f)
 	{

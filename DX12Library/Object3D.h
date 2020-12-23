@@ -76,6 +76,9 @@ private:
 	//ライト効果の有無
 	bool isLight = true;
 
+	//親オブジェクトのポインタ
+	Object3D* parent = nullptr;
+
 #pragma region 初期化回りの変数
 
 
@@ -318,6 +321,12 @@ public:
 	/// <returns>ライトの有無</returns>
 	const bool GetIsLight() { return isLight; }
 
+private:
+	/// <summary>
+	/// 親子構造用ワールド行列ゲッター
+	/// </summary>
+	const XMMATRIX GetMatWorld() { return matWorld; }
+
 //静的メンバ関数
 public:
 	/// <summary>
@@ -458,6 +467,12 @@ public:
 	/// </summary>
 	/// <param name="isLight">ライトの有無</param>
 	void SetIsLight(bool isLight) { this->isLight = isLight; }
+
+	/// <summary>
+	/// 親オブジェクトをセット
+	/// </summary>
+	/// <param name="parent"></param>
+	void SetParent(Object3D* parent) { this->parent = parent; }
 
 //静的メンバ関数
 public:

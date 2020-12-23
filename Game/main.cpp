@@ -45,6 +45,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	{
 		FPSManager::Initialize(60);
 		Input::Update();
+		Sound::Update();
 		// メッセージがある?
 		if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
 			TranslateMessage(&msg); // キー入力メッセージの処理
@@ -62,6 +63,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	}
 	// ウィンドウクラスを登録解除
 	SceneManager::DeleteScene();
+	Sound::DeleteSoundData();
 	DX12Util::End();
 }
 

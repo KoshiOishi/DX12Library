@@ -16,7 +16,7 @@ public:
 	//バッファの末尾に達したとき
 	STDMETHOD_(void, OnBufferEnd)(THIS_ void* pBufferContext) {
 		//バッファを解放する
-		delete[] pBufferContext;
+		//delete[] pBufferContext;
 	};
 	//再生がループ位置に達した時
 	STDMETHOD_(void, OnLoopEnd)(THIS_ void* pBufferContext) {};
